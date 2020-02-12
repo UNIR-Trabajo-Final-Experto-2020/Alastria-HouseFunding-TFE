@@ -1,0 +1,1 @@
+sudo remixd -s ./contracts --remix-ide https://remix.ethereum.org

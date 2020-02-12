@@ -3,36 +3,58 @@ pragma solidity ^0.5.0;
 import "./OpenZeppelin/Ownable.sol";
 
 contract Inversores is Ownable {
-//TODO ...
-/**
-def struct Inversor{
 
-+ nombre: string
+	//Eventos
+	event InversorRegistrado(address cuentaInversor, string nombre, string cif);
+    event InversorBorrado(address cuentaInversor);
 
-+ cif: string
+    struct Inversor {
+      address _address;
+      string _nombre;
+      string _cif;
+  	  address[] _proyectos;
+    }
 
-+ address: address
+    mapping(address => Inversor) inversoresInfo;
+    address[] inversores;
 
-+ address[] proyectos
-
-}
-
- + tokensPorInversor: uint32
-+ inversoresInfo: mapping(address => Inversor)
-
-+ []address inversores
-**/
+    //DUDA
+    //tokensPorInversor: uint32
+	
+	constructor() public {
+		//Constructor...
+	}
 
 
-/**
-+ construct(nombre, cif): Type
+	function registrarInversor(address cuentaInversor, string memory nombre, string memory cif) public onlyOwner {
 
-+ registrarInversor()
+        //Registra nuevo inversor
+        inversoresInfo[cuentaInversor] = Inversor(cuentaInversor, nombre, cif, new address[](0));
+        inversores.push(cuentaInversor);
 
-+ consultarInversor(address _inversor) return Inversor
+        //Evento inversor registrado
+        emit InversorRegistrado(cuentaInversor, nombre, cif);
 
-+ listarProyectosInversor(address _inversor) return address[] proyectos
+    }
 
-+ deleteInversor(address _inversor)
-**/
+   function consultarInversor(address cuentaInversor)  public view returns (string memory nombre, string memory cif)   {
+        return (inversoresInfo[cuentaInversor]._nombre, inversoresInfo[cuentaInversor]._cif);
+    }
+
+    function listarProyectosInversor(address cuentaInversor) public view returns (address [] memory proyectos) {
+    	return inversoresInfo[cuentaInversor]._proyectos;
+    }   
+
+	function deleteInversor(address cuentaInversor) public onlyOwner {
+	    delete inversoresInfo[cuentaInversor];
+        
+        for (uint i = 0; i< inversores.length; i++) {
+            if (inversores[i] == cuentaInversor) {
+              delete inversores[i];
+              emit InversorBorrado(cuentaInversor);
+            }
+        }
+       
+	}
+
 }

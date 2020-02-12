@@ -8,16 +8,19 @@ contract Promotores is Ownable {
     event PromotorRegistrado(address _cuenta, string _nombre, string _cif, uint256 capacidad);
     event ProyectoRegistrado(address _cuenta, string _nombre, uint256 _fechaInicioFinanciacion, uint256 _fechaFinFinanciacion,
 		uint256 _tokensGoal, uint256 _rentabilidad);
+    event ProyectoBorrado(address _cuentaProyecto);
+    event ProyectoEnEjecucion(address _cuentaProyecto);
+    
 
     struct Promotor {
       address _address;
       string _nombre;
       string _cif;
-	  uint256 _totalProyectos;
-	  // pensar formula : balanceOf * 100 - o de su saldo 
-	  //se resta el _tokensGoals por cada proyecto que abre y se suma cuando el proyecto se cierra
-	  uint256 _capacidad;
-	  mapping(address => Proyecto) _proyectos;
+  	  uint256 _totalProyectos;
+  	  // pensar formula : balanceOf * 100 - o de su saldo 
+  	  //se resta el _tokensGoals por cada proyecto que abre y se suma cuando el proyecto se cierra
+  	  uint256 _capacidad;
+  	  mapping(address => Proyecto) _proyectos;
     }
 
     struct Proyecto {
@@ -40,52 +43,61 @@ contract Promotores is Ownable {
     mapping(address => Promotor) promotoresInfo;
     address[] promotores;
 
-	address[] proyectos;
+	  address[] proyectos;
 
 	constructor() public {
 		//Constructor...
 	}
 
-	function registrarPromotor(address _cuenta, string memory _nombre, string memory _cif, uint256 _capacidad) public {
+	function registrarPromotor(address cuentaPromotor, string memory nombre, string memory cif, uint256 capacidad) public onlyOwner {
         //Registra nuevo promotor
-        promotoresInfo[_cuenta] = Promotor(_cuenta, _nombre, _cif, 0, _capacidad);
-        promotores.push(_cuenta);
+        promotoresInfo[cuentaPromotor] = Promotor(cuentaPromotor, nombre, cif, 0, capacidad);
+        promotores.push(cuentaPromotor);
+
+        //TODO Que capacidad le damos?
 
         //Evento promotor registrado
-        emit PromotorRegistrado(_cuenta, _nombre, _cif, _capacidad);
+        emit PromotorRegistrado(cuentaPromotor, nombre, cif, capacidad);
 
     }
 
-	function registrarProyecto(address _cuenta, string memory _nombre, uint256 _fechaInicioFinanciacion, uint256 _fechaFinFinanciacion,
-		uint256 _tokensGoal, uint256 _rentabilidad) public {
+	function registrarProyecto(address cuentaProyecto, string memory nombre, uint256 fechaInicioFinanciacion, uint256 fechaFinFinanciacion,
+		uint256 tokensGoal, uint256 rentabilidad) public onlyOwner {
         
         //Registra proyecto
        
-        proyectos.push(_cuenta);
+        proyectos.push(cuentaProyecto);
 
         //Se anade proyecto al promotor 
-        //TODO Sustituir por _msgSender()
-		Promotor storage promotor = promotoresInfo[msg.sender];
+		    Promotor storage promotor = promotoresInfo[_msgSender()];
 
-		promotor._proyectos[msg.sender] = Proyecto(_cuenta, _nombre, _fechaInicioFinanciacion, 
-        _fechaFinFinanciacion, 0, 0, _tokensGoal, _rentabilidad, ProjectStatus.INICIADO, new address[](0));
+		    promotor._proyectos[msg.sender] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
+          fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.INICIADO, new address[](0));
+
+        promotor._totalProyectos++;
 
         //Evento proyecto registrado
-        emit ProyectoRegistrado(_cuenta, _nombre, _fechaInicioFinanciacion, _fechaFinFinanciacion, _tokensGoal, _rentabilidad);
+        emit ProyectoRegistrado(cuentaProyecto, nombre, fechaInicioFinanciacion, fechaFinFinanciacion, tokensGoal, rentabilidad);
 
     }
 
-   function consultarPromotor(address _cuenta)  public view returns (string memory nombre, string memory cif)   {
-        //TODO...
-        return ("nombre", "cif");
+   
+
+   function consultarPromotor(address cuentaPromotor)  public view returns (string memory nombre, string memory cif, uint256 capacidad)   {
+        return (promotoresInfo[cuentaPromotor]._nombre, promotoresInfo[cuentaPromotor]._cif, promotoresInfo[cuentaPromotor]._capacidad);
     }
 
-   function consultarProyecto(address _cuenta)  public view 
-  		 returns (string memory _nombre, uint256 _fechaInicioFinanciacion, uint256 _fechaFinFinanciacion,
-   				uint256 _fechaInicioEjecucion, uint256 _fechaFinEjecucion,
-				uint256 _tokensGoal, uint256 _rentabilidad, ProjectStatus _estadoProyecto)   {
-        //TODO...
-        return ("nombre", 0,0,0,0,0,0,ProjectStatus.INICIADO);
+   function consultarProyecto(address cuentaProyecto)  public view 
+  		 returns (string memory nombre, uint256 fechaInicioFinanciacion, uint256 fechaFinFinanciacion,
+   				uint256 fechaInicioEjecucion, uint256 fechaFinEjecucion,
+				uint256 tokensGoal, uint256 rentabilidad, ProjectStatus estadoProyecto)   {
+        
+        Promotor storage promotor = promotoresInfo[_msgSender()];
+        Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
+
+        return (proyecto._nombre, proyecto._fechaInicioFinanciacion,proyecto._fechaFinFinanciacion,
+          proyecto._fechaInicioEjecucion, proyecto._fechaFinEjecucion,
+          proyecto._tokensGoal, proyecto._rentabilidad, proyecto._estadoProyecto);
     }
 
     function listarProyectos() public view returns (address [] memory _proyectos) {
@@ -96,21 +108,35 @@ contract Promotores is Ownable {
     	return promotores;
     }
 
-    function listarInversoresProyecto(address _addressProyecto) public view returns (address [] memory _inversores) {
-    	return promotoresInfo[msg.sender]._proyectos[_addressProyecto].inversores;
+    function listarInversoresProyecto(address cuentaProyecto) public view returns (address [] memory _inversores) {
+    	return promotoresInfo[msg.sender]._proyectos[cuentaProyecto].inversores;
     }    
     
-    function listarTokensPorProyectosPorInversor(address _addressProyecto, address _addressInversor) public view returns (uint256 tokensInversor) {
-    	//TODO...
-    	return 0;
+    function listarTokensPorProyectosPorInversor(address cuentaProyecto, address cuentaInversor) public view returns (uint256 tokensInversor) {
+    	
+    	return promotoresInfo[_msgSender()]._proyectos[cuentaProyecto]._tokensPorInversor[cuentaInversor];
     } 
 
-	function deleteProyecto(address _addressProyecto) public {
-		//TODO...
+	function deleteProyecto(address cuentaProyecto) public onlyOwner {
+	    delete promotoresInfo[msg.sender]._proyectos[cuentaProyecto];
+        
+        for (uint i = 0; i< proyectos.length; i++) {
+            if (proyectos[i] == cuentaProyecto) {
+              delete proyectos[i];
+              emit ProyectoBorrado(cuentaProyecto);
+            }
+        }
+       
 	}
 
-	function promotorEjecutaProyecto(address _addressProyecto) public {
-		//TODO...Cambiar estado...
+	function promotorEjecutaProyecto(address cuentaProyecto, uint256 fechaInicioEjecucion,
+      uint256 fechaFinEjecucion) public onlyOwner {
+		 Promotor storage promotor = promotoresInfo[_msgSender()];
+     Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
+     proyecto._fechaInicioEjecucion = fechaInicioEjecucion;
+     proyecto._fechaFinEjecucion = fechaFinEjecucion;
+     proyecto._estadoProyecto = ProjectStatus.EN_PROGRESO;
+     emit ProyectoEnEjecucion(cuentaProyecto);
 	}
 
 }
