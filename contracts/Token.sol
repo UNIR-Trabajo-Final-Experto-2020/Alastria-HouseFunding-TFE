@@ -24,8 +24,8 @@ contract Token is IERC20 {
         name = "VALTO";
         symbol = "VAT";
         decimals = 16;
-        _totalSupply = 10000000;
-        _balances[owner] = 10000000;
+        _totalSupply = 1000000000;
+        _balances[owner] = 1000000000;
         emit Transfer(address(0), owner, _totalSupply);
     }
 

@@ -35,15 +35,15 @@ contract Promotores is Ownable {
       uint256 _rentabilidad;
       ProjectStatus _estadoProyecto;
       address[] inversores;
-	  mapping(address => uint256) _tokensPorInversor;
+	    mapping(address => uint256) _tokensPorInversor;
     }
 
     enum ProjectStatus { INICIADO, CANCELADO, EN_PROGRESO, FINALIZADO}
 
-    mapping(address => Promotor) promotoresInfo;
-    address[] promotores;
+    mapping(address => Promotor) private promotoresInfo;
+    address[] private promotores;
 
-	  address[] proyectos;
+	  address[] private proyectos;
 
 	constructor() public {
 		//Constructor...
