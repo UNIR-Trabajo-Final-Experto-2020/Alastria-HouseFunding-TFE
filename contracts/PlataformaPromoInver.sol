@@ -101,7 +101,8 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     *	El inversor abandona el proyecto antes de ejecutarse y se devuelven los tokens al proyecto
     *	Una vez que esta en ejecucion no se puede abanadonar.
     */
-    function abandonarProyecto(address cuentaInversor, address cuentaProyecto) public {
+    function abandonarProyecto(address cuentaProyecto) public {
+        address cuentaInversor = currentOwner();
 		//TODO Se transfieren numeroTokens de cuentaProyecto a cuentaInversor
     }
 
