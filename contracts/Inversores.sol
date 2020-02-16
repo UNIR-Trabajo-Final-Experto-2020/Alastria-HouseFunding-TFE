@@ -12,6 +12,7 @@ contract Inversores is Ownable {
       address _address;
       string _nombre;
       string _cif;
+      bool _existe;
   	  address[] _proyectos;
     }
 
@@ -29,7 +30,7 @@ contract Inversores is Ownable {
 	function registrarInversor(address cuentaInversor, string memory nombre, string memory cif) public onlyOwner {
 
         //Registra nuevo inversor
-        inversoresInfo[cuentaInversor] = Inversor(cuentaInversor, nombre, cif, new address[](0));
+        inversoresInfo[cuentaInversor] = Inversor(cuentaInversor, nombre, cif, true, new address[](0));
         inversores.push(cuentaInversor);
 
         //Evento inversor registrado
@@ -56,5 +57,11 @@ contract Inversores is Ownable {
         }
        
 	}
+
+    modifier esInversorValido(address _cuenta){
+        if(inversoresInfo[_cuenta]._existe){
+            _;
+        }
+    }
 
 }

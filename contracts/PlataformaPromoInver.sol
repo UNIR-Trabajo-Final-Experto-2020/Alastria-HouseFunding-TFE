@@ -17,6 +17,10 @@ import "./Inversores.sol";
 */
 contract PlataformaPromoInver is Promotores, Inversores, Token {
     
+    //Eventos
+    event TokensEmitidos(address _from, address _to, uint256 _numeroTokens, bool _comprados);
+	event TokensInvertidosProyecto(address _cuentaInversor, address _cuentaProyecto, uint256 _numeroTokens, bool _invertidos); 
+
     //Promotores promotores;
     //Inversores inversores;
     //Token token;
@@ -47,18 +51,50 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     }
 
     /**
-    *	El inversor compra tokens a plataforma (se transfieren simplemente ya que no hay ningun exchange)
+    *   
+    *   La plataforma es la que emite los tokens al inversor
     **/
-    function comprarTokens(address cuentaInversor, uint256 numeroTokens) public { 
-    	//TODO El inversor compra tokens a plataforma
-    	//Se transfiere el numero de tokens que desee de la plataforma (owner) al inversor
+    function emitirTokensParaInversor(address cuentaInversor, uint256 numeroTokens) public esInversorValido(cuentaInversor) { 
+        
+        //Se transfiere el numero de tokens que desee de la plataforma (owner) al inversor
+        //Se comprueba que cuentaInversor esta registrada como inversor 
+        emitirTokens(cuentaInversor, numeroTokens);
+    }
+
+    /**
+    *   
+    *   La plataforma es la que emite los tokens al promotor
+    **/
+    function emitirTokensParaPromotor(address cuentaPromotor, uint256 numeroTokens) public esPromotorValido(cuentaPromotor) { 
+        
+        //Se transfiere el numero de tokens que desee de la plataforma (owner) al inversor
+        //Se comprueba que cuentaPromotor esta registrada como promotor 
+        emitirTokens(cuentaPromotor, numeroTokens);
+    }
+
+    /**
+    *	El inversor compra tokens a plataforma (se transfieren simplemente ya que no hay ningun exchange)
+    *   Se puede utilizar tambien para que el promotor compre tokens a la plataforma?
+    **/
+    function emitirTokens(address cuentaDestino, uint256 numeroTokens) internal onlyOwner { 
+    	//Se transfiere el numero de tokens que desee de la plataforma (owner) a cuentaDestino
+        address owner = currentOwner();
+    	bool comprados = transferFrom(owner, cuentaDestino, numeroTokens);
+    	emit TokensEmitidos(owner, cuentaDestino, numeroTokens, comprados);
+
     }
 
     /**
     *	El inversor invierte tokens en un proyecto concreto
     **/
-    function invertirProyecto(address cuentaInversor, address cuentaProyecto, uint256 numeroTokens) public { 
-    	//TODO Se transfieren numeroTokens de cuentaInversor a cuentaProyecto
+    function invertirProyecto(address cuentaProyecto, uint256 numeroTokens) public esProyectoValido(cuentaProyecto) { 
+    	//Se transfieren numeroTokens de cuentaInversor a cuentaProyecto
+    	
+    	//TODO Pendiente comprobar tokensGoal y estadoProyecto
+        //TODO Comprobar que cuentaInversor y cuentaProyecto estan registradas en el sistema
+        address cuentaInversor = currentOwner();
+    	bool invertidos = transferFrom(cuentaInversor, cuentaProyecto, numeroTokens);
+    	emit TokensInvertidosProyecto(cuentaInversor, cuentaProyecto, numeroTokens, invertidos);
     }
 
     /**

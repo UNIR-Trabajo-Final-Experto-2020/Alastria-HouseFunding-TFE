@@ -20,6 +20,7 @@ contract Promotores is Ownable {
   	  // pensar formula : balanceOf * 100 - o de su saldo 
   	  //se resta el _tokensGoals por cada proyecto que abre y se suma cuando el proyecto se cierra
   	  uint256 _capacidad;
+      bool _existe;
   	  mapping(address => Proyecto) _proyectos;
     }
 
@@ -34,13 +35,14 @@ contract Promotores is Ownable {
       uint256 _tokensGoal;
       uint256 _rentabilidad;
       ProjectStatus _estadoProyecto;
+      bool _existe;
       address[] inversores;
 	    mapping(address => uint256) _tokensPorInversor;
     }
 
     enum ProjectStatus { INICIADO, CANCELADO, EN_PROGRESO, FINALIZADO}
 
-    mapping(address => Promotor) private promotoresInfo;
+    mapping(address => Promotor) promotoresInfo;
     address[] private promotores;
 
 	  address[] private proyectos;
@@ -51,7 +53,7 @@ contract Promotores is Ownable {
 
 	function registrarPromotor(address cuentaPromotor, string memory nombre, string memory cif, uint256 capacidad) public onlyOwner {
         //Registra nuevo promotor
-        promotoresInfo[cuentaPromotor] = Promotor(cuentaPromotor, nombre, cif, 0, capacidad);
+        promotoresInfo[cuentaPromotor] = Promotor(cuentaPromotor, nombre, cif, 0, capacidad, true);
         promotores.push(cuentaPromotor);
 
         //TODO Que capacidad le damos?
@@ -72,7 +74,7 @@ contract Promotores is Ownable {
 		    Promotor storage promotor = promotoresInfo[_msgSender()];
 
 		    promotor._proyectos[msg.sender] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
-          fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.INICIADO, new address[](0));
+          fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.INICIADO, true, new address[](0));
 
         promotor._totalProyectos++;
 
@@ -138,5 +140,21 @@ contract Promotores is Ownable {
      proyecto._estadoProyecto = ProjectStatus.EN_PROGRESO;
      emit ProyectoEnEjecucion(cuentaProyecto);
 	}
+
+
+    modifier esPromotorValido(address _cuenta){
+        if(promotoresInfo[_cuenta]._existe){
+            _;
+        }
+    }
+
+    modifier esProyectoValido(address _cuenta) {
+        for (uint i = 0; i< proyectos.length; i++) {
+            if (proyectos[i] == _cuenta) {
+              _;
+            }
+        }
+    }
+
 
 }
