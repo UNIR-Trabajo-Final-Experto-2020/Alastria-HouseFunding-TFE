@@ -71,9 +71,10 @@ contract Promotores is Ownable {
         proyectos.push(cuentaProyecto);
 
         //Se anade proyecto al promotor 
-		    Promotor storage promotor = promotoresInfo[_msgSender()];
+        address cuentaPromotor = promotores[0];
+		Promotor storage promotor = promotoresInfo[cuentaPromotor];
 
-		    promotor._proyectos[msg.sender] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
+		    promotor._proyectos[cuentaProyecto] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
           fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.INICIADO, true, new address[](0));
 
         promotor._totalProyectos++;
@@ -94,7 +95,8 @@ contract Promotores is Ownable {
    				uint256 fechaInicioEjecucion, uint256 fechaFinEjecucion,
 				uint256 tokensGoal, uint256 rentabilidad, ProjectStatus estadoProyecto)   {
         
-        Promotor storage promotor = promotoresInfo[_msgSender()];
+        address cuentaPromotor = promotores[0];
+        Promotor storage promotor = promotoresInfo[cuentaPromotor];
         Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
 
         return (proyecto._nombre, proyecto._fechaInicioFinanciacion,proyecto._fechaFinFinanciacion,
