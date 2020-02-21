@@ -112,8 +112,8 @@ contract Promotores is Ownable {
     	return promotores;
     }
 
-    function listarInversoresProyecto(address cuentaProyecto) public view returns (address [] memory _inversores) {
-    	return promotoresInfo[msg.sender]._proyectos[cuentaProyecto].inversores;
+    function listarInversoresProyecto(address cuentaPromotor, address cuentaProyecto) public view returns (address [] memory _inversores) {
+    	return promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto].inversores;
     }    
     
     function listarTokensPorProyectosPorInversor(address cuentaProyecto, address cuentaInversor) public view returns (uint256 tokensInversor) {
