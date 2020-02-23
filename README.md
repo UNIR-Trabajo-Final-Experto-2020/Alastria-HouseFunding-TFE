@@ -17,6 +17,10 @@ Inicialización:
 	5.1 - El inversor I1 compra tokens a PlataformaPromoInver: balanceOf del inversor se incrementa y se resta del totalSupply (Exchange). Método tranferirTokensParaInversor.
 	5.2 - El inversor I1 invierte 1000 VAT en P1 (invertirProyecto).
 	5.3 - El inversor I1 invierto 5000 VAT en P2 (invertirProyecto).
+	5.4 - LLega el último inversor de un proyecto y alcance el tokensGoal (proyecto EN_PROGRESO).
+
+6 - El promotor transfiere tokens del proyecto a su cuenta.
+7 - El promotor transfiere tokens de plataforma a su cuenta para pagar intereses ().
 
 	  
 
