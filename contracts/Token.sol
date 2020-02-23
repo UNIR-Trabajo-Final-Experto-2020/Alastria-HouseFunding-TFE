@@ -61,6 +61,9 @@ contract Token is IERC20 {
      * @param value The amount to be transferred.
      */
     function transfer(address to, uint256 value) public returns (bool) {
+
+        require(_balances[msg.sender] >= value, "Saldo insuficiente");
+        
         _transfer(msg.sender, to, value);
         return true;
     }
