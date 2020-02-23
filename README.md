@@ -23,6 +23,8 @@ Inicialización:
 
 7 - El promotor transfiere tokens de plataforma a su cuenta para pagar intereses.
 
+8 - Finalizar proyecto.
+
 	  
 
 
