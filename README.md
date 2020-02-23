@@ -14,9 +14,9 @@ Inicialización:
 
 5 - Un inversor I1 accounts[4] se registra en la plataforma 
 
-	5.1 - El inversor I1 compra tokens a PlataformaPromoInver
-	5.2 - El inversor I1 invierte 1000 VAT en P1
-	5.3 - El inversor I1 invierto 5000 VAT en P2
+	5.1 - El inversor I1 compra tokens a PlataformaPromoInver: balanceOf del inversor se incrementa y se resta del totalSupply (Exchange). Método tranferirTokensParaInversor.
+	5.2 - El inversor I1 invierte 1000 VAT en P1 (invertirProyecto).
+	5.3 - El inversor I1 invierto 5000 VAT en P2 (invertirProyecto).
 
 	  
 
