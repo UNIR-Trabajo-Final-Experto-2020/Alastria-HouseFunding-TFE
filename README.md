@@ -20,7 +20,8 @@ Inicialización:
 	5.4 - LLega el último inversor de un proyecto y alcance el tokensGoal (proyecto EN_PROGRESO).
 
 6 - El promotor transfiere tokens del proyecto a su cuenta.
-7 - El promotor transfiere tokens de plataforma a su cuenta para pagar intereses ().
+
+7 - El promotor transfiere tokens de plataforma a su cuenta para pagar intereses.
 
 	  
 
