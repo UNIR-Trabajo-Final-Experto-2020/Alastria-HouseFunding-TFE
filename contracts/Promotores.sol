@@ -56,20 +56,19 @@ contract Promotores is Ownable {
         promotores.push(cuentaPromotor);
 
   }
-	
 
 	function registrarProyecto(address cuentaProyecto, string memory nombre, uint256 fechaInicioFinanciacion, uint256 fechaFinFinanciacion,
-		uint256 tokensGoal, uint256 rentabilidad) public onlyOwner {
+		uint256 tokensGoal, uint256 rentabilidad) public {
         
         //Registra proyecto
-       
         proyectos.push(cuentaProyecto);
 
-        //Se anade proyecto al promotor 
-        address cuentaPromotor = promotores[0];
-		Promotor storage promotor = promotoresInfo[cuentaPromotor];
+        //Se anade proyecto al promotor         
+		Promotor storage promotor = promotoresInfo[msg.sender];
 
-		    promotor._proyectos[cuentaProyecto] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
+        require(tokensGoal < promotor._capacidad, "TokensGoal del proyecto es superior a la capacidad del promotor");
+
+		promotor._proyectos[cuentaProyecto] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
           fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.INICIADO, true, new address[](0));
 
         promotor._totalProyectos++;
