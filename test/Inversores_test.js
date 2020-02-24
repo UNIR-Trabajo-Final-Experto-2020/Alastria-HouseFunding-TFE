@@ -7,11 +7,34 @@ contract('Inversores', function (accounts) {
         this.inversores = await Inversores.new();
     });
     
-    it('Test 1', async function () {
+    it('Registar Inversor valido', async function () {
 		
-        console.log("Test 1");        
+        console.log(accounts[0]);
+
+        const cuentaInversor = accounts[0];
+
+       	await this.plataformaPromoInver.registrarPromotor("Inversor 1", "B123888", 10000, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+            .on('receipt', function(receipt){
+
+                assert.equal(receipt.logs[0].event, "InversorRegistrado");            
+            });
+
     });
     
+    it('Registar Inversor sin nombre', async function () {
+		
+        console.log(accounts[0]);
+
+        const cuentaInversor = accounts[1];
+
+        try {
+       		await this.plataformaPromoInver.registrarPromotor("", "B123838", 10000, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 });
+       	} catch (error) {
+			console.log("Error inversores: " + error.message);
+  			return;
+       	}
+		assert.fail('Inversores: Expected throw not received');
+    });
     
 });
 
