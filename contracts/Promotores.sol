@@ -5,7 +5,6 @@ import "./OpenZeppelin/Ownable.sol";
 contract Promotores is Ownable {
     
     //Eventos
-    event PromotorRegistrado(address _cuenta, string _nombre, string _cif, uint256 capacidad);
     event ProyectoRegistrado(address _cuenta, string _nombre, uint256 _fechaInicioFinanciacion, uint256 _fechaFinFinanciacion,
 		uint256 _tokensGoal, uint256 _rentabilidad);
     event ProyectoBorrado(address _cuentaProyecto);
@@ -51,17 +50,13 @@ contract Promotores is Ownable {
 		//Constructor...
 	}
 
-	function registrarPromotor(address cuentaPromotor, string memory nombre, string memory cif, uint256 capacidad) public onlyOwner {
+  function registrarPromotor(address cuentaPromotor, string memory nombre, string memory cif, uint256 capacidad) internal {
         //Registra nuevo promotor
         promotoresInfo[cuentaPromotor] = Promotor(cuentaPromotor, nombre, cif, 0, capacidad, true);
         promotores.push(cuentaPromotor);
 
-        //TODO Que capacidad le damos?
-
-        //Evento promotor registrado
-        emit PromotorRegistrado(cuentaPromotor, nombre, cif, capacidad);
-
-    }
+  }
+	
 
 	function registrarProyecto(address cuentaProyecto, string memory nombre, uint256 fechaInicioFinanciacion, uint256 fechaFinFinanciacion,
 		uint256 tokensGoal, uint256 rentabilidad) public onlyOwner {
