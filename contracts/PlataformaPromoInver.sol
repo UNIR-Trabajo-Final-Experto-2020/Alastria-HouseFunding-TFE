@@ -20,6 +20,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     //Eventos
     event TokensEmitidos(address _from, address _to, uint256 _numeroTokens, bool _comprados);
 	event TokensInvertidosProyecto(address _cuentaInversor, address _cuentaProyecto, uint256 _numeroTokens, bool _invertidos); 
+    event PromotorRegistrado(address _cuenta, string _nombre, string _cif, uint256 capacidad);
 
     //Promotores promotores;
     //Inversores inversores;
@@ -31,6 +32,16 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     	//token = new Token();
     }
   
+
+  function registrarPromotor(string memory nombre, string memory cif, uint256 capacidad) public esCapacidadValida(capacidad) {
+        //Registra nuevo promotor
+        address cuentaPromotor = _msgSender();
+        super.registrarPromotor(cuentaPromotor, nombre, cif, capacidad);
+
+        emit PromotorRegistrado(cuentaPromotor, nombre, cif, capacidad);
+
+    }
+
   	/**
   	* 	El promotor finaliza proyecto y devuelve los tokens con los intereses a los inversores
   	**/
@@ -114,5 +125,9 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
 		//TODO Se transfieren numeroTokens de cuentaProyecto a cuentaInversor
     }
 
+    modifier esCapacidadValida(uint256 capacidad) {
+        require(capacidad <= totalSupply());
+        _;
+    }
 
 }
