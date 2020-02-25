@@ -53,11 +53,11 @@ contract('PlataformaPromoInver', function (accounts) {
                 assert.equal(receipt.logs[0].event, "InversorRegistrado");            
         });
 
-	    //Se obtiene el total supply antes de hacer transfrencia
+	    //Se obtiene el total supply antes de hacer transferencia
 	    const totalSupply = await this.plataformaPromoInver.totalSupply();
 
 		//Se realiza transferencia de tokens a inversor
-	    await this.plataformaPromoInver.tranferirTokensParaInversor(cuentaInversor, tokensInversor, { from: currentOwner, gasPrice: 1, gas: 3000000 })
+	    await this.plataformaPromoInver.transferirTokensParaInversor(cuentaInversor, tokensInversor, { from: currentOwner, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
 				
 				assert.equal(receipt.logs[0].event, "Transfer");  
@@ -70,6 +70,41 @@ contract('PlataformaPromoInver', function (accounts) {
 
     });
 
+
+   
+	it('Transferir tokens a promotor (intereses)', async function () {
+		        
+   		//Es el accounts[0]
+		const currentOwner = await this.plataformaPromoInver.currentOwner();
+		console.log("currentOwner: " + currentOwner);
+
+        const cuentaPromotor = accounts[1];
+		console.log("Cuenta promotor:"  + cuentaPromotor);
+
+		const tokensPromotor = 500000;
+
+		//Se crea promotor
+       	await this.plataformaPromoInver.registrarPromotor("Promotores 2020", "B778899", 1000000, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+            .on('receipt', function(receipt){
+                assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
+        });
+
+	    //Se obtiene el total supply antes de hacer transferencia
+	    const totalSupply = await this.plataformaPromoInver.totalSupply();
+
+		//Se realiza transferencia de tokens a promotor
+	    await this.plataformaPromoInver.transferirTokensParaPromotor(cuentaPromotor, tokensPromotor, { from: currentOwner, gasPrice: 1, gas: 3000000 })
+            .on('receipt', function(receipt){
+				
+				assert.equal(receipt.logs[0].event, "Transfer");  
+                assert.equal(receipt.logs[1].event, "TokensEmitidos");          
+        });
+
+
+        assert.equal(await this.plataformaPromoInver.balanceOf(cuentaPromotor), tokensPromotor);
+		assert.equal(await this.plataformaPromoInver.balanceOf(currentOwner), totalSupply - tokensPromotor);
+
+    });
 
 });
 
