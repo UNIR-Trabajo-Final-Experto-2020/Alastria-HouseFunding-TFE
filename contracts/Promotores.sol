@@ -152,5 +152,10 @@ contract Promotores is Ownable {
         }
     }
 
+    modifier esProyectoDelPromotor(address cuentaPromotor, address cuentaProyecto) {
+      if (promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto]._existe) {
+          _;
+      }
+    }
 
 }
