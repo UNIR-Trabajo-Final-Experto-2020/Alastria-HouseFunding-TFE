@@ -66,9 +66,8 @@ contract Inversores is Ownable {
     }
 
     modifier throwIfIsEmptyString(string memory _nombre, string memory _cif) {
-     if(bytes(_nombre).length == 0 || bytes(_cif).length == 0) {
+       require(bytes(_nombre).length > 0 && bytes(_cif).length > 0);
        _;
-     }
     }
 
 
