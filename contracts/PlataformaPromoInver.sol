@@ -65,7 +65,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     *   
     *   La plataforma es la que emite los tokens al inversor
     **/
-    function emitirTokensParaInversor(address cuentaInversor, uint256 numeroTokens) public esInversorValido(cuentaInversor) { 
+    function tranferirTokensParaInversor(address cuentaInversor, uint256 numeroTokens) public esInversorValido(cuentaInversor) { 
         
         //Se transfiere el numero de tokens que desee de la plataforma (owner) al inversor
         //Se comprueba que cuentaInversor esta registrada como inversor 
@@ -89,9 +89,10 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     **/
     function emitirTokens(address cuentaDestino, uint256 numeroTokens) internal onlyOwner { 
     	//Se transfiere el numero de tokens que desee de la plataforma (owner) a cuentaDestino
-        address owner = currentOwner();
-    	bool comprados = transferFrom(owner, cuentaDestino, numeroTokens);
-    	emit TokensEmitidos(owner, cuentaDestino, numeroTokens, comprados);
+        //address owner = currentOwner();
+    	//bool comprados = transferFrom(owner, cuentaDestino, numeroTokens);
+        bool comprados = transfer(cuentaDestino, numeroTokens);
+    	emit TokensEmitidos(_msgSender(), cuentaDestino, numeroTokens, comprados);
 
     }
 
