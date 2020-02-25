@@ -27,10 +27,10 @@ contract Inversores is Ownable {
 	}
 
 
-	function registrarInversor(string memory nombre, string memory cif) public throwIfIsEmptyString(nombre, cif){
+	function registrarInversor(string memory nombre, string memory cif) public throwIfIsEmptyString(nombre, cif) {
 
-        address cuentaInversor = _msgSender();
         //Registra nuevo inversor
+        address cuentaInversor =  _msgSender();
         inversoresInfo[cuentaInversor] = Inversor(cuentaInversor, nombre, cif, true, new address[](0));
         inversores.push(cuentaInversor);
 
@@ -70,4 +70,6 @@ contract Inversores is Ownable {
        _;
      }
     }
+
+
 }
