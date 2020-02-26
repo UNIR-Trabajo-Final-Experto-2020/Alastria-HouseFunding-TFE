@@ -159,23 +159,5 @@ contract Promotores is Ownable {
             _;
         }             
     }
-
- /*
-    modifier esInversorValidoEnProyecto(address _cuentaPromotor, address _cuentaProyecto, address _cuentaInversor) {
-
-        address [] memory _inversores = listarInversoresProyecto(_cuentaPromotor, _cuentaProyecto);
-        
-        _;
-       
-        for (uint i = 0; i< _inversores.length; i++) {
-            _;
-           
-            if (_inversores[i] == _cuentaInversor) {
-              _;
-            }
-        } 
-
-                        
-    }   
-    */ 
+    
 }

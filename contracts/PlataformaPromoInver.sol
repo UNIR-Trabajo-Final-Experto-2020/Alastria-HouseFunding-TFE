@@ -108,21 +108,19 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     	
         // Obtenemos cuenta inversor
         address cuentaInversor = _msgSender();
+       
+        // Se transfieren numeroTokens de cuentaInversor a cuentaProyecto: (descomentar transferFrom y emitir evento).
+        transfer(cuentaProyecto, numeroTokens);
 
-        // Validar que el promotor, proyecto (esProyectoValido) e inversor están registrados.
-        //require(promotoresInfo[_cuenta]._existe, "hay un promotor");
-
-        //Se transfieren numeroTokens de cuentaInversor a cuentaProyecto
-    	
-    	//TODO Pendiente comprobar tokensGoal y estadoProyecto
-        //TODO Comprobar que cuentaInversor y cuentaProyecto estan registradas en el sistema     
+        // Actualizamos el número de token que un inversor tiene en un proyecto (quitar += por =)
+        Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto];
+        proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
+    	 
+    	//TODO Pendiente comprobar tokensGoal y estadoProyecto        
 
         // Añadimos los inversores que están participando en el proyecto (TODO: verificar primero si el inversor ha invertido previamente)
         //Promotor storage promotor = promotoresInfo[cuentaPromotor];
         //promotor._proyectos[cuentaProyecto].inversores.push(cuentaInversor);
-
-        // Actualizamos el número de token que un inversor tiene en un proyecto
-        //promotor._proyectos[cuentaProyecto]._tokensPorInversor[cuentaInversor] += numeroTokens;        
 
     	//bool invertidos = transferFrom(cuentaInversor, cuentaProyecto, numeroTokens);
     	emit TokensInvertidosProyecto(cuentaInversor, cuentaProyecto, numeroTokens, true);
