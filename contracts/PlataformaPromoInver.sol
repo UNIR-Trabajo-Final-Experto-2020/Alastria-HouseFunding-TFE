@@ -20,6 +20,8 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     //Eventos
     event TokensEmitidos(address _from, address _to, uint256 _numeroTokens, bool _comprados);
     event TokensTransferidos(address _from, address _to, uint256 _numeroTokens, bool _transferidos);
+    event TokensNoAprobados(address _from, address _to, uint256 _numeroTokens, bool aprobados);
+    
 	event TokensInvertidosProyecto(address _cuentaInversor, address _cuentaProyecto, uint256 _numeroTokens, bool _invertidos); 
     event PromotorRegistrado(address _cuenta, string _nombre, string _cif, uint256 capacidad);
 
@@ -88,18 +90,26 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     *   Funcion invocada por el promotor para transferir los tokens del proyecto a su cuenta:
     *   El proyecto debe estar en estado EN_PROGRESO
     **/
-    function transferirTokensProyectoAPromotor(address cuentaProyecto) public esProyectoDelPromotor(_msgSender(), cuentaProyecto) {
+    function transferirTokensProyectoAPromotor(address cuentaProyecto) public esProyectoDelPromotor(_msgSender(), cuentaProyecto)  {
         
         //TODO Controlar el estado del proyecto
         address cuentaPromotor = _msgSender();
 
         uint256 numeroTokensProyecto = balanceOf(cuentaProyecto);
 
-        bool approved = approve(cuentaProyecto, numeroTokensProyecto);
+        bool approved = approve(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
 
-        bool transferidos = transferFrom(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
+        if (approved) {
 
-        emit TokensTransferidos(cuentaProyecto, cuentaPromotor, numeroTokensProyecto, transferidos);
+            bool transferidos = transferFrom(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
+        
+
+            emit TokensTransferidos(cuentaProyecto, cuentaPromotor, numeroTokensProyecto, transferidos);
+
+        } else {
+            emit TokensNoAprobados(cuentaProyecto, cuentaPromotor, numeroTokensProyecto, approved);
+        }
+        
 
     }
 
