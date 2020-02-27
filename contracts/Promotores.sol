@@ -161,6 +161,6 @@ contract Promotores is Ownable {
       if (promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto]._estadoProyecto == ProjectStatus.EN_FINANCIACION) {
           _;
       }
-    }    
-    
+    } 
+
 }

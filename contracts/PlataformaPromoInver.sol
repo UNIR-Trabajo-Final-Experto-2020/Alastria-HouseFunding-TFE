@@ -140,13 +140,18 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         // Obtenemos cuenta inversor
         address cuentaInversor = _msgSender();
 
+        // Obtenemos el proyecto del promotor
+        Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto];
         
+        // Validar que el número de token invertidos hasta el momento + el numeroTokens a invertir no supera tokensGoal.        
+        uint256 numeroTokenInvertidos = balanceOf(cuentaProyecto); 
+        require(numeroTokenInvertidos + numeroTokens <= proyecto._tokensGoal, "Tokens a invertir no puede superar tokensGoal");
        
         // Se transfieren numeroTokens de cuentaInversor a cuentaProyecto: (descomentar transferFrom y emitir evento).
         transfer(cuentaProyecto, numeroTokens);
 
         // Actualizamos el número de token que un inversor tiene en un proyecto (quitar += por =)
-        Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto];
+        
         proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
     	 
 
