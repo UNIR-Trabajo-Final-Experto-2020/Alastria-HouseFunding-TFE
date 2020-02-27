@@ -83,6 +83,14 @@ contract Token is IERC20 {
     }
 
     /**
+    *   Nueva funcion para aprobar transferencia de tokens de proyectos a promobtor
+    **/
+    function approve(address owner, address spender, uint256 value) internal returns (bool) {
+        _approve(owner, spender, value);
+        return true;
+    }
+
+    /**
      * @dev Transfer tokens from one address to another.
      * Note that while this function emits an Approval event, this is not required as per the specification,
      * and other compliant implementations may not emit the event.
