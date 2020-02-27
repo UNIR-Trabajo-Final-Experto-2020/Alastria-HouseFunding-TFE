@@ -39,7 +39,7 @@ contract Promotores is Ownable {
 	    mapping(address => uint256) _tokensPorInversor;
     }
 
-    enum ProjectStatus { INICIADO, CANCELADO, EN_PROGRESO, FINALIZADO}
+    enum ProjectStatus { EN_FINANCIACION, CANCELADO, EN_PROGRESO, FINALIZADO}
 
     mapping(address => Promotor) promotoresInfo;
     address[] private promotores;
