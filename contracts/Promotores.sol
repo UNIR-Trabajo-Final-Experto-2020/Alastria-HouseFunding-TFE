@@ -9,7 +9,7 @@ contract Promotores is Ownable {
 		uint256 _tokensGoal, uint256 _rentabilidad);
     event ProyectoBorrado(address _cuentaProyecto);
     event ProyectoEnEjecucion(address _cuentaProyecto);
-    
+    event ProjectStatusIncorrecto(address _cuentaProyecto, ProjectStatus _estadoProyecto);
 
     struct Promotor {
       address _address;
@@ -127,15 +127,36 @@ contract Promotores is Ownable {
        
 	}
 
-	function promotorEjecutaProyecto(address cuentaProyecto, uint256 fechaInicioEjecucion,
-      uint256 fechaFinEjecucion) public onlyOwner {
-		 Promotor storage promotor = promotoresInfo[_msgSender()];
+	function promotorEjecutaProyecto(address cuentaPromotor, address cuentaProyecto, uint256 fechaInicioEjecucion,
+      uint256 fechaFinEjecucion) internal {
+
+		 Promotor storage promotor = promotoresInfo[cuentaPromotor];
      Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
+     if (proyecto._estadoProyecto != ProjectStatus.INICIADO) {
+        emit ProjectStatusIncorrecto(cuentaProyecto, proyecto._estadoProyecto);
+     }
      proyecto._fechaInicioEjecucion = fechaInicioEjecucion;
      proyecto._fechaFinEjecucion = fechaFinEjecucion;
      proyecto._estadoProyecto = ProjectStatus.EN_PROGRESO;
      emit ProyectoEnEjecucion(cuentaProyecto);
+
 	}
+
+  function esEstadoProyectoValido(address cuentaProyecto, ProjectStatus _status) public view  returns (ProjectStatus _estadoProyecto, bool _esValido) {
+    string memory nombre;
+    uint256 fechaInicioFinanciacion;
+    uint256 fechaFinFinanciacion;
+    uint256 fechaInicioEjecucion; 
+    uint256 fechaFinEjecucion;
+    uint256 tokensGoal;
+    uint256 rentabilidad; 
+    ProjectStatus estadoProyecto;
+
+    (nombre, fechaInicioFinanciacion, fechaFinFinanciacion, fechaInicioEjecucion, fechaFinEjecucion, tokensGoal, rentabilidad, estadoProyecto) = consultarProyecto(cuentaProyecto);
+
+    return (estadoProyecto, (estadoProyecto == _status));
+    
+  }
 
     modifier esPromotorValido(address _cuenta){
         if(promotoresInfo[_cuenta]._existe){
