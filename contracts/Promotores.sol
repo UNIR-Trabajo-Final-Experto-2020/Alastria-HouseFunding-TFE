@@ -132,7 +132,7 @@ contract Promotores is Ownable {
 
 		 Promotor storage promotor = promotoresInfo[cuentaPromotor];
      Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
-     if (proyecto._estadoProyecto != ProjectStatus.INICIADO) {
+     if (proyecto._estadoProyecto != ProjectStatus.EN_FINANCIACION) {
         emit ProjectStatusIncorrecto(cuentaProyecto, proyecto._estadoProyecto);
      }
      proyecto._fechaInicioEjecucion = fechaInicioEjecucion;
