@@ -48,8 +48,9 @@ contract('Promotores', function (accounts) {
         await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, cuentaProyecto, 100, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
                 console.log(JSON.stringify(receipt, null, 2));
-
-                //assert.equal(receipt.logs[0].event, "TokensInvertidosProyecto");                  
+                
+                assert.equal(receipt.logs[0].event, "Transfer");  
+                assert.equal(receipt.logs[1].event, "TokensInvertidosProyecto");                                
             }); 
         
         

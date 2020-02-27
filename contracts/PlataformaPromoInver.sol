@@ -132,12 +132,15 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     //function invertirProyecto(address cuentaPromotor, address cuentaProyecto, uint256 numeroTokens) public esProyectoValido(cuentaProyecto) { 
     function invertirProyecto(address cuentaPromotor, address cuentaProyecto, uint256 numeroTokens) public 
         esPromotorValido(cuentaPromotor) 
-        esProyectoValidoEnPromotor(cuentaPromotor, cuentaProyecto) 
-        esInversorValido(_msgSender()) 
+        esProyectoDelPromotor(cuentaPromotor, cuentaProyecto) 
+        estaProyectoEnFinanciacion(cuentaPromotor, cuentaProyecto)
+        esInversorValido(_msgSender())         
     { 
     	
         // Obtenemos cuenta inversor
         address cuentaInversor = _msgSender();
+
+        
        
         // Se transfieren numeroTokens de cuentaInversor a cuentaProyecto: (descomentar transferFrom y emitir evento).
         transfer(cuentaProyecto, numeroTokens);
@@ -146,6 +149,8 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto];
         proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
     	 
+
+
     	//TODO Pendiente comprobar tokensGoal y estadoProyecto        
 
         // Añadimos los inversores que están participando en el proyecto (TODO: verificar primero si el inversor ha invertido previamente)

@@ -39,7 +39,7 @@ contract Promotores is Ownable {
 	    mapping(address => uint256) _tokensPorInversor;
     }
 
-    enum ProjectStatus { EN_FINANCIACION, CANCELADO, EN_PROGRESO, FINALIZADO}
+    enum ProjectStatus {EN_FINANCIACION, CANCELADO, EN_PROGRESO, FINALIZADO}
 
     mapping(address => Promotor) promotoresInfo;
     address[] private promotores;
@@ -69,7 +69,7 @@ contract Promotores is Ownable {
         require(tokensGoal < promotor._capacidad, "TokensGoal del proyecto es superior a la capacidad del promotor");
 
 		promotor._proyectos[cuentaProyecto] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
-          fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.INICIADO, true, new address[](0));
+          fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.EN_FINANCIACION, true, new address[](0));
 
         promotor._totalProyectos++;
 
@@ -155,14 +155,12 @@ contract Promotores is Ownable {
       if (promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto]._existe) {
           _;
       }
-    }
+    } 
 
-    modifier esProyectoValidoEnPromotor(address _cuentaPromotor, address _cuentaProyecto) {
-
-        Proyecto storage proyecto =  promotoresInfo[_cuentaPromotor]._proyectos[_cuentaProyecto];
-        if(proyecto._existe){        
-            _;
-        }             
-    }
+    modifier estaProyectoEnFinanciacion(address cuentaPromotor, address cuentaProyecto) {
+      if (promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto]._estadoProyecto == ProjectStatus.EN_FINANCIACION) {
+          _;
+      }
+    }    
     
 }
