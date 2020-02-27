@@ -137,7 +137,6 @@ contract Promotores is Ownable {
      emit ProyectoEnEjecucion(cuentaProyecto);
 	}
 
-
     modifier esPromotorValido(address _cuenta){
         if(promotoresInfo[_cuenta]._existe){
             _;
@@ -158,4 +157,12 @@ contract Promotores is Ownable {
       }
     }
 
+    modifier esProyectoValidoEnPromotor(address _cuentaPromotor, address _cuentaProyecto) {
+
+        Proyecto storage proyecto =  promotoresInfo[_cuentaPromotor]._proyectos[_cuentaProyecto];
+        if(proyecto._existe){        
+            _;
+        }             
+    }
+    
 }

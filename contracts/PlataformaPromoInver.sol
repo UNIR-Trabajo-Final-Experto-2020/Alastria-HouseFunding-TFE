@@ -129,22 +129,31 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     /**
     *	El inversor invierte tokens en un proyecto concreto
     **/
-    function invertirProyecto(address cuentaPromotor, address cuentaProyecto, address cuentaInversor, uint256 numeroTokens) public esProyectoValido(cuentaProyecto) { 
+    //function invertirProyecto(address cuentaPromotor, address cuentaProyecto, uint256 numeroTokens) public esProyectoValido(cuentaProyecto) { 
+    function invertirProyecto(address cuentaPromotor, address cuentaProyecto, uint256 numeroTokens) public 
+        esPromotorValido(cuentaPromotor) 
+        esProyectoValidoEnPromotor(cuentaPromotor, cuentaProyecto) 
+        esInversorValido(_msgSender()) 
+    { 
     	
-        //Se transfieren numeroTokens de cuentaInversor a cuentaProyecto
-    	
-    	//TODO Pendiente comprobar tokensGoal y estadoProyecto
-        //TODO Comprobar que cuentaInversor y cuentaProyecto estan registradas en el sistema     
+        // Obtenemos cuenta inversor
+        address cuentaInversor = _msgSender();
+       
+        // Se transfieren numeroTokens de cuentaInversor a cuentaProyecto: (descomentar transferFrom y emitir evento).
+        transfer(cuentaProyecto, numeroTokens);
+
+        // Actualizamos el número de token que un inversor tiene en un proyecto (quitar += por =)
+        Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto];
+        proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
+    	 
+    	//TODO Pendiente comprobar tokensGoal y estadoProyecto        
 
         // Añadimos los inversores que están participando en el proyecto (TODO: verificar primero si el inversor ha invertido previamente)
-        Promotor storage promotor = promotoresInfo[cuentaPromotor];
-        promotor._proyectos[cuentaProyecto].inversores.push(cuentaInversor);
-
-        // Actualizamos el número de token que un inversor tiene en un proyecto
-        promotor._proyectos[cuentaProyecto]._tokensPorInversor[cuentaInversor] += numeroTokens;        
+        //Promotor storage promotor = promotoresInfo[cuentaPromotor];
+        //promotor._proyectos[cuentaProyecto].inversores.push(cuentaInversor);
 
     	//bool invertidos = transferFrom(cuentaInversor, cuentaProyecto, numeroTokens);
-    	//emit TokensInvertidosProyecto(cuentaInversor, cuentaProyecto, numeroTokens, invertidos);
+    	emit TokensInvertidosProyecto(cuentaInversor, cuentaProyecto, numeroTokens, true);
     }
 
     /**
