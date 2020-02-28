@@ -21,9 +21,11 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     event TokensEmitidos(address _from, address _to, uint256 _numeroTokens, bool _comprados);
     event TokensTransferidos(address _from, address _to, uint256 _numeroTokens, bool _transferidos);
     event TokensNoAprobados(address _from, address _to, uint256 _numeroTokens, bool aprobados);
-    
+    event TokenPtesCompletarProyecto(uint256 _numeroToken);
+
 	event TokensInvertidosProyecto(address _cuentaInversor, address _cuentaProyecto, uint256 _numeroTokens, bool _invertidos); 
     event PromotorRegistrado(address _cuenta, string _nombre, string _cif, uint256 capacidad);
+    
 
     //Promotores promotores;
     //Inversores inversores;
@@ -136,34 +138,42 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         estaProyectoEnFinanciacion(cuentaPromotor, cuentaProyecto)
         esInversorValido(_msgSender())         
     { 
-    	
+    	bool invertidos = false;
+
         // Obtenemos cuenta inversor
         address cuentaInversor = _msgSender();
 
         // Obtenemos el proyecto del promotor
         Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto];
+        uint256 tokensGoalProyecto = proyecto._tokensGoal;
         
-        // Validar que el número de token invertidos hasta el momento + el numeroTokens a invertir no supera tokensGoal.        
+        // Validar que el número de token invertidos hasta el momento + el numeroTokens a invertir no supera tokensGoal.                
         uint256 numeroTokenInvertidos = balanceOf(cuentaProyecto); 
-        require(numeroTokenInvertidos + numeroTokens <= proyecto._tokensGoal, "Tokens a invertir no puede superar tokensGoal");
-       
-        // Se transfieren numeroTokens de cuentaInversor a cuentaProyecto: (descomentar transferFrom y emitir evento).
-        transfer(cuentaProyecto, numeroTokens);
+        if (numeroTokenInvertidos + numeroTokens >= tokensGoalProyecto) {
 
-        // Actualizamos el número de token que un inversor tiene en un proyecto (quitar += por =)
-        
-        proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
-    	 
+            emit TokenPtesCompletarProyecto(tokensGoalProyecto - numeroTokenInvertidos);
+        } else {
 
+            // Se transfieren numeroTokens de cuentaInversor a cuentaProyecto: (descomentar transferFrom y emitir evento).
+            //bool invertidos = transferFrom(cuentaInversor, cuentaProyecto, numeroTokens);
+            invertidos = transfer(cuentaProyecto, numeroTokens);               
+        }
 
-    	//TODO Pendiente comprobar tokensGoal y estadoProyecto        
+        if (invertidos) {
+            // Actualizamos el número de token que un inversor tiene en un proyecto         
+            proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
 
-        // Añadimos los inversores que están participando en el proyecto (TODO: verificar primero si el inversor ha invertido previamente)
-        //Promotor storage promotor = promotoresInfo[cuentaPromotor];
-        //promotor._proyectos[cuentaProyecto].inversores.push(cuentaInversor);
+            // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)
+            proyecto.inversores.push(cuentaInversor);
+            
+            // En caso de llegar al tokensGoal, se debe cambiar el estado del proyecto a EN_PROGRESO
+            if (numeroTokenInvertidos == tokensGoalProyecto) {
+                proyecto._estadoProyecto = ProjectStatus.EN_PROGRESO;                
+            }
 
-    	//bool invertidos = transferFrom(cuentaInversor, cuentaProyecto, numeroTokens);
-    	emit TokensInvertidosProyecto(cuentaInversor, cuentaProyecto, numeroTokens, true);
+            emit TokensInvertidosProyecto(cuentaInversor, cuentaProyecto, numeroTokens, true);
+        } 
+    	
     }
 
     /**
