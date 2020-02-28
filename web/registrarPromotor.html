@@ -4,21 +4,34 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js"></script>
     <script src="logic-environments/logic-Ganache.js"></script>
+    <script src="js/plataformaInverABI.js"></script>
 </head>
 
 <body>
+
+    address _address;
+    string _nombre;
+    string _cif;
+    uint256 _totalProyectos;
+    // pensar formula : balanceOf * 100 - o de su saldo 
+    //se resta el _tokensGoals por cada proyecto que abre y se suma cuando el proyecto se cierra
+    uint256 _capacidad;
+    bool _existe;
+    mapping(address => Proyecto) _proyectos;
+
+
   <div class="cuadro centrado">
-    <h4> Registrar nuevo proyecto </h4>
+    <h4> Registrar nuevo promotor </h4>
     <label> Nombre </label>
-    <input type="text" id="nEmpresaR"></input>
+    <input type="text" id="nbPromotor"></input>
     <br><br>
     <label> CIF </label>
-    <input type="text" id="cEmpresaR"></input>
+    <input type="text" id="cifPromotor"></input>
     <br><br>
-    <label> Password </label>
-    <input type="text" id="pEmpresaR"></input>
+    <label> Capacidad </label>
+    <input type="text" id="capacidadPromotor"></input>
     <br><br>
-    <button type="button" onclick="registrarEmpresa()">Registrar empresa</input>
+    <button type="button" onclick="registrarPromotor()">Registrar promotor</input>
   </div>
 </body>
 </html>
