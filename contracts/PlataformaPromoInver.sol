@@ -216,8 +216,8 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     */
     
     function abandonarProyecto(address cuentaPromotor, address cuentaProyecto) public 
-        esProyectoDelPromotor(cuentaPromotor, cuentaProyecto)  {
-        //esInversorEnProyectoDePromotor(cuentaPromotor, cuentaProyecto, _msgSender()) {
+        esProyectoDelPromotor(cuentaPromotor, cuentaProyecto)  
+        esInversorEnProyectoDePromotor(cuentaPromotor, cuentaProyecto, _msgSender()) {
 
         address cuentaInversor = _msgSender();
         
