@@ -189,7 +189,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         
         // Validar que el número de token invertidos hasta el momento + el numeroTokens a invertir no supera tokensGoal.                
         uint256 numeroTokenInvertidos = balanceOf(cuentaProyecto); 
-        if (numeroTokenInvertidos + numeroTokens >= tokensGoalProyecto) {
+        if (numeroTokenInvertidos + numeroTokens > tokensGoalProyecto) {
 
             emit TokenPtesCompletarProyecto(tokensGoalProyecto - numeroTokenInvertidos);
         } else {

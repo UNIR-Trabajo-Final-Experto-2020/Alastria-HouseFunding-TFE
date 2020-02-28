@@ -37,7 +37,7 @@ contract('Promotores', function (accounts) {
             });  
         
         // Emitimos tokens al inversor    
-        await this.plataformaPromoInver.transferirTokensParaInversor(cuentaInversor, 100, { from: currentOwner, gasPrice: 1, gas: 3000000 })
+        await this.plataformaPromoInver.transferirTokensParaInversor(cuentaInversor, 150, { from: currentOwner, gasPrice: 1, gas: 3000000 })
         .on('receipt', function(receipt){
             
             assert.equal(receipt.logs[0].event, "Transfer");  
@@ -55,6 +55,11 @@ contract('Promotores', function (accounts) {
         
         
         
+ 		const tokensProyecto = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
+ 		console.log("tokensProyecto:"  + tokensProyecto);
+ 		
+ 		const tokensInversor = await this.plataformaPromoInver.balanceOf(cuentaInversor);
+		console.log("tokensInversor:"  + tokensInversor);
            
         
     });
