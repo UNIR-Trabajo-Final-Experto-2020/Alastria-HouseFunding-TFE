@@ -109,20 +109,8 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         
 
         uint256 numeroTokensProyecto = balanceOf(cuentaProyecto);
-
-        bool approved = approve(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
-
-        if (approved) {
-
-            bool transferidos = transferFrom(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
         
-
-            emit TokensTransferidos(cuentaProyecto, cuentaPromotor, numeroTokensProyecto, transferidos);
-
-        } else {
-            emit TokensNoAprobados(cuentaProyecto, cuentaPromotor, numeroTokensProyecto, approved);
-        }
-        
+        approveAndTransferFrom(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
 
     }
 
@@ -200,8 +188,10 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         }
 
         if (invertidos) {
-            // Actualizamos el número de token que un inversor tiene en un proyecto         
-            proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
+            // Actualizamos el número de token que un inversor tiene en un proyecto 
+
+            //proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
+            proyecto._tokensPorInversor[cuentaInversor] += numeroTokens;
 
             // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)
             proyecto.inversores.push(cuentaInversor);
@@ -219,11 +209,54 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     /**
     *	El inversor abandona el proyecto antes de ejecutarse y se devuelven los tokens al proyecto
     *	Una vez que esta en ejecucion no se puede abanadonar.
+            - Valida que el inversor y proyecto existen en el sistema (y pertenece al promotor).
+            - Valida que el proyecto está en estado EN_FINANCIACION.
+            - Actualizar tokens por inversor en este proyecto a 0.
+            - Se ejecuta la transferencia de tokens del proyecto al inversor (los que hubiera invertido).
     */
-    function abandonarProyecto(address cuentaInversor, address cuentaProyecto) public {
-        address cuentaInversor = currentOwner();
-		//TODO Se transfieren numeroTokens de cuentaProyecto a cuentaInversor
+    
+    function abandonarProyecto(address cuentaPromotor, address cuentaProyecto) public 
+        esProyectoDelPromotor(cuentaPromotor, cuentaProyecto)  
+        esInversorEnProyectoDePromotor(cuentaPromotor, cuentaProyecto, _msgSender()) {
+
+        address cuentaInversor = _msgSender();
+        
+        //Controlar el estado del proyecto, debe estar en EN_FINANCIACION
+        bool esCorrecto; 
+        ProjectStatus estadoProyecto;
+
+        (estadoProyecto, esCorrecto) = esEstadoProyectoValido(cuentaProyecto, ProjectStatus.EN_FINANCIACION);
+        
+        if (!esCorrecto) {
+            emit ProjectStatusIncorrecto(cuentaProyecto, estadoProyecto);
+        }
+
+        // Obtenemos el proyecto del promotor
+        Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto];
+        uint256 numeroTokensProyectoInversor = proyecto._tokensPorInversor[cuentaInversor];
+
+        approveAndTransferFrom(cuentaProyecto, cuentaInversor, numeroTokensProyectoInversor);
+        
+
+        proyecto._tokensPorInversor[cuentaInversor] = 0;
+        //deleteInversor(cuentaInversor);
     }
+
+
+    function approveAndTransferFrom(address from, address to, uint256 numeroTokens) private {
+        
+        bool approved = approve(from, to, numeroTokens);
+
+        if (approved) {
+
+            bool transferidos = transferFrom(from, to, numeroTokens);
+        
+            emit TokensTransferidos(from, to, numeroTokens, transferidos);
+
+        } else {
+            emit TokensNoAprobados(from, to, numeroTokens, approved);
+        }
+    } 
 
     modifier esCapacidadValida(uint256 capacidad) {
         require(capacidad <= totalSupply());

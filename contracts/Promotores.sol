@@ -184,4 +184,10 @@ contract Promotores is Ownable {
       }
     } 
 
+    modifier esInversorEnProyectoDePromotor(address cuentaPromotor, address cuentaProyecto, address cuentaInversor) {
+      if (promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto]._tokensPorInversor[cuentaInversor] > 0) {
+          _;
+      }
+    }
+
 }
