@@ -47,7 +47,7 @@ contract Inversores is Ownable {
     	return inversoresInfo[cuentaInversor]._proyectos;
     }   
 
-	function deleteInversor(address cuentaInversor) public onlyOwner {
+	function deleteInversor(address cuentaInversor) internal  {
 	    delete inversoresInfo[cuentaInversor];
         
         for (uint i = 0; i< inversores.length; i++) {
