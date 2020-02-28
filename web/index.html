@@ -8,38 +8,50 @@
 
   <body>
     <div class="row">
-        <h1 class="centrado">HOUSE FUNDING</h1>
-        <p class="cursiva centrado"> Invierte en proyectos de promotores inmobiliarios con tokens en Alastria</p>
-        <div class="column-portada cuadro ">
-          <h2 class="centrado"> Balance</h2>
-          <label>Total supply :</label><div id="totalSupply"></div>                
-          <br/><br/> 
-          <label>Balance plataforma :</label><div id="balanceOf"></div>                
-          <br/><br/>          
-        </div>    
-    </div>
-    <div class="row">      
+      <h1 class="centrado"> HOUSE FUNDING </h1>
+      <p class="cursiva centrado"> Invierte en proyectos de promotores inmobiliarios con tokens en Alastria</p>
       <div class="column-portada cuadro ">
-        <h2 class="centrado"> Registrar promotor</h2>
-        <label>Cuenta promotor</label> :       
-        <input type="text" name="cuentaPromotor" id="cuentaPromotor"></input>
+        <h2 class="centrado"> Acceso Administrador </h2>
+        <label for="logAdministrador">Introduce tu Alastria ID (account)</label>
         <br/><br/>
-        <label for="pssEmpresa">Nombre</label>       
-        <input type="password" name="nombrePromotor" id="nombrePromotor"></input>
+        
+        <input type="text" name="logAdministrador" id="loginAdministradorT"></input>
         <br/><br/>
-        <label for="pssEmpresa">CIF</label>       
-        <input type="password" name="cifPromotor" id="cifPromotor"></input>
+        <label for="pssAdministrador">Contraseña</label>
         <br/><br/>
-        <label for="pssEmpresa">Capacidad</label>       
-        <input type="password" name="capacidadPromotor" id="capacidadPromotor"></input>
+        <input type="password" name="pssAdministrador" id="pssAdministrador"></input>
         <br/><br/>
-        <button type="button" id="logEmpresaButton" onclick="registrarPromotor()">Login empresa</button>
+        <button type="button" id="logAdministradorButton" onclick="loginAdministrador()">Login Administrador</button>        
+        <p> </p>
+        
+      </div>      
+      <div class="column-portada cuadro ">
+        <h2 class="centrado"> Acceso para promotores </h2>
+        <label for="logPromotor">Introduce tu Alastria ID (account)</label>
+        <br/><br/>
+        <input type="text" name="logPromotor" id="loginPromotorT"></input>
+        <br/><br/>
+        <label for="pssPromotor">Contraseña</label>
+        <br/><br/>
+        <input type="password" name="pssPromotor" id="pssPromotor"></input>
+        <br/><br/>
+        <button type="button" id="logPromotorButton" onclick="loginPromotor()">Login promotor</button>
         <p> ¿No tienes cuenta? </p>
-        <a href="registrarEmpresa.html"> Registrar empresa </a>
+        <a href="registrarPromotor.html"> Registrar promotor </a>
       </div>
       <div class="column-portada cuadro ">
-        <h2 class="centrado"> Registrar proyecto </h2>
-        
+        <h2 class="centrado"> Acceso para inversores </h2>
+        <label for="logInversor">Introduce tu Alastria ID (account)</label>
+        <br/><br/>
+        <input type="text" name="logInversor" id="logInversor"></input>
+        <br/><br/>
+        <label for="pssInversor">Contraseña</label>
+        <br/><br/>
+        <input type="password" name="pssInversor" id="pssInversor"></input>
+        <br/><br/>
+        <button type="button" onclick="loginInversor()">Login inversor</button>        
+        <p> ¿No tienes cuenta? </p>
+        <a href="registrarInversor.html"> Registrar inversor </a>
       </div>
     </div>
 
