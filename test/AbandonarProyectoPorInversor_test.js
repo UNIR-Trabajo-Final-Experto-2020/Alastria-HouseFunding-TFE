@@ -42,13 +42,13 @@ contract('PlataformaPromoInver', function (accounts) {
         });
 
 
-        // Inversor invierte en proyecto              
-        await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, cuentaProyecto, tokensInversor, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
-            .on('receipt', function(receipt){
+    // Inversor invierte en proyecto              
+    await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, cuentaProyecto, tokensInversor, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
+        .on('receipt', function(receipt){
 
-                assert.equal(receipt.logs[0].event, "Transfer"); 
-                assert.equal(receipt.logs[1].event, "TokensInvertidosProyecto");                
-        }); 
+            assert.equal(receipt.logs[0].event, "Transfer"); 
+            assert.equal(receipt.logs[1].event, "TokensInvertidosProyecto");                
+    }); 
 
  
 
@@ -61,9 +61,16 @@ contract('PlataformaPromoInver', function (accounts) {
     const tokensInversorAntesAbandono = await this.plataformaPromoInver.balanceOf(cuentaInversor);
     console.log("tokensInversorAntesAbandono:"  + tokensInversorAntesAbandono);
 
+    //Conculta tokens del inversor
+    const tokensPorInversor =
+    await this.plataformaPromoInver.listarTokensPorProyectosPorInversor(cuentaProyecto, cuentaInversor, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+        .on('receipt', function(receipt){
+               
+    }); 
 
-    //Se realiza transferencia de proyecto a inversor     
-    
+    console.log("listarTokensPorProyectosPorInversor:"  + tokensPorInversor);
+
+    //Se realiza transferencia de proyecto a inversor    
     await this.plataformaPromoInver.abandonarProyecto(cuentaPromotor, cuentaProyecto, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
         
@@ -71,7 +78,6 @@ contract('PlataformaPromoInver', function (accounts) {
         assert.equal(receipt.logs[1].event, "Transfer");  
         assert.equal(receipt.logs[2].event, "Approval"); 
         assert.equal(receipt.logs[3].event, "TokensTransferidos"); 
-        //assert.equal(receipt.logs[4].event, "InversorBorrado");  
                 
     });
 

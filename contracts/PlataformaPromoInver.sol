@@ -188,8 +188,10 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         }
 
         if (invertidos) {
-            // Actualizamos el número de token que un inversor tiene en un proyecto         
-            proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
+            // Actualizamos el número de token que un inversor tiene en un proyecto 
+
+            //proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
+            proyecto._tokensPorInversor[cuentaInversor] += numeroTokens;
 
             // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)
             proyecto.inversores.push(cuentaInversor);
