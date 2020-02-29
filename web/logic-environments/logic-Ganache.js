@@ -30,6 +30,8 @@ async function start() {
 
 start();
 
+
+
 async function registrarPromotor(){
 
 	var nombre = document.getElementById("nbPromotor").value;
@@ -52,7 +54,7 @@ async function registrarPromotor(){
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.PromotorRegistrado) {
-						mostrarSuccess("msgRegPromotor", "Promotor registrado correctamente");
+						mostrarMensaje("msgRegPromotor", "SUCCESS","Promotor registrado correctamente");
 						console.log("Evento registro promotor ok");
 					}
 				}
@@ -81,7 +83,7 @@ async function registrarInversor() {
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.InversorRegistrado) {
-						mostrarSuccess("msgRegInversor", "Inversor registrado correctamente");
+						mostrarMensaje("msgRegInversor", "SUCCESS", "Inversor registrado correctamente");
 						console.log("Evento registro inversor ok");
 					}
 				}
