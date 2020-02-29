@@ -1,6 +1,6 @@
 //En caso de ganache
 
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
 var instanciaPlataformaPromoInver;
 var accounts;
@@ -22,7 +22,7 @@ async function start() {
 	
 
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0xcA28Ce977c7A5c5F217Ff5592656C2464C646Ae9";
+	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";
 	instanciaPlataformaPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
 
 	//updateBalance();
@@ -109,6 +109,11 @@ async function registrarInversor() {
 			});  
 }
 
+
+function loginPromotor() {
+
+	location.replace("promotor.html");
+}
 
   
 

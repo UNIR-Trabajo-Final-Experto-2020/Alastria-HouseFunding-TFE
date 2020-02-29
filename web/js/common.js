@@ -1,3 +1,4 @@
+alert("hola");
 function mostrarMensaje(id, tipoMensaje, mensaje) {
 
 	var className;
