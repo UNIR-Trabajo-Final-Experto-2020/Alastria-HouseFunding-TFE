@@ -13,7 +13,7 @@ async function start() {
 	console.log("INIT ACCOUNTS\n" + accounts);
 
 	//Cuentas
-	cuentaPlataforma = accounts[0];
+	cuentaPlataforma = accounts[0];	
 	//cuentaPromotor = accounts[1];
 	//cuentaProyecto = accounts[2];
 	//cuentaInversor1 = accounts[3];
@@ -23,9 +23,8 @@ async function start() {
 
 	//Recuperamos el contrato	
 	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";
-	instanciaPlataformaPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
-
-	//updateBalance();
+	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
+	
 }
 
 start();
@@ -36,10 +35,10 @@ async function registrarPromotor(){
     var cif = document.getElementById("cifPromotor").value;
     var capacidad = document.getElementById("capacidadPromotor").value;
 
-	var cuentaPromotor = accounts[1];	
+	cuentaPromotor = accounts[1];
 
 	try {
-		await instanciaPlataformaPromoInver.methods.registrarPromotor(nombre, cif, capacidad)
+		await instPlatPromoInver.methods.registrarPromotor(nombre, cif, capacidad)
 			.send({from: cuentaPromotor, gas: 300000}, function(error, result){
 				if(!error){
 					
@@ -53,6 +52,7 @@ async function registrarPromotor(){
 						console.log(JSON.stringify(receipt.events, null, 2));
 
 						if (receipt.events.PromotorRegistrado) {
+							localStorage.setItem("accountPromotor", cuentaPromotor);
 							mostrarMensaje("msgRegPromotor", "SUCCESS","Promotor registrado correctamente");
 							console.log("Evento registro promotor ok");
 						}
@@ -73,7 +73,7 @@ async function registrarInversor() {
 	
 	var cuentaInversor = accounts[2];	
 	
-	await instanciaPlataformaPromoInver.methods.registrarInversor(nombre, cif)
+	await instPlatPromoInver.methods.registrarInversor(nombre, cif)
 		.send({from: cuentaInversor, gas: 300000}, function(error, result){
 			if(!error){
 				
@@ -94,11 +94,31 @@ async function registrarInversor() {
 			});  
 }
 
+function consultarPromotor(){
+
+	var ctaPromotor = localStorage.getItem("accountPromotor");
+
+	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 30000}, function(error, result){
+		if(!error){
+			console.log(result);	
+			document.getElementById("nbPromotorPro").innerHTML = result.nombre;
+			document.getElementById("cifPromotorPro").innerHTML = result.cif;
+			document.getElementById("capacidadPromotorPro").innerHTML = result.capacidad;			
+		} else 
+			console.error(error);
+	 	});
+
+}
 
 function loginPromotor() {
 
-	location.replace("promotor.html");
+	muestra_oculta('accesosDiv', 'promotorDiv');
+	consultarPromotor();
+	
 }
+
+
+
 
   
 

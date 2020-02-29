@@ -6,7 +6,9 @@
   </head>
 
   <body>
-    <div class="row">
+
+    <!-- INICIO ACCESOS ADMIN, PROMOTOR, INVERSOR-->
+    <div id="accesosDiv" class="row">
       <h1 class="centrado"> HOUSE FUNDING </h1>
       <p class="cursiva centrado"> Invierte en proyectos de promotores inmobiliarios con tokens en Alastria</p>
       <div class="column-portada cuadro ">
@@ -36,7 +38,7 @@
         <br/><br/>
         <button type="button" id="logPromotorButton" onclick="loginPromotor()">Login promotor</button>
         <p> ¿No tienes cuenta? </p>
-        <a href="registrarPromotor.html"> Registrar promotor </a>
+        <button type="button" id="logPromotorButton" onclick="muestra_oculta('regPromotorDiv', 'accesosDiv')">Registrar promotor</button>        
       </div>
       <div class="column-portada cuadro ">
         <h2 class="centrado"> Acceso para inversores </h2>
@@ -53,6 +55,44 @@
         <a href="registrarInversor.html"> Registrar inversor </a>
       </div>
     </div>
+    <!-- FIN ACCESO ADMIN, PROMOTOR, INVERSOR-->
 
+    <!-- INICIO REGISTRAR PROMOTOR-->
+    <div id="regPromotorDiv" class="cuadro centrado" style="display: none">
+      <h4> Registrar nuevo promotor </h4>
+      <label> Nombre </label>
+      <input type="text" id="nbPromotor"/>
+      <br><br>
+      <label> CIF </label>
+      <input type="text" id="cifPromotor"/>
+      <br><br>
+      <label> Capacidad </label>
+      <input type="text" id="capacidadPromotor"/>
+      <br><br>
+      <button type="button" onclick="registrarPromotor()">Registrar promotor</button>    
+      <span id="msgRegPromotor"></span>    
+      <br><br>    
+      <button type="button" onclick="muestra_oculta('regPromotorDiv', 'accesosDiv');">Volver</button>
+      <br>
+    </div>
+    <!-- FIN REGISTRAR PROMOTOR-->
+
+    <!-- INICIO PROMOTOR-->
+    <div id="promotorDiv" class="cuadro centrado" style="display: none">
+      <h4> Promotor </h4>
+      <label> Nombre: </label>
+      <span id="nbPromotorPro"></span>
+      <br><br>
+      <label> CIF: </label>
+      <span id="cifPromotorPro"></span>
+      <br><br>
+      <label> Capacidad: </label>
+      <span id="capacidadPromotorPro"></span>    
+      <br><br>    
+      <button type="button" onclick="muestra_oculta('promotorDiv', 'accesosDiv')">Volver</button>
+      <br>
+    </div>
+    <!-- FIN PROMOTOR-->
+    
   </body>
 </html>
