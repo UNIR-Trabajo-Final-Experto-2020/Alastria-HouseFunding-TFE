@@ -30,27 +30,6 @@ async function start() {
 
 start();
 
-// Login de una empresa
-function loginPromotor(){
-
-    var address = document.getElementById("loginPromotor").value;
-	var pwdPromotor = document.getElementById("pwdPromotor").value;
-	
-  	try{
-    	
-      var exist = plataforma.existeEmpresa.call(address, {from: accounts[0], gas:30000});
-      if(exist.valueOf()){
-        localStorage.setItem("accountEmpresa", address);
-        localStorage.setItem("accountEmpresa", address);
-        location.replace("empresa.html");
-      }else{
-        window.alert("No existe una empresa con esa cuenta en el sistema. Por favor, registrate");
-      }
-  	}catch(error) {
-  		alert("¡Contraseña incorrecta!");
-  	}
-  }
-
 async function registrarPromotor(){
 
 	var nombre = document.getElementById("nbPromotor").value;
