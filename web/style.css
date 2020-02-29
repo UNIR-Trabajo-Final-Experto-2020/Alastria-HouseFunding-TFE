@@ -1,5 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:700);
 
+.console-log-div {
+  border: 1px solid gray;
+  padding: 5px 10px;
+  border-radius: 5px;
+  width: 93% !important;
+  background-color: #efefef;
+}
+        
 .cuadro {
   border-style:solid;
   border-color:#287EC7;
