@@ -35,6 +35,33 @@ contract('PlataformaPromoInver', function (accounts) {
      	assert.fail('Expected throw not received');
 
     });
+
+    it('Intentar registrar un promotor que ya existe', async function () {
+		
+        console.log(accounts[1]);
+
+        const cuentaPromotor = accounts[1];
+
+        await this.plataformaPromoInver.registrarPromotor("Promotor 32", "B123019", 500, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+            .on('receipt', function(receipt){
+                
+                assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
+            });
+        
+        try{
+            await this.plataformaPromoInver.registrarPromotor("Promotor 32", "B123019", 500, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+                .on('receipt', function(receipt){
+
+                    assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
+                });
+        } catch (error ) {
+            console.log("Error: " + error.message);
+            return;
+        }    
+
+        assert.fail('Expected throw not received');
+
+    });
     
 
    it('Transferir tokens a inversor', async function () {

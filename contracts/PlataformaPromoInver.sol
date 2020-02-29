@@ -42,6 +42,9 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
   function registrarPromotor(string memory nombre, string memory cif, uint256 capacidad) public esCapacidadValida(capacidad) {
         //Registra nuevo promotor
         address cuentaPromotor = _msgSender();
+    
+        require(!promotoresInfo[cuentaPromotor]._existe, "Promotor no debe de existir");
+
         super.registrarPromotor(cuentaPromotor, nombre, cif, capacidad);
 
         emit PromotorRegistrado(cuentaPromotor, nombre, cif, capacidad);

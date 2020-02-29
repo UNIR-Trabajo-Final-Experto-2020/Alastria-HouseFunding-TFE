@@ -162,7 +162,7 @@ contract Promotores is Ownable {
         if(promotoresInfo[_cuenta]._existe){
             _;
         }
-    }
+    }    
 
     modifier esProyectoValido(address _cuenta) {
         for (uint i = 0; i< proyectos.length; i++) {

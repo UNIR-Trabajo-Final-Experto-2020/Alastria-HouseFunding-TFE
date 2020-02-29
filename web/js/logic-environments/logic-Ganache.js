@@ -61,7 +61,7 @@ async function registrarPromotor(){
 
 	} catch (err) {
 		console.error("Error: " + err);		
-		mostrarMensaje("msgRegPromotor", "SUCCESS","Error registrando promotor");
+		mostrarMensaje("msgRegPromotor", "ERROR", err);
 	}			
 }
 
