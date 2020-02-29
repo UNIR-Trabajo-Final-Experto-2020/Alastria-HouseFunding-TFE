@@ -51,3 +51,16 @@
 .derecha {
   text-align: right;
 }
+
+.label {
+  color: white;
+  padding: 8px;
+  font-family: Arial;
+  
+}
+
+.success {background-color: #4CAF50;} /* Green */
+.info {background-color: #2196F3;} /* Blue */
+.warnierrng {background-color: #ff9800;} /* Orange */
+.err {background-color: #f44336;} /* Red */ 
+.other {background-color: #e7e7e7; color: black;} /* Gray */ 

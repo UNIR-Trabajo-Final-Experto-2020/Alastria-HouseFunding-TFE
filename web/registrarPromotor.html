@@ -5,21 +5,10 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js"></script>
     <script src="logic-environments/logic-Ganache.js"></script>
     <script src="js/plataformaInverABI.js"></script>
+    <script src="js/logic.js"></script> 
 </head>
 
-<body>
-
-    address _address;
-    string _nombre;
-    string _cif;
-    uint256 _totalProyectos;
-    // pensar formula : balanceOf * 100 - o de su saldo 
-    //se resta el _tokensGoals por cada proyecto que abre y se suma cuando el proyecto se cierra
-    uint256 _capacidad;
-    bool _existe;
-    mapping(address => Proyecto) _proyectos;
-
-
+<body>    
   <div class="cuadro centrado">
     <h4> Registrar nuevo promotor </h4>
     <label> Nombre </label>
@@ -31,7 +20,11 @@
     <label> Capacidad </label>
     <input type="text" id="capacidadPromotor"></input>
     <br><br>
-    <button type="button" onclick="registrarPromotor()">Registrar promotor</input>
+    <button type="button" onclick="registrarPromotor()">Registrar promotor</button>    
+    <span id="msgRegPromotor"></span>    
+    <br><br>    
+    <button type="button" onclick="window.history.back();">Volver</button>
+    <br>
   </div>
 </body>
 </html>

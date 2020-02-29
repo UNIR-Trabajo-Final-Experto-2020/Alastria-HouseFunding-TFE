@@ -4,21 +4,26 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js"></script>
     <script src="logic-environments/logic-Ganache.js"></script>
+    <script src="js/plataformaInverABI.js"></script>
+    <script src="js/logic.js"></script> 
 </head>
 
 <body>
   <div class="cuadro centrado">
     <h4> Registrar nuevo inversor </h4>
     <label> Nombre </label>
-    <input type="text" id="nEmpresaR"></input>
+    <input type="text" id="nbInversor"></input>
     <br><br>
     <label> CIF </label>
-    <input type="text" id="cEmpresaR"></input>
+    <input type="text" id="cifInversor"></input>
     <br><br>
     <label> Password </label>
-    <input type="text" id="pEmpresaR"></input>
+    <input type="text" id="pwdInversor"></input>
     <br><br>
-    <button type="button" onclick="registrarEmpresa()">Registrar empresa</input>
+    <button type="button" onclick="registrarInversor()">Registrar inversor</button>
+      <span id="msgRegInversor"></span>    
+      <br><br>    
+      <button type="button" onclick="window.history.back();">Volver</button>  
   </div>
 </body>
 </html>
