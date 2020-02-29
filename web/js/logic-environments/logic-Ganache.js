@@ -22,7 +22,7 @@ async function start() {
 	
 
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";
+	const contratoPromoInver = "0xCC30baE1f65108F708ADf5E6AEDfa53dBb55642c";
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
 	
 }
@@ -103,11 +103,35 @@ function consultarPromotor(){
 			console.log(result);	
 			document.getElementById("nbPromotorPro").innerHTML = result.nombre;
 			document.getElementById("cifPromotorPro").innerHTML = result.cif;
-			document.getElementById("capacidadPromotorPro").innerHTML = result.capacidad;			
+			document.getElementById("capacidadPromotorPro").innerHTML = result.capacidad;
+			
+			let proyestosPromotor = result.proyectos;
+
+			for (let proyecto of proyestosPromotor) {
+
+				console.log(pathJs);
+				var script = document.createElement('script');		
+				script.src = parentScript + "/" +pathJs;
+				document.body.appendChild(script);		
+			}  	
+
 		} else 
 			console.error(error);
+			mostrarMensaje("msgConsultaPromotor", "ERROR", error);
 	 	});
 
+}
+
+function consultarProyecto(ctaProyecto) {
+
+	instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 30000}, function(error, result){
+		if(!error){
+			console.log(result);	
+				
+
+		} else 
+			console.error(err);			
+	 	});
 }
 
 function loginPromotor() {

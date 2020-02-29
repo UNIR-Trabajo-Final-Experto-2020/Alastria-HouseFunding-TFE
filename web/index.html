@@ -70,12 +70,46 @@
       <input type="text" id="capacidadPromotor"/>
       <br><br>
       <button type="button" onclick="registrarPromotor()">Registrar promotor</button>    
+      <br><br>
       <span id="msgRegPromotor"></span>    
       <br><br>    
       <button type="button" onclick="muestra_oculta('regPromotorDiv', 'accesosDiv');">Volver</button>
       <br>
     </div>
     <!-- FIN REGISTRAR PROMOTOR-->
+    
+    <!-- INICIO REGISTRAR PROYECTO-->
+    <div id="regProyectoDiv" class="cuadro centrado" style="display: none">
+        <h4> Registrar nuevo proyecto </h4>
+        <label> Nombre </label>
+        <input type="text" id="nbProyectoReg"/>
+        <br><br>
+        <label> Tokens Goal </label>
+        <input type="text" id="tokenGoalProyectoReg"/>
+        <br><br>
+        <label> Retabilidad </label>
+        <input type="text" id="rentabilidadProyectoReg"/>
+        <br><br>
+        <label> Fecha Inicio Financiación </label>
+        <input type="text" id="fechaIniFiancProyectoReg"/>
+        <br><br>
+        <label> Fecha Fin Financiación </label>
+        <input type="text" id="fechaFinFiancProyectoReg"/>
+        <br><br>
+        <label> Fecha Inicio Ejecución </label>
+        <input type="text" id="fechaIniEjeProyectoReg"/>
+        <br><br>
+        <label> Fecha Fin Ejecución </label>
+        <input type="text" id="fechaFinEjeProyectoReg"/>
+        <br><br>
+        <button type="button" onclick="registrarProyecto()">Registrar proyecto</button>    
+        <br><br>
+        <span id="msgRegPromotor"></span>    
+        <br><br>    
+        <button type="button" onclick="muestra_oculta('regPromotorDiv', 'regProyectoDiv');">Volver</button>
+        <br>
+      </div>
+      <!-- FIN REGISTRAR PROYECTO-->    
 
     <!-- INICIO PROMOTOR-->
     <div id="promotorDiv" class="cuadro centrado" style="display: none">
@@ -88,7 +122,8 @@
       <br><br>
       <label> Capacidad: </label>
       <span id="capacidadPromotorPro"></span>    
-      <br><br>    
+      <br><br>
+      <span id="msgConsultaPromotor"></span>        
       <button type="button" onclick="muestra_oculta('promotorDiv', 'accesosDiv')">Volver</button>
       <br>
     </div>

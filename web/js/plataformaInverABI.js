@@ -1032,6 +1032,11 @@ const ABI_CPII = [
         "internalType": "uint256",
         "name": "capacidad",
         "type": "uint256"
+      },
+      {
+        "internalType": "address[]",
+        "name": "proyectos",
+        "type": "address[]"
       }
     ],
     "payable": false,
@@ -1953,6 +1958,11 @@ const ABI_CPII = [
         "internalType": "uint256",
         "name": "capacidad",
         "type": "uint256"
+      },
+      {
+        "internalType": "address[]",
+        "name": "proyectos",
+        "type": "address[]"
       }
     ],
     "payable": false,
