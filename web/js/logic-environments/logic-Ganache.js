@@ -22,7 +22,7 @@ async function start() {
 	
 
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0xCC30baE1f65108F708ADf5E6AEDfa53dBb55642c";
+	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
 	
 }
@@ -139,6 +139,40 @@ function loginPromotor() {
 	muestra_oculta('accesosDiv', 'promotorDiv');
 	consultarPromotor();
 	
+}
+
+async function registrarProyecto() {
+
+	let nombre = document.getElementById("nbProyectoReg").value;
+	let tokenGoal = document.getElementById("tokenGoalProyectoReg").value;
+	let rentabilidad = document.getElementById("rentabilidadProyectoReg").value;
+	let fechaIniFinan = document.getElementById("fechaIniFiancProyectoReg").value;
+	let fechaFinFinan = document.getElementById("fechaFinFiancProyectoReg").value;
+	let fechaIniEjec = document.getElementById("fechaIniEjeProyectoReg").value;
+	let fechaFinEjec = document.getElementById("fechaFinEjeProyectoReg").value;
+
+	var cuentaProyecto = accounts[3];	
+	
+	await instPlatPromoInver.methods
+		.registrarProyecto(cuentaProyecto, nombre, fechaIniFinan, fechaFinFinan, tokenGoal, rentabilidad)
+		.send({from: cuentaProyecto, gas: 300000}, function(error, result){
+			if(!error){
+				
+				console.log("Registro proyecto ok");
+			}
+			else
+				console.error(error);
+			}).on('receipt', function(receipt){
+				
+				if (receipt.events) {
+					console.log(JSON.stringify(receipt.events, null, 2));
+
+					if (receipt.events.ProyectoRegistrado) {
+						mostrarMensaje("msgRegProyecto", "SUCCESS", "Proyecto registrado correctamente");
+						console.log("Evento registro proyecto ok");
+					}
+				}
+			});  
 }
 
 

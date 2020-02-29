@@ -30,7 +30,7 @@ function importarWeb3() {
 	document.body.appendChild(script);			   
 }
 
-importarWeb3();
+//importarWeb3();
 importarJs(ganache_ENVIRONMENT);
 
 
