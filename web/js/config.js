@@ -33,6 +33,7 @@ function importarWeb3() {
 	   
 }
 
-importarJs(ganache_ENVIRONMENT);
 importarWeb3();
+importarJs(ganache_ENVIRONMENT);
+
 

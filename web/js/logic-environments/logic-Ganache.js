@@ -38,25 +38,31 @@ async function registrarPromotor(){
 
 	var cuentaPromotor = accounts[1];	
 
-	await instanciaPlataformaPromoInver.methods.registrarPromotor(nombre, cif, capacidad)
-		.send({from: cuentaPromotor, gas: 300000}, function(error, result){
-			if(!error){
-				
-				console.log("Registro promotor ok");
-			}
-			else
-				console.error(error);
-			}).on('receipt', function(receipt){
-				
-				if (receipt.events) {
-					console.log(JSON.stringify(receipt.events, null, 2));
-
-					if (receipt.events.PromotorRegistrado) {
-						mostrarMensaje("msgRegPromotor", "SUCCESS","Promotor registrado correctamente");
-						console.log("Evento registro promotor ok");
-					}
+	try {
+		await instanciaPlataformaPromoInver.methods.registrarPromotor(nombre, cif, capacidad)
+			.send({from: cuentaPromotor, gas: 300000}, function(error, result){
+				if(!error){
+					
+					console.log("Registro promotor ok");
 				}
-			});  
+				else
+					console.error(error);
+				}).on('receipt', function(receipt){
+					
+					if (receipt.events) {
+						console.log(JSON.stringify(receipt.events, null, 2));
+
+						if (receipt.events.PromotorRegistrado) {
+							mostrarMensaje("msgRegPromotor", "SUCCESS","Promotor registrado correctamente");
+							console.log("Evento registro promotor ok");
+						}
+					}
+				});  
+
+	} catch (err) {
+		console.error("Error: " + err);		
+		mostrarMensaje("msgRegPromotor", "SUCCESS","Error registrando promotor");
+	}			
 }
 
 
