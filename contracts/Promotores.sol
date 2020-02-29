@@ -20,6 +20,7 @@ contract Promotores is Ownable {
   	  //se resta el _tokensGoals por cada proyecto que abre y se suma cuando el proyecto se cierra
   	  uint256 _capacidad;
       bool _existe;
+      address[] proyectos;
   	  mapping(address => Proyecto) _proyectos;
     }
 
@@ -52,7 +53,7 @@ contract Promotores is Ownable {
 
   function registrarPromotor(address cuentaPromotor, string memory nombre, string memory cif, uint256 capacidad) internal {
         //Registra nuevo promotor
-        promotoresInfo[cuentaPromotor] = Promotor(cuentaPromotor, nombre, cif, 0, capacidad, true);
+        promotoresInfo[cuentaPromotor] = Promotor(cuentaPromotor, nombre, cif, 0, capacidad, true, new address[](0));
         promotores.push(cuentaPromotor);
 
   }
@@ -73,6 +74,8 @@ contract Promotores is Ownable {
 
         promotor._totalProyectos++;
 
+        promotor.proyectos.push(cuentaProyecto);
+
         //Evento proyecto registrado
         emit ProyectoRegistrado(cuentaProyecto, nombre, fechaInicioFinanciacion, fechaFinFinanciacion, tokensGoal, rentabilidad);
 
@@ -80,8 +83,20 @@ contract Promotores is Ownable {
 
    
 
-   function consultarPromotor(address cuentaPromotor)  public view returns (string memory nombre, string memory cif, uint256 capacidad)   {
-        return (promotoresInfo[cuentaPromotor]._nombre, promotoresInfo[cuentaPromotor]._cif, promotoresInfo[cuentaPromotor]._capacidad);
+    function consultarPromotor(address cuentaPromotor)  public view 
+        returns (
+            string memory nombre, 
+            string memory cif, 
+            uint256 capacidad,
+            address[] memory proyectos
+        )   
+    {
+
+        return (promotoresInfo[cuentaPromotor]._nombre, 
+            promotoresInfo[cuentaPromotor]._cif, 
+            promotoresInfo[cuentaPromotor]._capacidad,
+            promotoresInfo[cuentaPromotor].proyectos
+            );
     }
 
    function consultarProyecto(address cuentaProyecto)  public view 

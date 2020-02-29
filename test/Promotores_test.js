@@ -76,9 +76,11 @@ contract('Promotores', function (accounts) {
             });   
        
         result = await this.plataformaPromoInver.consultarPromotor(cuentaPromotor, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 });     
-        
+                
+        console.log(JSON.stringify(result, null, 2));
         assert.equal(result.nombre, "Promotor 1"); 
         assert.equal(result.cif, "B123012"); 
+        assert.equal(result.proyectos[0], cuentaProyecto); 
                   
     });
     
