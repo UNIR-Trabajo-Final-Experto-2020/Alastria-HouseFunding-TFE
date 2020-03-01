@@ -3,7 +3,7 @@
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
 var instanciaPlataformaPromoInver;
-var accounts;
+var accounts, cuentaPlataforma;
 
 async function start() {
 
@@ -14,15 +14,17 @@ async function start() {
 
 	//Cuentas
 	cuentaPlataforma = accounts[0];	
-	//cuentaPromotor = accounts[1];
-	//cuentaProyecto = accounts[2];
-	//cuentaInversor1 = accounts[3];
-	//cuentaInversor2 = accounts[4];
 
-	
+	//accounts[1] -> Promotor: 0x5b8BA5c293704BB759A00EBFD2C2b97A8A2DDa40  //EJAL
+  //accounts[2] -> Inversor: 0x42A88Fb67F3b8DE7a438AB34d876b29f0d856A54  //EJAL
 
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";
+	//const contratoPromoInver = "0xCC30baE1f65108F708ADf5E6AEDfa53dBb55642c";  //Juanjo
+	const contratoPromoInver = "0xE788275f8A83050766741500030a475A0eB94795";    //EJAL
+
+
+	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo?
+
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
 	
 }

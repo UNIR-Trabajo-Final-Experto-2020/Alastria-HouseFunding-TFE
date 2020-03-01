@@ -2,7 +2,8 @@ let ganache_ENVIRONMENT =
 	[
 	"common.js", 
 	"plataformaInverABI.js", 
-	"logic-environments/logic-Ganache.js"
+	"logic-environments/logic-Ganache.js",
+	"housefunding.js"
 	];
 
 function importarJs(environmentJs) {

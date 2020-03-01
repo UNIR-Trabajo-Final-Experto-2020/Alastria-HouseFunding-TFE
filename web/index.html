@@ -12,12 +12,13 @@
     <div id="accesosDiv" class="row">
       <h1 class="centrado"> HOUSE FUNDING </h1>
       <p class="cursiva centrado"> Invierte en proyectos de promotores inmobiliarios con tokens en Alastria</p>
+      
       <div class="column-portada cuadro ">
         <h2 class="centrado"> Acceso Administrador </h2>
         <label for="logAdministrador">Introduce tu Alastria ID (account)</label>
         <br/><br/>
         
-        <input type="text" name="logAdministrador" id="loginAdministradorT"></input>
+        <input type="text" name="logAdministrador" id="loginAdministrador"></input>
         <br/><br/>
         <label for="pssAdministrador">Contraseña</label>
         <br/><br/>
@@ -25,7 +26,7 @@
         <br/><br/>
         <button type="button" id="logAdministradorButton" onclick="loginAdministrador()">Login Administrador</button>        
         <p> </p>
-        
+        <span id="msgAccesoAdministrador"></span> 
       </div>      
       <div class="column-portada cuadro ">
         <h2 class="centrado"> Acceso para promotores </h2>
@@ -133,5 +134,51 @@
     </div>
     <!-- FIN PROMOTOR-->
     
+    <!-- INICIO ADMINISTRADOR -->
+    <div id="administradorDiv" class="cuadro centrado" style="display: none">
+      <h4> Administrador de la Plataforma: Transferencia Tokens </h4>
+      <table align="center">
+         <tr>
+            <td>
+              Tipo: 
+            </td> 
+            <td>                 
+                <select name="selectTipoUsuario" id="selectTipoUsuario">
+                  <option value="PROMOTOR">Promotor</option>
+                  <option value="INVERSOR">Inversor</option>
+              </select>
+            </td>
+         </tr>
+         <tr>
+            <td>
+              Cuenta destino: 
+            </td> 
+            <td>
+              <input type="text" name="cuentaDestino" id="cuentaDestino" size="50" maxlength="42" value="" />
+            </td>
+         </tr>
+         <tr>
+            <td>Tokens:</td>
+           <td>
+               <input type="number" min="1" name="numeroTokens" id="numeroTokens" size="50" maxlength="10" value=""/>
+            </td>                  
+         </tr>
+
+         <tr> 
+            <td>&nbsp;</td>    
+            <td>
+              <input type="button" name="tranferirTokensBtn" value="Tranferir" onclick="tranferirTokens()"/>
+              <button type="button" onclick="muestra_oculta('administradorDiv', 'accesosDiv')">Volver</button>
+            </td>    
+         </tr>
+      </table>
+
+      <br><br>  
+      <span id="msgAdministradorPlataforma"></span>
+      
+    </div>
+
+    <!-- FIN ADMINISTRADOR -->
+
   </body>
 </html>
