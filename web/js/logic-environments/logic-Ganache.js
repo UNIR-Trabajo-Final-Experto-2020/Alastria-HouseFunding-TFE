@@ -131,6 +131,43 @@ function consultarPromotor(){
 
 }
 
+function consultarInversor(){
+
+	let ctaInversor = localStorage.getItem("ctaInversor");
+
+	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 30000}, function(error, result){
+		if(!error){
+			console.log(result);	
+			document.getElementById("nbInversorInv").innerHTML = result.nombre;
+			document.getElementById("cifInversorInv").innerHTML = result.cif;
+			
+			/*
+			let proyestosPromotor = result.proyectos;
+
+			if (proyestosPromotor.length > 0) {
+				
+				let proyectosPromo = "";
+				for (let proyecto of proyestosPromotor) {
+
+					consultarProyecto(proyecto);										
+				}  	
+
+				document.getElementById("msgListProyectosPromotor").innerHTML = proyectosPromo;
+
+			} else {
+								
+				mostrarMensaje("msgListProyectosPromotor", "INFO", "No existen proyectos para este promotor");				
+			}
+			*/
+
+		} else {
+			console.error(error);
+			mostrarMensaje("msgConsultaInversor", "ERROR", error);
+		}
+	});
+
+}
+
 function consultarProyecto(ctaProyecto) {
 
 	instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
@@ -157,6 +194,16 @@ function loginPromotor() {
 
 	muestra_oculta('accesosDiv', 'promotorDiv');
 	consultarPromotor();
+	
+}
+
+function loginInversor() {
+
+	let ctaInversor = document.getElementById("logInversor").value;
+
+	localStorage.setItem("ctaInversor", ctaInversor);
+	muestra_oculta('accesosDiv', 'inversorDiv');
+	consultarInversor();
 	
 }
 
