@@ -357,6 +357,11 @@ const ABI_CPII = [
         "internalType": "string",
         "name": "cif",
         "type": "string"
+      },
+      {
+        "internalType": "address[]",
+        "name": "proyectos",
+        "type": "address[]"
       }
     ],
     "payable": false,
@@ -1001,6 +1006,11 @@ const ABI_CPII = [
         "internalType": "string",
         "name": "cif",
         "type": "string"
+      },
+      {
+        "internalType": "address[]",
+        "name": "proyectos",
+        "type": "address[]"
       }
     ],
     "payable": false,

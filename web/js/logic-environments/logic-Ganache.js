@@ -32,6 +32,9 @@ async function start() {
 
 start();
 
+
+// PANTALLA REGISTRAR NUEVO PROMOTOR
+
 async function registrarPromotor(){
 
 	var nombre = document.getElementById("nbPromotor").value;
@@ -54,7 +57,7 @@ async function registrarPromotor(){
 
 						if (receipt.events.PromotorRegistrado) {
 							localStorage.setItem("accountPromotor", cuentaPromotor);
-							mostrarMensaje("msgRegPromotor", "SUCCESS","Promotor registrado correctamente");
+							mostrarMensajeGenerico("SUCCESS","Promotor registrado correctamente");
 							console.log("Evento registro promotor ok");
 						}
 					}
@@ -62,149 +65,8 @@ async function registrarPromotor(){
 
 	} catch (err) {
 		console.error("Error: " + err);		
-		mostrarMensaje("msgRegPromotor", "ERROR", err);
+		mostrarMensajeGenerico("ERROR", err);
 	}			
-}
-
-
-async function registrarInversor() {
-
-	var nombre = document.getElementById("nbInversor").value;
-	var cif = document.getElementById("cifInversor").value;
-	
-	var cuentaInversor = accounts[2];	
-	
-	await instPlatPromoInver.methods.registrarInversor(nombre, cif)
-		.send({from: cuentaInversor, gas: 300000}, function(error, result){
-			if(!error){
-				
-				console.log("Registro inversor ok");
-			}
-			else
-				console.error(error);
-			}).on('receipt', function(receipt){
-				
-				if (receipt.events) {
-					console.log(JSON.stringify(receipt.events, null, 2));
-
-					if (receipt.events.InversorRegistrado) {
-						mostrarMensaje("msgRegInversor", "SUCCESS", "Inversor registrado correctamente");
-						console.log("Evento registro inversor ok");
-					}
-				}
-			});  
-}
-
-function consultarPromotor(){
-
-	var ctaPromotor = localStorage.getItem("accountPromotor");
-
-	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 30000}, function(error, result){
-		if(!error){
-			console.log(result);	
-			document.getElementById("nbPromotorPro").innerHTML = result.nombre;
-			document.getElementById("cifPromotorPro").innerHTML = result.cif;
-			document.getElementById("capacidadPromotorPro").innerHTML = result.capacidad;
-			
-			let proyestosPromotor = result.proyectos;
-
-			if (proyestosPromotor.length > 0) {
-				
-				let proyectosPromo = "";
-				for (let proyecto of proyestosPromotor) {
-
-					consultarProyecto(proyecto);										
-				}  	
-
-				document.getElementById("msgListProyectosPromotor").innerHTML = proyectosPromo;
-
-			} else {
-								
-				mostrarMensaje("msgListProyectosPromotor", "INFO", "No existen proyectos para este promotor");				
-			}
-
-		} else {
-			console.error(error);
-			mostrarMensaje("msgConsultaPromotor", "ERROR", error);
-		}
-	});
-
-}
-
-function consultarInversor(){
-
-	let ctaInversor = localStorage.getItem("ctaInversor");
-
-	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 30000}, function(error, result){
-		if(!error){
-			console.log(result);	
-			document.getElementById("nbInversorInv").innerHTML = result.nombre;
-			document.getElementById("cifInversorInv").innerHTML = result.cif;
-			
-			/*
-			let proyestosPromotor = result.proyectos;
-
-			if (proyestosPromotor.length > 0) {
-				
-				let proyectosPromo = "";
-				for (let proyecto of proyestosPromotor) {
-
-					consultarProyecto(proyecto);										
-				}  	
-
-				document.getElementById("msgListProyectosPromotor").innerHTML = proyectosPromo;
-
-			} else {
-								
-				mostrarMensaje("msgListProyectosPromotor", "INFO", "No existen proyectos para este promotor");				
-			}
-			*/
-
-		} else {
-			console.error(error);
-			mostrarMensaje("msgConsultaInversor", "ERROR", error);
-		}
-	});
-
-}
-
-function consultarProyecto(ctaProyecto) {
-
-	instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
-		if(!error){
-			console.log(result);	
-			
-			let proyectoResult = "Proyecto: " + result.nombre + ", " + 
-			result.fechaInicioFinanciacion + ", " +
-			result.fechaFinFinanciacion + ", " +			
-			result.tokensGoal + ", " +
-			result.rentabilidad + ", " +
-			result.estadoProyecto + "</br></br>";
-			
-			document.getElementById("msgListProyectosPromotor").innerHTML += proyectoResult;
-
-		} else { 
-			console.error(err);
-			mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
-		}	
-	});
-}
-
-function loginPromotor() {
-
-	muestra_oculta('accesosDiv', 'promotorDiv');
-	consultarPromotor();
-	
-}
-
-function loginInversor() {
-
-	let ctaInversor = document.getElementById("logInversor").value;
-
-	localStorage.setItem("ctaInversor", ctaInversor);
-	muestra_oculta('accesosDiv', 'inversorDiv');
-	consultarInversor();
-	
 }
 
 async function registrarProyecto() {
@@ -214,21 +76,21 @@ async function registrarProyecto() {
 	let rentabilidad = document.getElementById("rentabilidadProyectoReg").value;
 	let fechaIniFinan = document.getElementById("fechaIniFiancProyectoReg").value;
 	let fechaFinFinan = document.getElementById("fechaFinFiancProyectoReg").value;
-	let fechaIniEjec = document.getElementById("fechaIniEjeProyectoReg").value;
-	let fechaFinEjec = document.getElementById("fechaFinEjeProyectoReg").value;
+	//let fechaIniEjec = document.getElementById("fechaIniEjeProyectoReg").value;
+	//let fechaFinEjec = document.getElementById("fechaFinEjeProyectoReg").value;
 
 	var cuentaProyecto = accounts[3];	
 	
 	await instPlatPromoInver.methods
 		.registrarProyecto(cuentaProyecto, nombre, fechaIniFinan, fechaFinFinan, tokenGoal, rentabilidad)
 		.send({from: cuentaPromotor, gas: 300000}, function(error, result){
-			if(!error){
-				
-				console.log("Registro proyecto ok");
-			}
-			else
-				console.error(error);
-				mostrarMensaje("msgRegProyecto", "ERROR", error);
+				if(!error){
+					
+					console.log("Registro proyecto ok");
+				} else {
+					console.error(error);
+					mostrarMensaje("msgRegProyecto", "ERROR", error);
+				}	
 			}).on('receipt', function(receipt){
 				
 				if (receipt.events) {
@@ -241,6 +103,260 @@ async function registrarProyecto() {
 				}
 			});  
 }
+
+
+// fin PANTALLA REGISTRAR NUEVO PROMOTOR
+
+
+// PANTALLA REGISTRAR NUEVO INVERSOR
+async function registrarInversor() {
+
+	var nombre = document.getElementById("nbInversor").value;
+	var cif = document.getElementById("cifInversor").value;
+	
+	var cuentaInversor = accounts[2];	
+	
+	await instPlatPromoInver.methods.registrarInversor(nombre, cif)
+		.send({from: cuentaInversor, gas: 300000}, function(error, result){
+			if(!error){
+				mostrarMensajeGenerico("ERROR", error);
+				console.log("Registro inversor ok");
+			}
+			else
+				console.error(error);
+			}).on('receipt', function(receipt){
+				
+				if (receipt.events) {
+					console.log(JSON.stringify(receipt.events, null, 2));
+
+					if (receipt.events.InversorRegistrado) {
+						mostrarMensajeGenerico("SUCCESS", "Inversor registrado correctamente");
+						console.log("Evento registro inversor ok");
+					}
+				}
+			});  
+}
+// fin PANTALLA REGISTRAR NUEVO INVERSOR
+
+
+
+// PANTALLA PROMOTOR
+function loginPromotor() {
+
+	let ctaPromotor = document.getElementById("loginPromotorT").value;
+
+	cargarPantallaPromotor(ctaPromotor);
+
+	muestra_oculta('accesosDiv', 'promotorDiv');		
+}
+
+function cargarPantallaPromotor(ctaPromotor){
+
+	document.getElementById("msgListProyectosPromotor").innerHTML = "";
+
+	// Consultamos los datos del promotor
+	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 30000}, function(error, resultConsultarPromo){
+		if(!error){
+			console.log(resultConsultarPromo);	
+			document.getElementById("nbPromotorPro").innerHTML = resultConsultarPromo.nombre;
+			document.getElementById("cifPromotorPro").innerHTML = resultConsultarPromo.cif;
+			document.getElementById("capacidadPromotorPro").innerHTML = resultConsultarPromo.capacidad;
+					
+			if (resultConsultarPromo.proyectos.length > 0) {
+				for(let ctaProyecto of resultConsultarPromo.proyectos){
+
+					// consultamos proyecto
+					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
+						if(!error){
+							console.log(result);	
+							
+							let proyectoResult = "Proyecto: " + result.nombre + ", " + 
+							result.fechaInicioFinanciacion + ", " +
+							result.fechaFinFinanciacion + ", " +			
+							result.tokensGoal + ", " +
+							result.rentabilidad + ", " +
+							result.estadoProyecto + "</br></br>";
+							
+							document.getElementById("msgListProyectosPromotor").innerHTML += proyectoResult;
+				
+						} else { 
+							console.error(err);
+							mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+						}	
+					});
+
+
+				}
+			}
+
+		} else {
+			console.error(error);
+			mostrarMensaje("msgConsultaPromotor", "ERROR", error);
+		}
+	});
+
+}
+
+// FIN PANTALLA PROMOTOR
+
+
+
+// PANTALLA INVERSOR
+function loginInversor() {
+
+	let ctaInversor = document.getElementById("logInversor").value;
+
+	localStorage.setItem("ctaInversorLogado", ctaInversor);
+
+	cargarPantallaInversor(ctaInversor);	
+
+	muestra_oculta('accesosDiv', 'inversorDiv');		
+}
+
+function cargarPantallaInversor(ctaInversor){
+
+	// Consultamos dastos del inversor y ctas proyectos que ha invertido
+	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 30000}, function(error, result){
+		if(!error){
+			console.log(result);	
+			document.getElementById("nbInversorInv").innerHTML = result.nombre;
+			document.getElementById("cifInversorInv").innerHTML = result.cif;
+
+			// Consultamos datos proyectos
+			if (result.proyectos.length > 0) {
+				for(let ctaProyecto of result.proyectos){
+
+					// consultamos proyecto
+					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
+						if(!error){
+							console.log(result);	
+							
+							let proyectoResult = "Proyecto: " + result.nombre + ", " + 
+							result.fechaInicioFinanciacion + ", " +
+							result.fechaFinFinanciacion + ", " +			
+							result.tokensGoal + ", " +
+							result.rentabilidad + ", " +
+							result.estadoProyecto + "</br></br>";
+														
+
+							instPlatPromoInver.methods.listarTokensPorProyectosPorInversor(ctaProyecto, ctaInversor).call( {from: cuentaPromotor, gas: 30000}, function(error, result){
+								if(!error){
+									console.log(result);	
+									
+									proyectoResult = "TokenPorProyecto: " + result + "<\br>";  
+									document.getElementById("msgConsultaInversor").innerHTML += proyectoResult;
+								} else { 
+									console.error(err);
+									mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+								}	
+							});							
+
+				
+						} else { 
+							console.error(err);
+							mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+						}	
+					});
+
+
+				}
+
+			}
+				
+		} else {
+			console.error(error);
+			mostrarMensaje("msgConsultaInversor", "ERROR", error);
+		}
+	});
+
+
+}	
+// fin PANTALLA INVERSOR
+
+
+
+
+// PANTALLA INVERTIR EN PROYECTOS
+// Carga todos los proyectos existentes en la plataforma
+function cargarPantallaInvertirEnProyectos(){
+
+	// Consultar addres de promotores
+	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 30000}, function(error, resultListarPromo){
+		if(!error){
+			
+			console.log(resultListarPromo);	
+			let promotores = resultListarPromo;			
+
+			for (let ctaPromotor of promotores) {
+			
+				// Consultar datos de cada promotor
+				instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 30000}, function(error, resultConsultarPromo){
+					if(!error){
+						console.log(resultConsultarPromo);	
+
+						let tablaPromo = tablaPromotor(resultConsultarPromo.nombre, resultConsultarPromo.cif);
+						
+						for (let ctaProyecto of resultConsultarPromo.proyectos) {
+
+							// Consultar datos de cada proyecto
+							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
+								if(!error){
+									console.log(result);	
+									
+									let tabla = tablaProyecto(tablaPromo, result.nombre, result.tokensGoal, result.rentabilidad, result.fechaInicioFinanciacion, result.fechaFinFinanciacion);
+									document.getElementById("invertirEnProyectoSpan").innerHTML += tabla;
+						
+								} else { 
+									console.error(err);
+									mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+								}	
+							});
+						}
+						
+			
+					} else {
+						console.error(error);
+						mostrarMensaje("msgConsultaPromotor", "ERROR", error);
+					}
+				});			
+			}
+
+
+		} else { 
+			console.error(err);
+			mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+		}	
+	});
+
+}
+
+function tablaProyecto(tablaPromotor, nbPromotor, tokenGoal, rentabilidad, fechaIniFinan, fechaFinFinan){
+	
+	tablaPromotor+="<tr><td>Proyecto</td></tr>";
+	tablaPromotor+="<tr><td>Nombre:"+ nbPromotor +"</td></tr>";
+	tablaPromotor+="<tr><td>TokenGoal:"+ tokenGoal +"</td></tr>";
+	tablaPromotor+="<tr><td>Rentabilidad:"+ rentabilidad +"</td></tr>";
+	tablaPromotor+="<tr><td>Fecha Inicio Financiación:"+ fechaIniFinan +"</td></tr>";
+	tablaPromotor+="<tr><td>Fecha Fin Financiación:"+ fechaFinFinan +"</td></tr>";
+	tablaPromotor+="<tr><td><button type='button' onclick='invertir()'>Invertir</button><input type='text' id='invertir"+ nbPromotor +"'/></td></tr>";
+    tablaPromotor+="</table>";
+
+	return tablaPromotor;
+
+}
+
+function tablaPromotor(nbProyecto, cif){
+
+    let tabla = "<table border='1'>";    
+	tabla+="<tr><td>Promotor</td></tr>";
+	tabla+="<tr><td>"+ nbProyecto +"</td></tr>";
+
+	return tabla;
+
+}
+// finPANTALLA INVERTIR EN PROYECTOS
+
+
 
 
 

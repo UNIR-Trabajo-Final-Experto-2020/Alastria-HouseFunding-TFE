@@ -19,6 +19,29 @@ function mostrarMensaje(id, tipoMensaje, mensaje) {
 	document.getElementById(id).innerHTML  = mensaje;	
 }
 
+function mostrarMensajeGenerico(tipoMensaje, mensaje) {
+
+	var className;
+
+	if (tipoMensaje == "SUCCESS") {
+		className = "label success";
+	} else if (tipoMensaje == "INFO") {
+		className = "label info";
+	} else if (tipoMensaje == "WARNING") {
+		className = "label warning";
+	} else if (tipoMensaje == "ERROR") {
+		className = "label err";
+	} else if (tipoMensaje == "OTHER") {		
+		className = "label other";
+
+	}
+
+	document.getElementById("mensajesDiv").style.display = 'block';
+	document.getElementById("mensajesDiv").className = className;
+	document.getElementById("mensajesDiv").innerHTML  = mensaje;	
+}
+
+
 function muestra_oculta(id1, id2){
 
 	if (document.getElementById){ //se obtiene el id
@@ -28,6 +51,8 @@ function muestra_oculta(id1, id2){
 		el = document.getElementById(id2); //se define la variable "el" igual a nuestro div
 		el.style.display = (el.style.display == 'none') ? 'block' : 'none'; //damos un atributo display:none que oculta el div
 	}
+
+	document.getElementById("mensajesDiv").style.display = 'none';
 }
 	
 

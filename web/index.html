@@ -71,9 +71,7 @@
       <label> Capacidad </label>
       <input type="text" id="capacidadPromotor"/>
       <br><br>
-      <button type="button" onclick="registrarPromotor()">Registrar promotor</button>    
-      <br><br>
-      <span id="msgRegPromotor"></span>    
+      <button type="button" onclick="registrarPromotor()">Registrar promotor</button>          
       <br><br>    
       <button type="button" onclick="muestra_oculta('regPromotorDiv', 'accesosDiv');">Volver</button>
       <br>
@@ -170,12 +168,23 @@
       <br><br>
       <span id="msgConsultaInversor"></span>
       <br>
-      <button type="button" onclick="muestra_oculta('promotorDiv', 'regProyectoDiv')">Invertir en proyecto</button>      
+      <button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cargarPantallaInvertirEnProyectos();">Invertir en nuevo proyecto</button>      
       <br><br>
       <button type="button" onclick="muestra_oculta('inversorDiv', 'accesosDiv');">Volver</button>
       <br>
     </div>
     <!-- FIN INVERSOR-->    
+
+    <!-- INICIO INVERTIR EN PROYECTO-->
+    <div id="invertirEnProyectoDiv" class="cuadro centrado" style="display: none">
+     
+      <br><br>
+      <span id="invertirEnProyectoSpan"></span>
+      <br>     
+      <button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');">Volver</button>
+      <br>
+    </div>
+    <!-- FIN INVERTIR EN PROYECTO-->       
     
     <!-- INICIO ADMINISTRADOR -->
     <div id="administradorDiv" class="cuadro centrado" style="display: none">
@@ -222,6 +231,14 @@
     </div>
 
     <!-- FIN ADMINISTRADOR -->
+
+    
+    <div id="mensajesDiv" style="display: none">                       
+      <br><br>
+      <span id="mensajeSpan"></span>
+      <br><br>
+    </div>
+
 
   </body>
 </html>
