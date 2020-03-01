@@ -54,7 +54,7 @@
         <br/><br/>
         <button type="button" onclick="loginInversor()">Login inversor</button>        
         <p> ¿No tienes cuenta? </p>
-        <a href="registrarInversor.html"> Registrar inversor </a>
+        <button type="button" id="logPromotorButton" onclick="muestra_oculta('regInversorDiv', 'accesosDiv')">Registrar inversor</button>                
       </div>
     </div>
     <!-- FIN ACCESO ADMIN, PROMOTOR, INVERSOR-->
@@ -79,6 +79,27 @@
       <br>
     </div>
     <!-- FIN REGISTRAR PROMOTOR-->
+
+    <!-- FIN REGISTRAR INVERSOR-->
+    <div id="regInversorDiv" class="cuadro centrado" style="display: none">
+      <h4> Registrar nuevo inversor </h4>
+      <label> Nombre </label>
+      <input type="text" id="nbInversor" />
+      <br><br>
+      <label> CIF </label>
+      <input type="text" id="cifInversor" />
+      <br><br>
+      <!--
+      <label> Password </label>
+      <input type="text" id="pwdInversor"></input>
+      <br><br>
+      -->
+      <button type="button" onclick="registrarInversor()">Registrar inversor</button>
+        <span id="msgRegInversor"></span>    
+        <br><br>    
+      <button type="button" onclick="muestra_oculta('regInversorDiv', 'accesosDiv');">Volver</button>  
+    </div>
+    <!-- FIN REGISTRAR INVERSOR-->
     
     <!-- INICIO REGISTRAR PROYECTO-->
     <div id="regProyectoDiv" class="cuadro centrado" style="display: none">
