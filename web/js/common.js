@@ -74,6 +74,12 @@ function cleanRegistrarProyecto(){
 	
 }
 
+function cleanRegistrarInversor(){
+
+	document.getElementById("nbInversor").value = "";
+    document.getElementById("cifInversor").value = "";    
+}
+
 
 function plantillaProyectosDelPromotor(nbProyecto, tokenGoalProyecto, rentabilidad, estadoProyecto, fechaInicioFinanciacion, fechaFinFinanciacion) {
 

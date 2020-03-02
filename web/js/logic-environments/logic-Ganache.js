@@ -67,7 +67,7 @@ async function registrarPromotor(){
 
 						if (receipt.events.PromotorRegistrado) {
 							localStorage.setItem("accountPromotor", cuentaPromotor);
-							mostrarMensajeGenerico("SUCCESS","Promotor registrado correctamente");
+							mostrarMensajeGenerico("SUCCESS","Promotor registrado correctamente, su Id: " + ctaPromotorNueva);
 							cleanRegistrarPromotor();
 							console.log("Evento registro promotor ok");
 						}
@@ -127,23 +127,26 @@ async function registrarInversor() {
 	var nombre = document.getElementById("nbInversor").value;
 	var cif = document.getElementById("cifInversor").value;
 	
-	var cuentaInversor = accounts[2];	
-	
+	let cuentaInversorNueva = dameNuevaCuenta();
+		
 	await instPlatPromoInver.methods.registrarInversor(nombre, cif)
-		.send({from: cuentaInversor, gas: 300000}, function(error, result){
+		.send({from: cuentaInversorNueva, gas: 300000}, function(error, result){
 			if(!error){
-				mostrarMensajeGenerico("ERROR", error);
+				
 				console.log("Registro inversor ok");
-			}
-			else
+			}else{
 				console.error(error);
+				mostrarMensajeGenerico("ERROR", error);
+			}				
+
 			}).on('receipt', function(receipt){
 				
 				if (receipt.events) {
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.InversorRegistrado) {
-						mostrarMensajeGenerico("SUCCESS", "Inversor registrado correctamente");
+						cleanRegistrarInversor();
+						mostrarMensajeGenerico("SUCCESS", "Inversor registrado correctamente, su Id:" + cuentaInversorNueva);
 						console.log("Evento registro inversor ok");
 					}
 				}
@@ -225,12 +228,14 @@ function loginInversor() {
 
 	localStorage.setItem("ctaInversorLogado", ctaInversor);
 
-	cargarPantallaInversor(ctaInversor);	
+	cargarPantallaInversor();	
 
 	muestra_oculta('accesosDiv', 'inversorDiv');		
 }
 
-function cargarPantallaInversor(ctaInversor){
+function cargarPantallaInversor(){
+
+	let ctaInversor = localStorage.getItem("ctaInversorLogado");
 
 	// Consultamos dastos del inversor y ctas proyectos que ha invertido
 	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 30000}, function(error, result){
