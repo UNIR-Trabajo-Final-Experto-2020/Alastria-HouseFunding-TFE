@@ -104,7 +104,7 @@ contract Promotores is Ownable {
    				uint256 fechaInicioEjecucion, uint256 fechaFinEjecucion,
 				uint256 tokensGoal, uint256 rentabilidad, ProjectStatus estadoProyecto)   {
         
-        address cuentaPromotor = promotores[0];
+        address cuentaPromotor = _msgSender();
         Promotor storage promotor = promotoresInfo[cuentaPromotor];
         Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
 

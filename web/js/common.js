@@ -54,6 +54,49 @@ function muestra_oculta(id1, id2){
 
 	document.getElementById("mensajesDiv").style.display = 'none';
 }
+
+function cleanRegistrarPromotor(){
+
+	document.getElementById("nbPromotor").value = "";
+    document.getElementById("cifPromotor").value = "";
+    document.getElementById("capacidadPromotor").value = "";
+}
+
+function cleanRegistrarProyecto(){
+
+	document.getElementById("nbProyectoReg").value = "";
+	document.getElementById("tokenGoalProyectoReg").value = "";
+	document.getElementById("rentabilidadProyectoReg").value = "";
+	document.getElementById("fechaIniFiancProyectoReg").value = "";
+	document.getElementById("fechaFinFiancProyectoReg").value = "";
+	//document.getElementById("fechaIniEjeProyectoReg").value = "";
+	//document.getElementById("fechaFinEjeProyectoReg").value = "";
+	
+}
+
+
+function plantillaProyectosDelPromotor(nbProyecto, tokenGoalProyecto, rentabilidad, estadoProyecto, fechaInicioFinanciacion, fechaFinFinanciacion) {
+
+	var plantilla= ` 
+		<div class="cuadro centrado">
+			Proyecto
+			</br></br>
+			Nombre: ${nbProyecto}
+			</br>
+			TokenGoal: ${tokenGoalProyecto}
+			</br>
+			Rentabilidad: ${rentabilidad}
+			</br>
+			EstadoProyecto: ${estadoProyecto}
+			</br>
+			Fecha Inicio Financiación: ${fechaInicioFinanciacion}
+			</br>
+			Fecha Fin Financiación: ${fechaFinFinanciacion}
+		</div>`;
+
+	document.getElementById("msgListProyectosPromotor").innerHTML += plantilla;
+	
+}
 	
 
  

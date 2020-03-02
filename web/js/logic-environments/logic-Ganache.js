@@ -4,6 +4,7 @@ var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
 var instanciaPlataformaPromoInver;
 var accounts, cuentaPlataforma, cuentaPromotor;
+let contadorAccountsUtilizadas = 1;
 
 async function start() {
 
@@ -14,7 +15,7 @@ async function start() {
 
 	//Cuentas
 	cuentaPlataforma = accounts[0];	
-	cuentaPromotor = accounts[1];
+	//cuentaPromotor = accounts[1];
 
 	//accounts[1] -> Promotor: 0x5b8BA5c293704BB759A00EBFD2C2b97A8A2DDa40  //EJAL
   //accounts[2] -> Inversor: 0x42A88Fb67F3b8DE7a438AB34d876b29f0d856A54  //EJAL
@@ -30,6 +31,13 @@ async function start() {
 	
 }
 
+function dameNuevaCuenta(){
+
+	let nuevaCta = accounts[contadorAccountsUtilizadas]
+	contadorAccountsUtilizadas ++;
+	return nuevaCta;
+}
+
 start();
 
 
@@ -41,9 +49,11 @@ async function registrarPromotor(){
     var cif = document.getElementById("cifPromotor").value;
     var capacidad = document.getElementById("capacidadPromotor").value;
 
+	let ctaPromotorNueva = dameNuevaCuenta();
+
 	try {
 		await instPlatPromoInver.methods.registrarPromotor(nombre, cif, capacidad)
-			.send({from: cuentaPromotor, gas: 300000}, function(error, result){
+			.send({from: ctaPromotorNueva, gas: 300000}, function(error, result){
 				if(!error){
 					
 					console.log("Registro promotor ok");
@@ -58,6 +68,7 @@ async function registrarPromotor(){
 						if (receipt.events.PromotorRegistrado) {
 							localStorage.setItem("accountPromotor", cuentaPromotor);
 							mostrarMensajeGenerico("SUCCESS","Promotor registrado correctamente");
+							cleanRegistrarPromotor();
 							console.log("Evento registro promotor ok");
 						}
 					}
@@ -79,17 +90,18 @@ async function registrarProyecto() {
 	//let fechaIniEjec = document.getElementById("fechaIniEjeProyectoReg").value;
 	//let fechaFinEjec = document.getElementById("fechaFinEjeProyectoReg").value;
 
-	var cuentaProyecto = accounts[3];	
-	
+	let ctaPrmotor = localStorage.getItem("ctaPromotorLogado");
+	let cuentaProyecto = dameNuevaCuenta();
+		
 	await instPlatPromoInver.methods
 		.registrarProyecto(cuentaProyecto, nombre, fechaIniFinan, fechaFinFinan, tokenGoal, rentabilidad)
-		.send({from: cuentaPromotor, gas: 300000}, function(error, result){
+		.send({from: ctaPrmotor, gas: 300000}, function(error, result){
 				if(!error){
 					
 					console.log("Registro proyecto ok");
 				} else {
 					console.error(error);
-					mostrarMensaje("msgRegProyecto", "ERROR", error);
+					mostrarMensajeGenerico("ERROR", error);					
 				}	
 			}).on('receipt', function(receipt){
 				
@@ -97,7 +109,8 @@ async function registrarProyecto() {
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.ProyectoRegistrado) {
-						mostrarMensaje("msgRegProyecto", "SUCCESS", "Proyecto registrado correctamente");
+						mostrarMensajeGenerico("SUCCESS", "Proyecto registrado correctamente");	
+						cleanRegistrarProyecto();					
 						console.log("Evento registro proyecto ok");
 					}
 				}
@@ -145,14 +158,18 @@ function loginPromotor() {
 
 	let ctaPromotor = document.getElementById("loginPromotorT").value;
 
-	cargarPantallaPromotor(ctaPromotor);
+	localStorage.setItem("ctaPromotorLogado", ctaPromotor);
+
+	cargarPantallaPromotor();
 
 	muestra_oculta('accesosDiv', 'promotorDiv');		
 }
 
-function cargarPantallaPromotor(ctaPromotor){
+function cargarPantallaPromotor(){
 
 	document.getElementById("msgListProyectosPromotor").innerHTML = "";
+
+	let ctaPromotor = localStorage.getItem("ctaPromotorLogado");
 
 	// Consultamos los datos del promotor
 	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 30000}, function(error, resultConsultarPromo){
@@ -163,25 +180,25 @@ function cargarPantallaPromotor(ctaPromotor){
 			document.getElementById("capacidadPromotorPro").innerHTML = resultConsultarPromo.capacidad;
 					
 			if (resultConsultarPromo.proyectos.length > 0) {
+				
+				// Consultamos todos los proyectos de un prmotor
 				for(let ctaProyecto of resultConsultarPromo.proyectos){
 
 					// consultamos proyecto
-					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
+					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 30000}, function(error, result){
 						if(!error){
 							console.log(result);	
 							
-							let proyectoResult = "Proyecto: " + result.nombre + ", " + 
-							result.fechaInicioFinanciacion + ", " +
-							result.fechaFinFinanciacion + ", " +			
-							result.tokensGoal + ", " +
-							result.rentabilidad + ", " +
-							result.estadoProyecto + "</br></br>";
-							
-							document.getElementById("msgListProyectosPromotor").innerHTML += proyectoResult;
+							plantillaProyectosDelPromotor(result.nombre, 
+								result.tokensGoal,
+								result.rentabilidad,
+								result.estadoProyecto,
+								result.fechaInicioFinanciacion,
+								result.fechaFinFinanciacion);
 				
 						} else { 
 							console.error(err);
-							mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+							mostrarMensajeGenerico("ERROR", error)		
 						}	
 					});
 
@@ -191,7 +208,7 @@ function cargarPantallaPromotor(ctaPromotor){
 
 		} else {
 			console.error(error);
-			mostrarMensaje("msgConsultaPromotor", "ERROR", error);
+			mostrarMensajeGenerico("ERROR", error)			
 		}
 	});
 
