@@ -25,6 +25,14 @@ Inicialización:
 
 8 - Finalizar proyecto.
 
+# Despliegue del proyecto en local
+
+truffle migrate --reset --all --network ganache
+
+# Ejecucion de test
+
+truffle test
+
 	  
 
 

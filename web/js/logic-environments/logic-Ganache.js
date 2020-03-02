@@ -18,11 +18,11 @@ async function start() {
 	//cuentaPromotor = accounts[1];
 
 	//accounts[1] -> Promotor: 0x5b8BA5c293704BB759A00EBFD2C2b97A8A2DDa40  //EJAL
-  //accounts[2] -> Inversor: 0x42A88Fb67F3b8DE7a438AB34d876b29f0d856A54  //EJAL
+ 	//accounts[2] -> Inversor: 0x42A88Fb67F3b8DE7a438AB34d876b29f0d856A54  //EJAL
 
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
-	//const contratoPromoInver = "0xE788275f8A83050766741500030a475A0eB94795";    //EJAL
+	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
+	const contratoPromoInver = "0xfd859c0358cb924C3072E5b50b55a61D290aDD24";    //EJAL
 
 
 	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo?
