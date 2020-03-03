@@ -80,6 +80,11 @@ function cleanRegistrarInversor(){
     document.getElementById("cifInversor").value = "";    
 }
 
+function cleanInvertirEnProyectos(){
+
+	document.getElementById("invertirEnProyectoSpan").innerHTML = "";
+}
+
 
 function plantillaProyectosDelPromotor(nbProyecto, tokenGoalProyecto, rentabilidad, estadoProyecto, fechaInicioFinanciacion, fechaFinFinanciacion) {
 
@@ -103,6 +108,64 @@ function plantillaProyectosDelPromotor(nbProyecto, tokenGoalProyecto, rentabilid
 	document.getElementById("msgListProyectosPromotor").innerHTML += plantilla;
 	
 }
+
+function plantillaPromotoresParaInvertir(ctaPromotor, nbPromotor, proyectosPromotor) {
+
+	var plantilla= ` 
+		<div id="${ctaPromotor}" class="cuadro centrado">
+			<div>Promotor : ${nbPromotor}</div>						
+		</div>`;
+
+	document.getElementById("invertirEnProyectoSpan").innerHTML += plantilla;	
+}
+
+function addProyecto (ctaPromotor, ctaProyecto, nbProyecto) { 
 	
+	// Creamos div
+	var newDiv = document.createElement("div"); 
+
+	var newContent = document.createTextNode(nbProyecto);
+	newDiv.appendChild(newContent); //añade texto al div creado. 
+
+	// boton
+	var newButton = document.createElement("button"); 
+	var aType = document.createAttribute("type");
+	aType.value = "button";
+	newButton.setAttributeNode(aType);
+	var textoButon = document.createTextNode("Invertir");
+	newButton.appendChild(textoButon); //añade texto al boton.
+	newDiv.appendChild(newButton);
+
+	// caja texto	
+	var newCajaTexto = document.createElement("input"); 
+	var aText = document.createAttribute("type");
+	aText.value = "text";
+	var aId = document.createAttribute("id");
+	aId.value = ctaProyecto;
+	newButton.setAttributeNode(aId);	
+	newDiv.appendChild(newCajaTexto);
+
+	// añade el elemento creado y su contenido al DOM 
+	//var currentDiv = document.getElementById(ctaPromotor); 
+	//document.getElementById(ctaProyecto).appendChild(newInput)
+	document.getElementById(ctaPromotor).appendChild(newDiv);
+
+	//document.body.insertBefore(newDiv, currentDiv); 
+  }
+
+  /*
+function plantillaProyectosParaInvertir(nbProyecto) {
+
+	let plantilla= ` 
+		<div class="cuadro centrado">
+			Proyecto : ${nbProyecto}
+			</br></br>						
+			
+		</div>`;
+
+	return plantilla;
+	
+}
+	*/
 
  

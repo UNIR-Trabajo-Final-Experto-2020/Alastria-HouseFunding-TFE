@@ -201,7 +201,7 @@ function cargarPantallaPromotor(){
 				
 						} else { 
 							console.error(err);
-							mostrarMensajeGenerico("ERROR", error)		
+							mostrarMensajeGenerico("ERROR", error);		
 						}	
 					});
 
@@ -211,7 +211,7 @@ function cargarPantallaPromotor(){
 
 		} else {
 			console.error(error);
-			mostrarMensajeGenerico("ERROR", error)			
+			mostrarMensajeGenerico("ERROR", error);			
 		}
 	});
 
@@ -269,14 +269,14 @@ function cargarPantallaInversor(){
 									document.getElementById("msgConsultaInversor").innerHTML += proyectoResult;
 								} else { 
 									console.error(err);
-									mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+									mostrarMensajeGenerico("ERROR", error);												
 								}	
 							});							
 
 				
 						} else { 
 							console.error(err);
-							mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+							mostrarMensajeGenerico("ERROR", error);										
 						}	
 					});
 
@@ -286,8 +286,8 @@ function cargarPantallaInversor(){
 			}
 				
 		} else {
-			console.error(error);
-			mostrarMensaje("msgConsultaInversor", "ERROR", error);
+			console.error(error);			
+			mostrarMensajeGenerico("ERROR", error);			
 		}
 	});
 
@@ -316,25 +316,31 @@ function cargarPantallaInvertirEnProyectos(){
 					if(!error){
 						console.log(resultConsultarPromo);	
 
-						let tablaPromo = tablaPromotor(resultConsultarPromo.nombre, resultConsultarPromo.cif);
-						
+						//let datosPromotor = {};
+						//datosPromotor.nombre = resultConsultarPromo.nombre;
+						plantillaPromotoresParaInvertir(ctaPromotor, resultConsultarPromo.nombre);
+						let plantillaProyectos = "";	
 						for (let ctaProyecto of resultConsultarPromo.proyectos) {
 
+							
+
 							// Consultar datos de cada proyecto
-							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
+							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 30000}, function(error, result){
 								if(!error){
 									console.log(result);	
 									
-									let tabla = tablaProyecto(tablaPromo, result.nombre, result.tokensGoal, result.rentabilidad, result.fechaInicioFinanciacion, result.fechaFinFinanciacion);
-									document.getElementById("invertirEnProyectoSpan").innerHTML += tabla;
+									addProyecto(ctaPromotor, ctaProyecto,result.nombre);
+									//plantillaPromotoresParaInvertir(nbPromotor, plantillaProyectos)
+									//plantillaProyectos += plantillaProyectosParaInvertir(result.nombre);
+									//let tabla = tablaProyecto(tablaPromo, result.nombre, result.tokensGoal, result.rentabilidad, result.fechaInicioFinanciacion, result.fechaFinFinanciacion);
+									//document.getElementById("invertirEnProyectoSpan").innerHTML += tabla;
 						
 								} else { 
 									console.error(err);
 									mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
 								}	
 							});
-						}
-						
+						}						
 			
 					} else {
 						console.error(error);
