@@ -18,7 +18,7 @@ async function start() {
 	cuentaPlataforma = accounts[0];	
 
 	//Indicar aqui la direccion del contrato tras su despliegue.
-	const contratoPromoInver = "0xfd859c0358cb924C3072E5b50b55a61D290aDD24";    
+	const contratoPromoInver = "0xc5B7101F0331D880726d339987A32C15Bab0edFE";    
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
 	
