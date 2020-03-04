@@ -24,22 +24,22 @@ async function start() {
 	
 }
 
-function dameNuevaCuenta(){
+async function dameNuevaCuenta(){
 	// En la testnet local de Alastria
 	pss = "test";
-    var address = web3.eth.personal.newAccount(pss);
+    var address = await web3.eth.personal.newAccount(pss);
     desbloqueaCuenta(address);
 	return address;
 }
 
-function desbloqueaCuenta(cuenta) {
+async function desbloqueaCuenta(cuenta) {
 	pss = "test";
-	web3.eth.personal.unlockAccount(cuenta, pss, 0);
+	await web3.eth.personal.unlockAccount(cuenta, pss, 0);
 }
 
-function bloqueaCuenta(cuenta) {
+async function bloqueaCuenta(cuenta) {
 	pss = "test";
-	web3.personal.lockAccount(cuenta, pss);
+	await web3.personal.lockAccount(cuenta, pss);
 }
 
 
