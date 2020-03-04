@@ -1,5 +1,5 @@
 const PlataformaPromoInver = artifacts.require("PlataformaPromoInver");
 
 module.exports = function(deployer) {
-  deployer.deploy(PlataformaPromoInver);
+  deployer.deploy(PlataformaPromoInver, {gas: 6000000});
 };
