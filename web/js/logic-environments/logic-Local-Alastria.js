@@ -10,7 +10,7 @@ async function start() {
 	// Gett all the accounts
 	accounts = await web3.eth.getAccounts();
 	
-	web3.eth.personal.unlockAccount(accounts[0], "Passw0rd");
+	await web3.eth.personal.unlockAccount(accounts[0], "Passw0rd");
 
 	console.log("INIT ACCOUNTS\n" + accounts);
 
@@ -28,7 +28,7 @@ async function dameNuevaCuenta(){
 	// En la testnet local de Alastria
 	pss = "test";
     var address = await web3.eth.personal.newAccount(pss);
-    desbloqueaCuenta(address);
+    await desbloqueaCuenta(address);
 	return address;
 }
 
