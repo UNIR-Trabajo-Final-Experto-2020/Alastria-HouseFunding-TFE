@@ -39,7 +39,7 @@ async function desbloqueaCuenta(cuenta) {
 
 async function bloqueaCuenta(cuenta) {
 	pss = "test";
-	await web3.personal.lockAccount(cuenta, pss);
+	await web3.eth.personal.lockAccount(cuenta, pss);
 }
 
 
