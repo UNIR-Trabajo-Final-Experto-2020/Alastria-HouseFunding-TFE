@@ -48,7 +48,7 @@
         async function tranferirTokensInversor(cuentaDestino, numeroTokens)
         {
           try {
-            instPlatPromoInver.methods.transferirTokensParaInversor(cuentaDestino, numeroTokens).send( {from: cuentaPlataforma, gas: 50000}, function(error, result){
+            instPlatPromoInver.methods.transferirTokensParaInversor(cuentaDestino, numeroTokens).send( {from: cuentaPlataforma, gas: 80000}, function(error, result){
                   if(!error){
                       console.log(result);
                                             

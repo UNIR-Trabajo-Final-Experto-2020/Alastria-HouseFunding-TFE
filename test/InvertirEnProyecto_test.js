@@ -53,7 +53,13 @@ contract('Promotores', function (accounts) {
                 assert.equal(receipt.logs[1].event, "TokensInvertidosProyecto");                                
             }); 
         
+            
+
+        // Consultamos los token invertidos en el proyecto
+        result = await this.plataformaPromoInver.tokensInvertidosEnProyecto(cuentaProyecto, { from: cuentaInversor, gasPrice: 1, gas: 3000000 });
         
+        assert.equal(result.tokensInversor, 100);               
+ 		console.log("tokensInvertidosEnProyecto:"  + result);
         
  		const tokensProyecto = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
  		console.log("tokensProyecto:"  + tokensProyecto);

@@ -80,11 +80,14 @@ function cleanRegistrarInversor(){
     document.getElementById("cifInversor").value = "";    
 }
 
-function cleanInvertirEnProyectos(){
+function cleanInvertirEnProyecto(){
 
-	document.getElementById("invertirEnProyectoSpan").innerHTML = "";
+	document.getElementById("invertirEnProyectoSpan").innerHTML = "";    
 }
 
+function cleanInversor(){
+	document.getElementById("msgConsultaInversor").innerHTML = "";
+}
 
 function plantillaProyectosDelPromotor(nbProyecto, tokenGoalProyecto, rentabilidad, estadoProyecto, fechaInicioFinanciacion, fechaFinFinanciacion) {
 
@@ -119,7 +122,7 @@ function plantillaPromotoresParaInvertir(ctaPromotor, nbPromotor, proyectosPromo
 	document.getElementById("invertirEnProyectoSpan").innerHTML += plantilla;	
 }
 
-function addProyecto (ctaPromotor, ctaProyecto, nbProyecto) { 
+function plantillaAddProyecto (ctaPromotor, ctaProyecto, nbProyecto) { 
 	
 	// Creamos div
 	var newDiv = document.createElement("div"); 
@@ -132,17 +135,21 @@ function addProyecto (ctaPromotor, ctaProyecto, nbProyecto) {
 	var aType = document.createAttribute("type");
 	aType.value = "button";
 	newButton.setAttributeNode(aType);
+	var onclickInput = document.createAttribute("onClick");
+	onclickInput.value = `invertirProyecto("${ctaPromotor}", "${ctaProyecto}")`;
+	newButton.setAttributeNode(onclickInput);	
 	var textoButon = document.createTextNode("Invertir");
 	newButton.appendChild(textoButon); //añade texto al boton.
 	newDiv.appendChild(newButton);
 
 	// caja texto	
 	var newCajaTexto = document.createElement("input"); 
-	var aText = document.createAttribute("type");
-	aText.value = "text";
 	var aId = document.createAttribute("id");
 	aId.value = ctaProyecto;
-	newButton.setAttributeNode(aId);	
+	newCajaTexto.setAttributeNode(aId);
+	var aType = document.createAttribute("type");
+	aType.value = "text";
+	newCajaTexto.setAttributeNode(aType);
 	newDiv.appendChild(newCajaTexto);
 
 	// añade el elemento creado y su contenido al DOM 
@@ -153,19 +160,42 @@ function addProyecto (ctaPromotor, ctaProyecto, nbProyecto) {
 	//document.body.insertBefore(newDiv, currentDiv); 
   }
 
-  /*
-function plantillaProyectosParaInvertir(nbProyecto) {
+  function plantillaProyectosDelInversor(nbProyecto, tokenGoalProyecto, rentabilidad, estadoProyecto, fechaInicioFinanciacion, fechaFinFinanciacion, tokenInvertidos) {
 
-	let plantilla= ` 
+	var plantilla= ` 
 		<div class="cuadro centrado">
-			Proyecto : ${nbProyecto}
-			</br></br>						
-			
+			Proyecto
+			</br></br>
+			Nombre: ${nbProyecto}
+			</br>
+			TokenGoal: ${tokenGoalProyecto}
+			</br>
+			Rentabilidad: ${rentabilidad}
+			</br>
+			EstadoProyecto: ${estadoProyecto}
+			</br>
+			Fecha Inicio Financiación: ${fechaInicioFinanciacion}
+			</br>
+			Fecha Fin Financiación: ${fechaFinFinanciacion}
+			</br>
+			Token invertidos: ${tokenInvertidos}
 		</div>`;
 
-	return plantilla;
+	document.getElementById("msgConsultaInversor").innerHTML += plantilla;
 	
 }
-	*/
 
- 
+function traduceEstado(id){	
+	
+	if(id == 0){
+		return "EN_FINANCIACION";
+	}else if(id == 1) {
+		return "CANCELADO";
+	}else if(id == 2) {
+		return "EN_PROGRESO";
+	}else if(id == 3) {
+		return "FINALIZADO";
+	}else{
+		return "";
+	}
+}

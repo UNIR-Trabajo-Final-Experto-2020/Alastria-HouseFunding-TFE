@@ -14,10 +14,19 @@ contract Inversores is Ownable {
       string _cif;
       bool _existe;
   	  address[] _proyectos;
+     mapping(address => TokensInvertidos) _tokensInvertidoPorInversor;                  
+    }
+
+    struct TokensInvertidos {
+      address _ctaPromotor;      
+      uint256 _tokensInvertidos;
     }
 
     mapping(address => Inversor) inversoresInfo;
     address[] inversores;
+    
+    mapping(address => TokensInvertidos) tokensInvertidoPorInversor;    
+
 
     //DUDA
     //tokensPorInversor: uint32
@@ -46,6 +55,15 @@ contract Inversores is Ownable {
     function listarProyectosInversor(address cuentaInversor) public view returns (address [] memory proyectos) {
     	return inversoresInfo[cuentaInversor]._proyectos;
     }   
+
+    function tokensInvertidosEnProyecto(address ctaProyecto) public view 
+        returns (address ctaPromotor,           
+            uint256 tokensInversor) {
+                
+        TokensInvertidos storage tokensInvertidos = inversoresInfo[_msgSender()]._tokensInvertidoPorInversor[ctaProyecto];                 
+
+        return (tokensInvertidos._ctaPromotor, tokensInvertidos._tokensInvertidos);
+    }
 
 	function deleteInversor(address cuentaInversor) internal  {
 	    delete inversoresInfo[cuentaInversor];

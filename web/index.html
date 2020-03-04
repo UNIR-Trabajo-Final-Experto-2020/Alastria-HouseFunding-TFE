@@ -164,9 +164,9 @@
       <br><br>
       <span id="msgConsultaInversor"></span>
       <br>
-      <button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cargarPantallaInvertirEnProyectos();">Invertir en nuevo proyecto</button>      
+      <button type="button" onclick="cargarPantallaInvertirEnProyectos();muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cleanInversor();">Invertir en nuevo proyecto</button>      
       <br><br>
-      <button type="button" onclick="muestra_oculta('inversorDiv', 'accesosDiv');">Volver</button>
+      <button type="button" onclick="muestra_oculta('inversorDiv', 'accesosDiv');cleanInversor();">Volver</button>
       <br>
     </div>
     <!-- FIN INVERSOR-->    
@@ -177,7 +177,7 @@
       <br><br>
       <span id="invertirEnProyectoSpan"></span>
       <br>     
-      <button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cleanInvertirEnProyectos();">Volver</button>
+      <button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cleanInvertirEnProyecto();cargarPantallaInversor();">Volver</button>
       <br>
     </div>
     <!-- FIN INVERTIR EN PROYECTO-->       

@@ -21,14 +21,10 @@ async function start() {
  	//accounts[2] -> Inversor: 0x42A88Fb67F3b8DE7a438AB34d876b29f0d856A54  //EJAL
 
 	//Recuperamos el contrato	
-	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
-	const contratoPromoInver = "0xfd859c0358cb924C3072E5b50b55a61D290aDD24";    //EJAL
+	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
+	//const contratoPromoInver = "0xfd859c0358cb924C3072E5b50b55a61D290aDD24";    //EJAL
 
-
-	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo?
-
-	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
-	
+	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
 
 function dameNuevaCuenta(){
@@ -95,7 +91,7 @@ async function registrarProyecto() {
 		
 	await instPlatPromoInver.methods
 		.registrarProyecto(cuentaProyecto, nombre, fechaIniFinan, fechaFinFinan, tokenGoal, rentabilidad)
-		.send({from: ctaPrmotor, gas: 300000}, function(error, result){
+		.send({from: ctaPrmotor, gas: 500000}, function(error, result){
 				if(!error){
 					
 					console.log("Registro proyecto ok");
@@ -205,7 +201,6 @@ function cargarPantallaPromotor(){
 						}	
 					});
 
-
 				}
 			}
 
@@ -248,37 +243,44 @@ function cargarPantallaInversor(){
 			if (result.proyectos.length > 0) {
 				for(let ctaProyecto of result.proyectos){
 
-					// consultamos proyecto
-					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaProyecto, gas: 30000}, function(error, result){
+					
+					
+					instPlatPromoInver.methods.tokensInvertidosEnProyecto(ctaProyecto).call( {from: ctaInversor, gas: 30000}, function(error, resultTokenInvertidosEnProy){
 						if(!error){
-							console.log(result);	
+							console.log(resultTokenInvertidosEnProy);	
 							
-							let proyectoResult = "Proyecto: " + result.nombre + ", " + 
-							result.fechaInicioFinanciacion + ", " +
-							result.fechaFinFinanciacion + ", " +			
-							result.tokensGoal + ", " +
-							result.rentabilidad + ", " +
-							result.estadoProyecto + "</br></br>";
-														
-
-							instPlatPromoInver.methods.listarTokensPorProyectosPorInversor(ctaProyecto, ctaInversor).call( {from: cuentaPromotor, gas: 30000}, function(error, result){
+							// consultamos proyecto
+							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: resultTokenInvertidosEnProy.ctaPromotor, gas: 30000}, function(error, resultConsultarProy){
 								if(!error){
-									console.log(result);	
+									console.log(resultConsultarProy);	
 									
-									proyectoResult = "TokenPorProyecto: " + result + "<\br>";  
-									document.getElementById("msgConsultaInversor").innerHTML += proyectoResult;
+									plantillaProyectosDelInversor(resultConsultarProy.nombre, 
+										resultConsultarProy.tokensGoal, 
+										resultConsultarProy.rentabilidad, 
+										traduceEstado(resultConsultarProy.estadoProyecto),										 
+										resultConsultarProy.fechaInicioFinanciacion, 
+										resultConsultarProy.fechaFinFinanciacion, 
+										resultTokenInvertidosEnProy.tokensInversor);				
+
+						
 								} else { 
 									console.error(err);
-									mostrarMensajeGenerico("ERROR", error);												
+									mostrarMensajeGenerico("ERROR", error);										
 								}	
-							});							
+							});
 
-				
+
+
+
+							
 						} else { 
 							console.error(err);
-							mostrarMensajeGenerico("ERROR", error);										
+							mostrarMensajeGenerico("ERROR", error);												
 						}	
-					});
+					});							
+
+				
+				
 
 
 				}
@@ -329,7 +331,7 @@ function cargarPantallaInvertirEnProyectos(){
 								if(!error){
 									console.log(result);	
 									
-									addProyecto(ctaPromotor, ctaProyecto,result.nombre);
+									plantillaAddProyecto(ctaPromotor, ctaProyecto,result.nombre);
 									//plantillaPromotoresParaInvertir(nbPromotor, plantillaProyectos)
 									//plantillaProyectos += plantillaProyectosParaInvertir(result.nombre);
 									//let tabla = tablaProyecto(tablaPromo, result.nombre, result.tokensGoal, result.rentabilidad, result.fechaInicioFinanciacion, result.fechaFinFinanciacion);
@@ -358,6 +360,37 @@ function cargarPantallaInvertirEnProyectos(){
 
 }
 
+function invertirProyecto(cuentaPromotor, cuentaProyecto){
+
+	let ctaInversor = localStorage.getItem("ctaInversorLogado");
+
+	let numeroTokens = document.getElementById(cuentaProyecto).value;
+
+	instPlatPromoInver.methods.invertirProyecto(cuentaPromotor, cuentaProyecto, numeroTokens)
+		.send({from: ctaInversor, gas: 300000}, function(error, result){
+			if(!error){
+				
+				console.log("Inversión en proyecto ok");
+			}else{
+				console.error(error);
+				mostrarMensajeGenerico("ERROR", error);
+			}				
+
+			}).on('receipt', function(receipt){
+				
+				if (receipt.events) {
+					console.log(JSON.stringify(receipt.events, null, 2));
+
+					if (receipt.events.TokensInvertidosProyecto) {
+						document.getElementById(cuentaProyecto).value = "";						
+						mostrarMensajeGenerico("SUCCESS", "Token invertidos en proyecto");
+						console.log("Evento TokensInvertidosProyecto ok");
+					}
+				}
+			});  
+}
+
+/*
 function tablaProyecto(tablaPromotor, nbPromotor, tokenGoal, rentabilidad, fechaIniFinan, fechaFinFinan){
 	
 	tablaPromotor+="<tr><td>Proyecto</td></tr>";
@@ -381,7 +414,7 @@ function tablaPromotor(nbProyecto, cif){
 
 	return tabla;
 
-}
+}*/
 // finPANTALLA INVERTIR EN PROYECTOS
 
 

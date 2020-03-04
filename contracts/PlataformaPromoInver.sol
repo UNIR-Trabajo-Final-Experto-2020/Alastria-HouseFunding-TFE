@@ -161,8 +161,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
 
     /**
     *	El inversor invierte tokens en un proyecto concreto
-    **/
-    //function invertirProyecto(address cuentaPromotor, address cuentaProyecto, uint256 numeroTokens) public esProyectoValido(cuentaProyecto) { 
+    **/    
     function invertirProyecto(address cuentaPromotor, address cuentaProyecto, uint256 numeroTokens) public 
         esPromotorValido(cuentaPromotor) 
         esProyectoDelPromotor(cuentaPromotor, cuentaProyecto) 
@@ -191,9 +190,19 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         }
 
         if (invertidos) {
-            // Actualizamos el número de token que un inversor tiene en un proyecto 
 
-            //proyecto._tokensPorInversor[cuentaInversor].add(numeroTokens);
+            // Añadimos al inversor el proyecto en el que ha invertido, si es la primera vez que inverte                                  
+            if(inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto]._tokensInvertidos == 0) {               
+                inversoresInfo[cuentaInversor]._proyectos.push(cuentaProyecto);
+
+                // Contabilizamos los tokens que un inversor invierte en cada proyecto
+                inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto] = TokensInvertidos(cuentaPromotor, numeroTokens);
+            } else {
+                // Contabilizamos los tokens que un inversor invierte en cada proyecto
+                inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto]._tokensInvertidos += numeroTokens;
+            }
+            
+            // Actualizamos el número de token que un inversor tiene en un proyecto             
             proyecto._tokensPorInversor[cuentaInversor] += numeroTokens;
 
             // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)

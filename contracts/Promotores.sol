@@ -35,9 +35,9 @@ contract Promotores is Ownable {
       uint256 _tokensGoal;
       uint256 _rentabilidad;
       ProjectStatus _estadoProyecto;
-      bool _existe;
+      bool _existe;      
       address[] inversores;
-	    mapping(address => uint256) _tokensPorInversor;
+	    mapping(address => uint256) _tokensPorInversor;      
     }
 
     enum ProjectStatus {EN_FINANCIACION, CANCELADO, EN_PROGRESO, FINALIZADO}
