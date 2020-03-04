@@ -54,7 +54,7 @@ async function registrarPromotor(){
     var cif = document.getElementById("cifPromotor").value;
     var capacidad = document.getElementById("capacidadPromotor").value;
 
-	let ctaPromotorNueva = dameNuevaCuenta();
+	let ctaPromotorNueva = await dameNuevaCuenta();
 
 	try {
 		await instPlatPromoInver.methods.registrarPromotor(nombre, cif, capacidad)
@@ -79,7 +79,7 @@ async function registrarPromotor(){
 					}
 				}); 
 
-		bloqueaCuenta(ctaPromotorNueva);
+		await bloqueaCuenta(ctaPromotorNueva);
 
 	} catch (err) {
 		console.error("Error: " + err);		
@@ -98,7 +98,7 @@ async function registrarProyecto() {
 	//let fechaFinEjec = document.getElementById("fechaFinEjeProyectoReg").value;
 
 	let ctaPrmotor = localStorage.getItem("ctaPromotorLogado");
-	let cuentaProyecto = dameNuevaCuenta();
+	let cuentaProyecto = await dameNuevaCuenta();
 		
 	await instPlatPromoInver.methods
 		.registrarProyecto(cuentaProyecto, nombre, fechaIniFinan, fechaFinFinan, tokenGoal, rentabilidad)
@@ -134,7 +134,7 @@ async function registrarInversor() {
 	var nombre = document.getElementById("nbInversor").value;
 	var cif = document.getElementById("cifInversor").value;
 	
-	let cuentaInversorNueva = dameNuevaCuenta();
+	let cuentaInversorNueva = await dameNuevaCuenta();
 		
 	await instPlatPromoInver.methods.registrarInversor(nombre, cif)
 		.send({from: cuentaInversorNueva, gas: 300000}, function(error, result){
@@ -158,17 +158,17 @@ async function registrarInversor() {
 					}
 				}
 			});  
-	bloqueaCuenta(cuentaInversorNueva);
+	await bloqueaCuenta(cuentaInversorNueva);
 }
 // fin PANTALLA REGISTRAR NUEVO INVERSOR
 
 
 
 // PANTALLA PROMOTOR
-function loginPromotor() {
+async function loginPromotor() {
 
 	let ctaPromotor = document.getElementById("loginPromotorT").value;
-	desbloqueaCuenta(ctaPromotor);
+	await desbloqueaCuenta(ctaPromotor);
 
 	localStorage.setItem("ctaPromotorLogado", ctaPromotor);
 
