@@ -34,7 +34,7 @@ function dameNuevaCuenta(){
 
 function desbloqueaCuenta(cuenta) {
 	pss = "test";
-	web3.eth.personal.unlockAccount(address, pss, 0);
+	web3.eth.personal.unlockAccount(cuenta, pss, 0);
 }
 
 function bloqueaCuenta(cuenta) {
