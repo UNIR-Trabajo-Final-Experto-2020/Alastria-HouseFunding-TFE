@@ -1,8 +1,9 @@
+//Configuracion entornos
 let ganache_ENVIRONMENT = 
 	[
 	"common.js", 
 	"plataformaInverABI.js", 
-	"logic-environments/logic-Ganache.js",
+	"logic-environments/logic-Ganache.js?v=" + Date.now(),
 	"housefunding.js"
 	];
 
@@ -10,7 +11,7 @@ let local_Alastria_ENVIRONMENT =
 	[
 	"common.js", 
 	"plataformaInverABI.js", 
-	"logic-environments/logic-Local-Alastria.js",
+	"logic-environments/logic-Local-Alastria.js?v=" + Date.now(),
 	"housefunding.js"
 	];
 
