@@ -703,6 +703,48 @@ const ABI_CPII = [
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "cuentaProyecto",
+        "type": "address"
+      },
+      {
+        "name": "nombre",
+        "type": "string"
+      },
+      {
+        "name": "fechaInicioFinanciacion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaFinFinanciacion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaInicioEjecucion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaFinEjecucion",
+        "type": "uint256"
+      },
+      {
+        "name": "tokensGoal",
+        "type": "uint256"
+      },
+      {
+        "name": "rentabilidad",
+        "type": "uint256"
+      }
+    ],
+    "name": "registrarProyecto",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [
       {
@@ -1038,40 +1080,6 @@ const ABI_CPII = [
       }
     ],
     "name": "deleteProyecto",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "cuentaProyecto",
-        "type": "address"
-      },
-      {
-        "name": "nombre",
-        "type": "string"
-      },
-      {
-        "name": "fechaInicioFinanciacion",
-        "type": "uint256"
-      },
-      {
-        "name": "fechaFinFinanciacion",
-        "type": "uint256"
-      },
-      {
-        "name": "tokensGoal",
-        "type": "uint256"
-      },
-      {
-        "name": "rentabilidad",
-        "type": "uint256"
-      }
-    ],
-    "name": "registrarProyecto",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -1770,6 +1778,14 @@ const ABI_CPII = [
       },
       {
         "name": "fechaFinFinanciacion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaInicioEjecucion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaFinEjecucion",
         "type": "uint256"
       },
       {

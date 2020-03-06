@@ -67,8 +67,8 @@ function cleanRegistrarProyecto(){
 	document.getElementById("nbProyectoReg").value = "";
 	document.getElementById("tokenGoalProyectoReg").value = "";
 	document.getElementById("rentabilidadProyectoReg").value = "";
-	document.getElementById("fechaIniFiancProyectoReg").value = "";
-	document.getElementById("fechaFinFiancProyectoReg").value = "";
+	document.getElementById("fechaIniFinancProyectoReg").value = "";
+	document.getElementById("fechaFinFinancProyectoReg").value = "";
 	//document.getElementById("fechaIniEjeProyectoReg").value = "";
 	//document.getElementById("fechaFinEjeProyectoReg").value = "";
 	
@@ -89,7 +89,10 @@ function cleanInversor(){
 	document.getElementById("msgConsultaInversor").innerHTML = "";
 }
 
-function plantillaProyectosDelPromotor(nbProyecto, tokenGoalProyecto, rentabilidad, estadoProyecto, fechaInicioFinanciacion, fechaFinFinanciacion) {
+function plantillaProyectosDelPromotor(nbProyecto, 
+	tokenGoalProyecto, rentabilidad, estadoProyecto, 
+	fechaInicioFinanciacion, fechaFinFinanciacion,
+	fechaIniEjecucion, fechaFinEjecucion) {
 
 	var plantilla= ` 
 		<div class="cuadro centrado">
@@ -103,9 +106,13 @@ function plantillaProyectosDelPromotor(nbProyecto, tokenGoalProyecto, rentabilid
 			</br>
 			EstadoProyecto: ${estadoProyecto}
 			</br>
-			Fecha Inicio Financiación: ${fechaInicioFinanciacion}
+			Fecha Inicio Financiación: ${formateaNumeroAFecha(fechaInicioFinanciacion)}
 			</br>
-			Fecha Fin Financiación: ${fechaFinFinanciacion}
+			Fecha Fin Financiación: ${formateaNumeroAFecha(fechaFinFinanciacion)}
+			</br>
+			Fecha Inicio Ejecución: ${formateaNumeroAFecha(fechaIniEjecucion)}
+			</br>
+			Fecha Fin FinanEjecuciónciación: ${formateaNumeroAFecha(fechaFinEjecucion)}
 		</div>`;
 
 	document.getElementById("msgListProyectosPromotor").innerHTML += plantilla;
@@ -198,4 +205,15 @@ function traduceEstado(id){
 	}else{
 		return "";
 	}
+}
+
+// recibe una fecha en formato dd/mm/yyyy
+function formeteaFechaANumero(fecha){
+
+	return Date.parse(fecha);
+}
+
+function formateaNumeroAFecha(num){
+
+	return new Date(Number.parseInt(num)).toLocaleDateString();	
 }

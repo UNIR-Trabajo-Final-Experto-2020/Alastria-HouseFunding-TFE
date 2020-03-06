@@ -58,8 +58,14 @@ contract Promotores is Ownable {
 
   }
 
-	function registrarProyecto(address cuentaProyecto, string memory nombre, uint256 fechaInicioFinanciacion, uint256 fechaFinFinanciacion,
-		uint256 tokensGoal, uint256 rentabilidad) public {
+	function registrarProyecto(address cuentaProyecto, 
+        string memory nombre, 
+        uint256 fechaInicioFinanciacion, 
+        uint256 fechaFinFinanciacion,
+        uint256 fechaInicioEjecucion, 
+        uint256 fechaFinEjecucion, 
+		uint256 tokensGoal, 
+        uint256 rentabilidad) public {
         
         //Registra proyecto
         proyectos.push(cuentaProyecto);
@@ -70,7 +76,7 @@ contract Promotores is Ownable {
         require(tokensGoal < promotor._capacidad, "TokensGoal del proyecto es superior a la capacidad del promotor");
 
 		promotor._proyectos[cuentaProyecto] = Proyecto(cuentaProyecto, nombre, fechaInicioFinanciacion, 
-          fechaFinFinanciacion, 0, 0, tokensGoal, rentabilidad, ProjectStatus.EN_FINANCIACION, true, new address[](0));
+          fechaFinFinanciacion, fechaInicioEjecucion, fechaFinEjecucion, tokensGoal, rentabilidad, ProjectStatus.EN_FINANCIACION, true, new address[](0));
 
         promotor._totalProyectos++;
 
@@ -100,9 +106,12 @@ contract Promotores is Ownable {
     }
 
    function consultarProyecto(address cuentaProyecto)  public view 
-  		 returns (string memory nombre, uint256 fechaInicioFinanciacion, uint256 fechaFinFinanciacion,
-   				uint256 fechaInicioEjecucion, uint256 fechaFinEjecucion,
-				uint256 tokensGoal, uint256 rentabilidad, ProjectStatus estadoProyecto)   {
+  		 returns (string memory nombre, 
+            uint256 fechaInicioFinanciacion, 
+            uint256 fechaFinFinanciacion,
+   			uint256 fechaInicioEjecucion, 
+            uint256 fechaFinEjecucion,
+			uint256 tokensGoal, uint256 rentabilidad, ProjectStatus estadoProyecto)   {
         
         address cuentaPromotor = _msgSender();
         Promotor storage promotor = promotoresInfo[cuentaPromotor];

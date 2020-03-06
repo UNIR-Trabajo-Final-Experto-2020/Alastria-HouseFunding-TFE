@@ -81,16 +81,16 @@ async function registrarProyecto() {
 	let nombre = document.getElementById("nbProyectoReg").value;
 	let tokenGoal = document.getElementById("tokenGoalProyectoReg").value;
 	let rentabilidad = document.getElementById("rentabilidadProyectoReg").value;
-	let fechaIniFinan = document.getElementById("fechaIniFiancProyectoReg").value;
-	let fechaFinFinan = document.getElementById("fechaFinFiancProyectoReg").value;
-	//let fechaIniEjec = document.getElementById("fechaIniEjeProyectoReg").value;
-	//let fechaFinEjec = document.getElementById("fechaFinEjeProyectoReg").value;
+	let fechaIniFinan = formeteaFechaANumero(document.getElementById("fechaIniFinancProyectoReg").value);
+	let fechaFinFinan = formeteaFechaANumero(document.getElementById("fechaFinFinancProyectoReg").value);
+	let fechaIniEjec = formeteaFechaANumero(document.getElementById("fechaIniEjeProyectoReg").value);
+	let fechaFinEjec = formeteaFechaANumero(document.getElementById("fechaFinEjeProyectoReg").value);
 
 	let ctaPrmotor = localStorage.getItem("ctaPromotorLogado");
 	let cuentaProyecto = dameNuevaCuenta();
 		
 	await instPlatPromoInver.methods
-		.registrarProyecto(cuentaProyecto, nombre, fechaIniFinan, fechaFinFinan, tokenGoal, rentabilidad)
+		.registrarProyecto(cuentaProyecto, nombre, fechaIniFinan, fechaFinFinan, fechaIniEjec, fechaFinEjec, tokenGoal, rentabilidad)
 		.send({from: ctaPrmotor, gas: 500000}, function(error, result){
 				if(!error){
 					
@@ -193,7 +193,9 @@ function cargarPantallaPromotor(){
 								result.rentabilidad,
 								result.estadoProyecto,
 								result.fechaInicioFinanciacion,
-								result.fechaFinFinanciacion);
+								result.fechaFinFinanciacion,
+								result.fechaInicioEjecucion,
+								result.fechaFinEjecucion);
 				
 						} else { 
 							console.error(err);

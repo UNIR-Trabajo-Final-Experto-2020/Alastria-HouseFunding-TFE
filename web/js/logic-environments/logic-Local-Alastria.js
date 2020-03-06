@@ -92,8 +92,8 @@ async function registrarProyecto() {
 	let nombre = document.getElementById("nbProyectoReg").value;
 	let tokenGoal = document.getElementById("tokenGoalProyectoReg").value;
 	let rentabilidad = document.getElementById("rentabilidadProyectoReg").value;
-	let fechaIniFinan = document.getElementById("fechaIniFiancProyectoReg").value;
-	let fechaFinFinan = document.getElementById("fechaFinFiancProyectoReg").value;
+	let fechaIniFinan = document.getElementById("fechaIniFinancProyectoReg").value;
+	let fechaFinFinan = document.getElementById("fechaFinFinancProyectoReg").value;
 	//let fechaIniEjec = document.getElementById("fechaIniEjeProyectoReg").value;
 	//let fechaFinEjec = document.getElementById("fechaFinEjeProyectoReg").value;
 
