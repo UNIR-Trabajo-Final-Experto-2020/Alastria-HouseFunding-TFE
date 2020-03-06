@@ -23,7 +23,7 @@ contract('Promotores', function (accounts) {
             });
 
         // Creamos proyecto
-        await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 1", 0, 0, 200, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+        await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 1", 0, 0, 0, 0,200, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
                 
                 assert.equal(receipt.logs[0].event, "ProyectoRegistrado");            
