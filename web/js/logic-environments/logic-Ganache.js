@@ -21,8 +21,8 @@ async function start() {
  	//accounts[2] -> Inversor: 0x42A88Fb67F3b8DE7a438AB34d876b29f0d856A54  //EJAL
 
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
-	//const contratoPromoInver = "0xfd859c0358cb924C3072E5b50b55a61D290aDD24";    //EJAL
+	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
+	const contratoPromoInver = "0x78c19164660899116f119d2FBf32307F5b3E7def";    //EJAL
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
