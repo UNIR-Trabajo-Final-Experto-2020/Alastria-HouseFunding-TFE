@@ -1,5 +1,27 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:700);
 
+table {
+   width: 100%;
+   border: 1px solid #000;
+}
+th, td {
+   width: 25%;
+   text-align: left;
+   vertical-align: top;
+   border: 1px solid #000;
+   border-collapse: collapse;
+   padding: 0.3em;
+   caption-side: bottom;
+}
+caption {
+   padding: 0.3em;
+   color: #fff;
+   background: #000;
+}
+th {
+   background: #eee;
+}
+
 .console-log-div {
   border: 1px solid gray;
   padding: 5px 10px;
@@ -17,9 +39,23 @@
   box-sizing: content-box;
 }
 
+.cuadroAdmin {
+  border-style:solid;
+  border-color:#287EC7;
+  padding:5;
+  text-align: center;
+  margin: 5;
+  box-sizing: content-box;
+}
+
 .column {
   float: left;
   width: 70%;
+}
+
+.column-half40 {
+  float: left;
+  width: 46%;
 }
 
 .column-half {

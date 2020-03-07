@@ -22,7 +22,7 @@ async function start() {
 
 	//Recuperamos el contrato	
 	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
-	const contratoPromoInver = "0x78c19164660899116f119d2FBf32307F5b3E7def";    //EJAL
+	const contratoPromoInver = "0xcF33c7429C6a4d1202e8dfB819E59c11e8B54663";    //EJAL
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }

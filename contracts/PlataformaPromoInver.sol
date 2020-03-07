@@ -192,11 +192,16 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         if (invertidos) {
 
             // Añadimos al inversor el proyecto en el que ha invertido, si es la primera vez que inverte                                  
-            if(inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto]._tokensInvertidos == 0) {               
+            if(inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto]._tokensInvertidos == 0) {   
+                        
                 inversoresInfo[cuentaInversor]._proyectos.push(cuentaProyecto);
-
+                
                 // Contabilizamos los tokens que un inversor invierte en cada proyecto
                 inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto] = TokensInvertidos(cuentaPromotor, numeroTokens);
+                
+                //Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto.
+                proyecto.inversores.push(cuentaInversor);
+
             } else {
                 // Contabilizamos los tokens que un inversor invierte en cada proyecto
                 inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto]._tokensInvertidos += numeroTokens;
@@ -206,7 +211,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
             proyecto._tokensPorInversor[cuentaInversor] += numeroTokens;
 
             // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)
-            proyecto.inversores.push(cuentaInversor);
+            //proyecto.inversores.push(cuentaInversor);
             
             // En caso de llegar al tokensGoal, se debe cambiar el estado del proyecto a EN_PROGRESO
             if (numeroTokenInvertidos == tokensGoalProyecto) {

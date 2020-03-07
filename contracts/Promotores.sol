@@ -109,9 +109,10 @@ contract Promotores is Ownable {
   		 returns (string memory nombre, 
             uint256 fechaInicioFinanciacion, 
             uint256 fechaFinFinanciacion,
-   			uint256 fechaInicioEjecucion, 
+   			    uint256 fechaInicioEjecucion, 
             uint256 fechaFinEjecucion,
-			uint256 tokensGoal, uint256 rentabilidad, ProjectStatus estadoProyecto)   {
+			      uint256 tokensGoal, uint256 rentabilidad, ProjectStatus estadoProyecto
+            )   {
         
         address cuentaPromotor = _msgSender();
         Promotor storage promotor = promotoresInfo[cuentaPromotor];
@@ -175,8 +176,10 @@ contract Promotores is Ownable {
     uint256 tokensGoal;
     uint256 rentabilidad; 
     ProjectStatus estadoProyecto;
+    
 
-    (nombre, fechaInicioFinanciacion, fechaFinFinanciacion, fechaInicioEjecucion, fechaFinEjecucion, tokensGoal, rentabilidad, estadoProyecto) = consultarProyecto(cuentaProyecto);
+    (nombre, fechaInicioFinanciacion, fechaFinFinanciacion, fechaInicioEjecucion, 
+      fechaFinEjecucion, tokensGoal, rentabilidad, estadoProyecto) = consultarProyecto(cuentaProyecto);
 
     return (estadoProyecto, (estadoProyecto == _status));
     
