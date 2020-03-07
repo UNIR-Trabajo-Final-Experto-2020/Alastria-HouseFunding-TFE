@@ -167,7 +167,16 @@ function plantillaAddProyecto (ctaPromotor, ctaProyecto, nbProyecto) {
 	//document.body.insertBefore(newDiv, currentDiv); 
   }
 
-  function plantillaProyectosDelInversor(nbProyecto, tokenGoalProyecto, rentabilidad, estadoProyecto, fechaInicioFinanciacion, fechaFinFinanciacion, tokenInvertidos) {
+  function plantillaProyectosDelInversor(ctaPromotor, 
+	ctaProyecto, 
+	ctaInversor,
+	nbProyecto, 
+	tokenGoalProyecto, 
+	rentabilidad, 
+	estadoProyecto, 
+	fechaInicioFinanciacion, 
+	fechaFinFinanciacion, 
+	tokenInvertidos) {
 
 	var plantilla= ` 
 		<div class="cuadro centrado">
@@ -186,6 +195,8 @@ function plantillaAddProyecto (ctaPromotor, ctaProyecto, nbProyecto) {
 			Fecha Fin Financiación: ${fechaFinFinanciacion}
 			</br>
 			Token invertidos: ${tokenInvertidos}
+			</br>
+			<button type="button" onclick="abandonarProyecto('${ctaPromotor}', '${ctaProyecto}', '${ctaInversor}');cleanInversor();">Abandonar</button>
 		</div>`;
 
 	document.getElementById("msgConsultaInversor").innerHTML += plantilla;

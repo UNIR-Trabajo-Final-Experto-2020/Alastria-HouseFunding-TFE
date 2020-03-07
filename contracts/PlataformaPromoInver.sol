@@ -251,6 +251,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         
 
         proyecto._tokensPorInversor[cuentaInversor] = 0;
+        delete inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[cuentaProyecto]; 
         //deleteInversor(cuentaInversor);
     }
 

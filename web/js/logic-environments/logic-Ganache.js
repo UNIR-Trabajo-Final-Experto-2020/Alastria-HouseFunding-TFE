@@ -21,8 +21,8 @@ async function start() {
  	//accounts[2] -> Inversor: 0x42A88Fb67F3b8DE7a438AB34d876b29f0d856A54  //EJAL
 
 	//Recuperamos el contrato	
-	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
-	const contratoPromoInver = "0x78c19164660899116f119d2FBf32307F5b3E7def";    //EJAL
+	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
+	//const contratoPromoInver = "0x78c19164660899116f119d2FBf32307F5b3E7def";    //EJAL
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
@@ -171,7 +171,7 @@ function cargarPantallaPromotor(){
 	let ctaPromotor = localStorage.getItem("ctaPromotorLogado");
 
 	// Consultamos los datos del promotor
-	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 30000}, function(error, resultConsultarPromo){
+	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
 		if(!error){
 			console.log(resultConsultarPromo);	
 			document.getElementById("nbPromotorPro").innerHTML = resultConsultarPromo.nombre;
@@ -184,7 +184,7 @@ function cargarPantallaPromotor(){
 				for(let ctaProyecto of resultConsultarPromo.proyectos){
 
 					// consultamos proyecto
-					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 30000}, function(error, result){
+					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
 						if(!error){
 							console.log(result);	
 							
@@ -235,7 +235,7 @@ function cargarPantallaInversor(){
 	let ctaInversor = localStorage.getItem("ctaInversorLogado");
 
 	// Consultamos dastos del inversor y ctas proyectos que ha invertido
-	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 30000}, function(error, result){
+	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 300000}, function(error, result){
 		if(!error){
 			console.log(result);	
 			document.getElementById("nbInversorInv").innerHTML = result.nombre;
@@ -244,24 +244,25 @@ function cargarPantallaInversor(){
 			// Consultamos datos proyectos
 			if (result.proyectos.length > 0) {
 				for(let ctaProyecto of result.proyectos){
-
-					
-					
-					instPlatPromoInver.methods.tokensInvertidosEnProyecto(ctaProyecto).call( {from: ctaInversor, gas: 30000}, function(error, resultTokenInvertidosEnProy){
+										
+					instPlatPromoInver.methods.tokensInvertidosEnProyecto(ctaProyecto).call( {from: ctaInversor, gas: 300000}, function(error, resultTokenInvertidosEnProy){
 						if(!error){
 							console.log(resultTokenInvertidosEnProy);	
 							
 							// consultamos proyecto
-							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: resultTokenInvertidosEnProy.ctaPromotor, gas: 30000}, function(error, resultConsultarProy){
+							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: resultTokenInvertidosEnProy.ctaPromotor, gas: 300000}, function(error, resultConsultarProy){
 								if(!error){
 									console.log(resultConsultarProy);	
 									
-									plantillaProyectosDelInversor(resultConsultarProy.nombre, 
+									plantillaProyectosDelInversor(resultTokenInvertidosEnProy.ctaPromotor,
+										ctaProyecto,
+										ctaInversor,
+										resultConsultarProy.nombre, 
 										resultConsultarProy.tokensGoal, 
 										resultConsultarProy.rentabilidad, 
 										traduceEstado(resultConsultarProy.estadoProyecto),										 
-										resultConsultarProy.fechaInicioFinanciacion, 
-										resultConsultarProy.fechaFinFinanciacion, 
+										formateaNumeroAFecha(resultConsultarProy.fechaInicioFinanciacion), 
+										formateaNumeroAFecha(resultConsultarProy.fechaFinFinanciacion), 
 										resultTokenInvertidosEnProy.tokensInversor);				
 
 						
@@ -271,19 +272,12 @@ function cargarPantallaInversor(){
 								}	
 							});
 
-
-
-
-							
+			
 						} else { 
 							console.error(err);
 							mostrarMensajeGenerico("ERROR", error);												
 						}	
 					});							
-
-				
-				
-
 
 				}
 
@@ -297,6 +291,33 @@ function cargarPantallaInversor(){
 
 
 }	
+
+function abandonarProyecto(ctaPromotor, ctaProyecto, ctaInversor){
+
+	instPlatPromoInver.methods.abandonarProyecto(ctaPromotor, ctaProyecto)
+		.send({from: ctaInversor, gas: 300000}, function(error, result){
+			if(!error){
+				
+				console.log("Registro inversor ok");
+			}else{
+				console.error(error);
+				mostrarMensajeGenerico("ERROR", error);
+			}				
+
+			}).on('receipt', function(receipt){
+				
+				if (receipt.events) {
+					console.log(JSON.stringify(receipt.events, null, 2));
+/*
+					if (receipt.events.InversorRegistrado) {
+						
+						mostrarMensajeGenerico("SUCCESS", "Inversor registrado correctamente, su Id:" + cuentaInversorNueva);
+						console.log("Evento registro inversor ok");
+					}
+					*/
+				}
+			});  
+}
 // fin PANTALLA INVERSOR
 
 
@@ -307,7 +328,7 @@ function cargarPantallaInversor(){
 function cargarPantallaInvertirEnProyectos(){
 
 	// Consultar addres de promotores
-	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 30000}, function(error, resultListarPromo){
+	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){
 		if(!error){
 			
 			console.log(resultListarPromo);	
@@ -316,7 +337,7 @@ function cargarPantallaInvertirEnProyectos(){
 			for (let ctaPromotor of promotores) {
 			
 				// Consultar datos de cada promotor
-				instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 30000}, function(error, resultConsultarPromo){
+				instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
 					if(!error){
 						console.log(resultConsultarPromo);	
 
@@ -329,7 +350,7 @@ function cargarPantallaInvertirEnProyectos(){
 							
 
 							// Consultar datos de cada proyecto
-							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 30000}, function(error, result){
+							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
 								if(!error){
 									console.log(result);	
 									
@@ -369,7 +390,7 @@ function invertirProyecto(cuentaPromotor, cuentaProyecto){
 	let numeroTokens = document.getElementById(cuentaProyecto).value;
 
 	instPlatPromoInver.methods.invertirProyecto(cuentaPromotor, cuentaProyecto, numeroTokens)
-		.send({from: ctaInversor, gas: 300000}, function(error, result){
+		.send({from: ctaInversor, gas: 3000000}, function(error, result){
 			if(!error){
 				
 				console.log("Inversión en proyecto ok");
@@ -392,31 +413,7 @@ function invertirProyecto(cuentaPromotor, cuentaProyecto){
 			});  
 }
 
-/*
-function tablaProyecto(tablaPromotor, nbPromotor, tokenGoal, rentabilidad, fechaIniFinan, fechaFinFinan){
-	
-	tablaPromotor+="<tr><td>Proyecto</td></tr>";
-	tablaPromotor+="<tr><td>Nombre:"+ nbPromotor +"</td></tr>";
-	tablaPromotor+="<tr><td>TokenGoal:"+ tokenGoal +"</td></tr>";
-	tablaPromotor+="<tr><td>Rentabilidad:"+ rentabilidad +"</td></tr>";
-	tablaPromotor+="<tr><td>Fecha Inicio Financiación:"+ fechaIniFinan +"</td></tr>";
-	tablaPromotor+="<tr><td>Fecha Fin Financiación:"+ fechaFinFinan +"</td></tr>";
-	tablaPromotor+="<tr><td><button type='button' onclick='invertir()'>Invertir</button><input type='text' id='invertir"+ nbPromotor +"'/></td></tr>";
-    tablaPromotor+="</table>";
 
-	return tablaPromotor;
-
-}
-
-function tablaPromotor(nbProyecto, cif){
-
-    let tabla = "<table border='1'>";    
-	tabla+="<tr><td>Promotor</td></tr>";
-	tabla+="<tr><td>"+ nbProyecto +"</td></tr>";
-
-	return tabla;
-
-}*/
 // finPANTALLA INVERTIR EN PROYECTOS
 
 
