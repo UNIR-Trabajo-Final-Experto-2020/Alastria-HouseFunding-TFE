@@ -273,6 +273,23 @@ const ABI_CPII = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "name": "cuentaProyecto",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "cuentaInversor",
+        "type": "address"
+      }
+    ],
+    "name": "ProyectoInversorBorrado",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "name": "previousOwner",
         "type": "address"
@@ -1350,6 +1367,23 @@ const ABI_CPII = [
       }
     ],
     "name": "InversorBorrado",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "cuentaProyecto",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "cuentaInversor",
+        "type": "address"
+      }
+    ],
+    "name": "ProyectoInversorBorrado",
     "type": "event"
   },
   {

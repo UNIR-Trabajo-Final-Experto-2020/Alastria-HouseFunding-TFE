@@ -7,6 +7,7 @@ contract Inversores is Ownable {
 	//Eventos
 	event InversorRegistrado(address cuentaInversor, string nombre, string cif);
     event InversorBorrado(address cuentaInversor);
+    event ProyectoInversorBorrado(address cuentaProyecto, address cuentaInversor);
 
     struct Inversor {
       address _address;
@@ -76,6 +77,19 @@ contract Inversores is Ownable {
         }
        
 	}
+
+	function deleteProyectoInversor(address cuentaProyecto, address cuentaInversor) internal  {
+
+        address[] storage proyectos = inversoresInfo[cuentaInversor]._proyectos;
+	             
+        for (uint i = 0; i< proyectos.length; i++) {
+            if (proyectos[i] == cuentaProyecto) {
+              delete proyectos[i];              
+              emit ProyectoInversorBorrado(cuentaProyecto, cuentaInversor);
+            }
+        }
+       
+	}    
 
     modifier esInversorValido(address _cuenta){
         if(inversoresInfo[_cuenta]._existe){

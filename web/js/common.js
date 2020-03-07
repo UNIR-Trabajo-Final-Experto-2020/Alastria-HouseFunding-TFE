@@ -225,6 +225,8 @@ function formeteaFechaANumero(fecha){
 }
 
 function formateaNumeroAFecha(num){
-
+	if (num == 0) {
+		return "-";
+	}
 	return new Date(Number.parseInt(num)).toLocaleDateString();	
 }

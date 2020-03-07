@@ -20,7 +20,7 @@ contract('Promotores', function (accounts) {
                 assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
             });
 
-        await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 1", 0, 0, 200, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+        await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 1", 0, 0, 0, 0, 200, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
                 
                 assert.equal(receipt.logs[0].event, "ProyectoRegistrado");            
@@ -69,7 +69,7 @@ contract('Promotores', function (accounts) {
             });
 
        
-        await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 1", 0, 0, 100, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+        await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 1", 0, 0, 0, 0, 100, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
                 console.log(JSON.stringify(receipt, null, 2));
                 assert.equal(receipt.logs[0].event, "ProyectoRegistrado");            
