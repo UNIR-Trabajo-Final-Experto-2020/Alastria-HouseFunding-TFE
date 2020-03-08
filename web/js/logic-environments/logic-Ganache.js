@@ -419,31 +419,36 @@ function invertirProyecto(cuentaPromotor, cuentaProyecto){
 
 async function finalizarProyecto(cuentaPromotor, cuentaProyecto) {
 
-	instPlatPromoInver.methods.finalizarProyecto(cuentaProyecto)
-		.send({from: cuentaPromotor, gas: 3000000}, function(error, result){
-			if(!error){
-				
-				console.log("Proyecto finalizado OK");
-			}else{
-				console.error(error);
-				mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto no finalizado: debe estar en estado EN_CURSO y haber alcanzado la financiación (goal).");
+	try {
+		instPlatPromoInver.methods.finalizarProyecto(cuentaProyecto)
+			.send({from: cuentaPromotor, gas: 3000000}, function(error, result){
+				if(!error){
+					
+					console.log("Proyecto finalizado OK");
+				}else{
+					console.error(error);
+					mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto no finalizado: debe estar en estado EN_CURSO y haber alcanzado la financiación (goal).");
 
-			}				
+				}				
 
-			}).on('receipt', function(receipt){
-				
-				if (receipt.events) {
+				}).on('receipt', function(receipt){
+					
+					if (receipt.events) {
 
-					if (receipt.events.ProyectoFinalizadoConTransferencias) {
-						mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "SUCCESS", "Proyecto finalizado y tokens transferidos a inversores.");
-						console.log("Evento ProyectoFinalizadoConTransferencias ok");
-					} else if (receipt.events.BalanceOfPromotorNoSuficiente) {
-						mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto NO finalizado. Promotor necesita tokens para pagar intereses a inversores.");
-					} else {
-						mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto NO finalizado, error...");
+						if (receipt.events.ProyectoFinalizadoConTransferencias) {
+							mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "SUCCESS", "Proyecto finalizado y tokens transferidos a inversores.");
+							console.log("Evento ProyectoFinalizadoConTransferencias ok");
+						} else if (receipt.events.BalanceOfPromotorNoSuficiente) {
+							mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto NO finalizado. Promotor necesita tokens para pagar intereses a inversores.");
+						} else {
+							mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto NO finalizado, error...");
+						}
 					}
-				}
-			});             
+				});   
+		} catch (err) {
+            console.error("Error: " + err);
+            mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto NO finalizado, error: " + err);
+        }          
 }
 
 
