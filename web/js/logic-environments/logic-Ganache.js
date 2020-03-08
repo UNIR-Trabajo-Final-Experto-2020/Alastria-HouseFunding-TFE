@@ -18,7 +18,7 @@ async function start() {
 	
 	//Recuperamos el contrato	
 	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
-	const contratoPromoInver = "0xe0Df65B70A20AaDb411906E3028982650A427C39";    //EJAL	
+	const contratoPromoInver = "0x834C1B095cB55F2574f7f4Af359cB28B0cdCFd24";    //EJAL	
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
@@ -435,8 +435,12 @@ async function finalizarProyecto(cuentaPromotor, cuentaProyecto) {
 				if (receipt.events) {
 
 					if (receipt.events.ProyectoFinalizadoConTransferencias) {
-						mostrarMensajeGenerico("msgProyectoPromotorAction_"+cuentaProyecto, "SUCCESS", "Proyecto finalizado y tokens transferidos a inversores.");
+						mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "SUCCESS", "Proyecto finalizado y tokens transferidos a inversores.");
 						console.log("Evento ProyectoFinalizadoConTransferencias ok");
+					} else if (receipt.events.BalanceOfPromotorNoSuficiente) {
+						mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto NO finalizado. Promotor necesita tokens para pagar intereses a inversores.");
+					} else {
+						mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto NO finalizado, error...");
 					}
 				}
 			});             

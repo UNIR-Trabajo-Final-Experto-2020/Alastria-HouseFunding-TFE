@@ -55,15 +55,18 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
   	/**
   	* 	El promotor finaliza proyecto y devuelve los tokens con los intereses a los inversores
   	**/
-    function finalizarProyecto(address cuentaProyecto) public esProyectoDelPromotor(_msgSender(), cuentaProyecto)  { 
-        //Validar que el proyecto está registrado en el proyecto.
-        
+    function finalizarProyecto(address cuentaProyecto) public 
+        esProyectoDelPromotor(_msgSender(), cuentaProyecto) 
+        hayInversoresEnProyecto(_msgSender(), cuentaProyecto)
+      { 
+    
         //Se valida que el promotor tiene tokens suficientes para repartirlo con los inversores
         address cuentaPromotor = _msgSender();
         uint256 balanceOfPromotor = balanceOf(cuentaPromotor);
 
         if (!esBalancePromotorValido(cuentaPromotor, cuentaProyecto, balanceOfPromotor)) {
             emit BalanceOfPromotorNoSuficiente(cuentaPromotor, cuentaProyecto);
+            return;
         }
 
         //Cambiar estado a ProjectStatus.FINALIZADO

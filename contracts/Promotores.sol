@@ -220,6 +220,12 @@ contract Promotores is Ownable {
       }
     } 
 
+    modifier hayInversoresEnProyecto(address cuentaPromotor, address cuentaProyecto) {
+      if (promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto].inversores.length > 0) {
+          _;
+      }
+    } 
+
     modifier estaProyectoEnFinanciacion(address cuentaPromotor, address cuentaProyecto) {
       if (promotoresInfo[cuentaPromotor]._proyectos[cuentaProyecto]._estadoProyecto == ProjectStatus.EN_FINANCIACION) {
           _;
