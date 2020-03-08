@@ -109,7 +109,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     /**
     *	El promotor cancela el proyecto y devuelve los tokens a los inversores
     **/
-    function cancelarProyecto(address cuentaProyecto) public esProyectoDelPromotor(_msgSender(), cuentaProyecto)  { 
+    function cancelarProyecto(address cuentaProyecto) public view esProyectoDelPromotor(_msgSender(), cuentaProyecto)  { 
 		//TODO Cambiar estado a ProjectStatus.FINALIZADO
 		//Transferencia de tokens de proyecto a inversores
 		//Borramos proyecto o solo se transfieren los tokens y se deja en estado FINALIZADO

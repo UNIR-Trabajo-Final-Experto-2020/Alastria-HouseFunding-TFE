@@ -185,7 +185,7 @@
 
           $("#tblPromotor tbody").append(newRowContent);
 
-          $('#rowProyectosId' + index).click(function(){ listarProyectosDePromotor(cuentaPromotor, datosPromotor.proyectos, datosPromotor.nombre); return false; });
+          $('#rowProyectosId' + index).click(function(){ listarProyectosDePromotor(cuentaPromotor, datosPromotor.listadoProyectos, datosPromotor.nombre); return false; });
           $('#rowPromoBalanceId' + index).click(function(){ calculaBalanceOf(cuentaPromotor); return false; });
           $('#rowGetTokensId' + index).click(function(){ selectObtenerTokens('PROMOTOR', cuentaPromotor); return false; });
 

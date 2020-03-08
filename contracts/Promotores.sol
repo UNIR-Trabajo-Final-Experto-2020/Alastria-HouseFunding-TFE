@@ -110,7 +110,7 @@ contract Promotores is Ownable {
             string memory nombre, 
             string memory cif, 
             uint256 capacidad,
-            address[] memory proyectos
+            address[] memory listadoProyectos
         )   
     {
 

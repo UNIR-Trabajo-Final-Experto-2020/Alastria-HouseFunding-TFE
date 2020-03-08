@@ -175,10 +175,10 @@ function cargarPantallaPromotor(){
 			document.getElementById("cifPromotorPro").innerHTML = resultConsultarPromo.cif;
 			document.getElementById("capacidadPromotorPro").innerHTML = resultConsultarPromo.capacidad;
 					
-			if (resultConsultarPromo.proyectos.length > 0) {
+			if (resultConsultarPromo.listadoProyectos.length > 0) {
 				
 				// Consultamos todos los proyectos de un prmotor
-				for(let ctaProyecto of resultConsultarPromo.proyectos){
+				for(let ctaProyecto of resultConsultarPromo.listadoProyectos){
 
 					// consultamos proyecto
 					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
@@ -346,7 +346,7 @@ function cargarPantallaInvertirEnProyectos(){
 						//datosPromotor.nombre = resultConsultarPromo.nombre;
 						plantillaPromotoresParaInvertir(ctaPromotor, resultConsultarPromo.nombre);
 						let plantillaProyectos = "";	
-						for (let ctaProyecto of resultConsultarPromo.proyectos) {
+						for (let ctaProyecto of resultConsultarPromo.listadoProyectos) {
 
 							
 

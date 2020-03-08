@@ -18,7 +18,7 @@ async function start() {
 	cuentaPlataforma = accounts[0];	
 
 	//Indicar aqui la direccion del contrato tras su despliegue.
-	const contratoPromoInver = "0xc5B7101F0331D880726d339987A32C15Bab0edFE";    
+	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";    
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);
 	
@@ -191,10 +191,10 @@ function cargarPantallaPromotor(){
 			document.getElementById("cifPromotorPro").innerHTML = resultConsultarPromo.cif;
 			document.getElementById("capacidadPromotorPro").innerHTML = resultConsultarPromo.capacidad;
 					
-			if (resultConsultarPromo.proyectos.length > 0) {
+			if (resultConsultarPromo.listadoProyectos.length > 0) {
 				
 				// Consultamos todos los proyectos de un prmotor
-				for(let ctaProyecto of resultConsultarPromo.proyectos){
+				for(let ctaProyecto of resultConsultarPromo.listadoProyectos){
 
 					// consultamos proyecto
 					instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 30000}, function(error, result){
@@ -330,7 +330,7 @@ function cargarPantallaInvertirEnProyectos(){
 						//datosPromotor.nombre = resultConsultarPromo.nombre;
 						plantillaPromotoresParaInvertir(ctaPromotor, resultConsultarPromo.nombre);
 						let plantillaProyectos = "";	
-						for (let ctaProyecto of resultConsultarPromo.proyectos) {
+						for (let ctaProyecto of resultConsultarPromo.listadoProyectos) {
 
 							
 
@@ -339,11 +339,7 @@ function cargarPantallaInvertirEnProyectos(){
 								if(!error){
 									console.log(result);	
 									
-									addProyecto(ctaPromotor, ctaProyecto,result.nombre);
-									//plantillaPromotoresParaInvertir(nbPromotor, plantillaProyectos)
-									//plantillaProyectos += plantillaProyectosParaInvertir(result.nombre);
-									//let tabla = tablaProyecto(tablaPromo, result.nombre, result.tokensGoal, result.rentabilidad, result.fechaInicioFinanciacion, result.fechaFinFinanciacion);
-									//document.getElementById("invertirEnProyectoSpan").innerHTML += tabla;
+									addProyecto(ctaPromotor, ctaProyecto,result.nombre);									
 						
 								} else { 
 									console.error(err);
