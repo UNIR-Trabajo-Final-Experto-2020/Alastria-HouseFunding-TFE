@@ -848,7 +848,7 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "owner",
+        "name": "account",
         "type": "address"
       }
     ],
@@ -895,7 +895,7 @@ const ABI_CPII = [
         "type": "uint256"
       },
       {
-        "name": "proyectos",
+        "name": "listadoProyectos",
         "type": "address[]"
       }
     ],
@@ -1069,7 +1069,7 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "owner",
+        "name": "account",
         "type": "address"
       },
       {
@@ -1564,7 +1564,7 @@ const ABI_CPII = [
     "type": "function"
   },
   {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
         "name": "cuentaProyecto",
@@ -1574,7 +1574,7 @@ const ABI_CPII = [
     "name": "cancelarProyecto",
     "outputs": [],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1608,42 +1608,6 @@ const ABI_CPII = [
       }
     ],
     "name": "transferirTokensParaPromotor",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "cuentaProyecto",
-        "type": "address"
-      }
-    ],
-    "name": "transferirTokensProyectoAPromotor",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "cuentaProyecto",
-        "type": "address"
-      },
-      {
-        "name": "fechaInicioEjecucion",
-        "type": "uint256"
-      },
-      {
-        "name": "fechaFinEjecucion",
-        "type": "uint256"
-      }
-    ],
-    "name": "promotorEjecutaProyecto",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -1918,7 +1882,7 @@ const ABI_CPII = [
         "type": "uint256"
       },
       {
-        "name": "proyectos",
+        "name": "listadoProyectos",
         "type": "address[]"
       }
     ],
@@ -2212,7 +2176,7 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "owner",
+        "name": "account",
         "type": "address"
       }
     ],
@@ -2231,7 +2195,7 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "owner",
+        "name": "account",
         "type": "address"
       },
       {
