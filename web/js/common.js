@@ -89,30 +89,41 @@ function cleanInversor(){
 	document.getElementById("msgConsultaInversor").innerHTML = "";
 }
 
+function cleanListaProyectosPromotor(){
+	
+	$('[id^=msgListProyectosPromotor]').empty();
+
+}
+
 function plantillaProyectosDelPromotor(nbProyecto, 
 	tokenGoalProyecto, rentabilidad, estadoProyecto, 
 	fechaInicioFinanciacion, fechaFinFinanciacion,
-	fechaIniEjecucion, fechaFinEjecucion) {
+	fechaIniEjecucion, fechaFinEjecucion, ctaPromotor, ctaProyecto) {
 
 	var plantilla= ` 
 		<div class="cuadro centrado">
-			Proyecto
-			</br></br>
+			<b>Proyecto</b>
+			<br/><br/>
 			Nombre: ${nbProyecto}
-			</br>
+			<br/>
 			TokenGoal: ${tokenGoalProyecto}
-			</br>
+			<br/>
 			Rentabilidad: ${rentabilidad}
-			</br>
+			<br/>
 			EstadoProyecto: ${estadoProyecto}
-			</br>
+			<br/>
 			Fecha Inicio Financiación: ${formateaNumeroAFecha(fechaInicioFinanciacion)}
-			</br>
+			<br/>
 			Fecha Fin Financiación: ${formateaNumeroAFecha(fechaFinFinanciacion)}
-			</br>
+			<br/>
 			Fecha Inicio Ejecución: ${formateaNumeroAFecha(fechaIniEjecucion)}
-			</br>
-			Fecha Fin FinanEjecuciónciación: ${formateaNumeroAFecha(fechaFinEjecucion)}
+			<br/>
+			Fecha Fin Ejecución: ${formateaNumeroAFecha(fechaFinEjecucion)}
+			<br/><br/>
+			<button type="button" onclick="finalizarProyecto('${ctaPromotor}', '${ctaProyecto}');">Finalizar Proyecto</button>
+			<br/><br/><br/>
+			<span id="msgProyectoPromotorAction_${ctaProyecto}"></span>
+			<br/>
 		</div>`;
 
 	document.getElementById("msgListProyectosPromotor").innerHTML += plantilla;
