@@ -134,59 +134,6 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         emitirTokens(cuentaPromotor, numeroTokens);
     }
 
-    /**
-    *   Funcion invocada por el promotor para transferir los tokens del proyecto a su cuenta:
-    *   El proyecto debe estar en estado EN_PROGRESO
-    **/
-    function transferirTokensProyectoAPromotor(address cuentaProyecto) public esProyectoDelPromotor(_msgSender(), cuentaProyecto) {
-        
-        address cuentaPromotor = _msgSender();
-
-        //Controlar el estado del proyecto, debe estar en progreso
-        bool esCorrecto; 
-        ProjectStatus estadoProyecto;
-
-        (estadoProyecto, esCorrecto) = esEstadoProyectoValido(cuentaProyecto, ProjectStatus.EN_PROGRESO);
-        
-        if (!esCorrecto) {
-            emit ProjectStatusIncorrecto(cuentaProyecto, estadoProyecto);
-        }
-        
-
-        uint256 numeroTokensProyecto = balanceOf(cuentaProyecto);
-        
-        approveAndTransferFrom(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
-
-    }
-
-    /**
-    *  Promotor ejecuta proyecto
-    * Cambia el estado a EN_PROGRESO
-    * 
-    */
-    function promotorEjecutaProyecto(address cuentaProyecto, uint256 fechaInicioEjecucion,
-      uint256 fechaFinEjecucion) public esProyectoDelPromotor(_msgSender(), cuentaProyecto){
-
-        require (fechaFinEjecucion > fechaInicioEjecucion, "La fecha de fin de ejecucion deber ser mayor a la fecha de inicio");
-        string memory nombre;
-        uint256 fechaInicioFinanciacion;
-        uint256 fechaFinFinanciacion;
-        uint256 fechaInicioEjecucion; 
-        uint256 fechaFinEjecucion;
-        uint256 tokensGoal;
-        uint256 rentabilidad; 
-        ProjectStatus estadoProyecto;
-
-        (nombre, fechaInicioFinanciacion, fechaFinFinanciacion, fechaInicioEjecucion, fechaFinEjecucion, tokensGoal, rentabilidad, estadoProyecto) = consultarProyecto(cuentaProyecto);
-
-        uint256 balanceOfProyecto = balanceOf(cuentaProyecto);
-        
-        if (balanceOf(cuentaProyecto) < tokensGoal) {
-            emit TokensGoalProyectoNoAlcanzado(cuentaProyecto, balanceOfProyecto, tokensGoal);
-        } 
-        super.promotorEjecutaProyecto(_msgSender(), cuentaProyecto, fechaInicioEjecucion, fechaFinEjecucion);
-    }
-
 
     /**
     *	El inversor compra tokens a plataforma (se transfieren simplemente ya que no hay ningun exchange)

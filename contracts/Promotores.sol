@@ -68,33 +68,38 @@ contract Promotores is Ownable {
         uint256 fechaFinEjecucion, 
 		uint256 tokensGoal, 
         uint256 rentabilidad) public {
+
+            
+        require (fechaFinFinanciacion > fechaInicioFinanciacion, "Fecha fin financiacion deber ser mayor a la fecha inicio financiacion");
+        require (fechaInicioEjecucion > fechaFinFinanciacion, "Fecha inicio ejecución deber ser mayor a la fecha fin financiacion");            
+        require (fechaFinEjecucion > fechaInicioEjecucion, "Fecha fin ejecucion deber ser mayor a la fecha inicio ejecucion");            
         
-            //Registra proyecto
-            proyectos.push(cuentaProyecto);
+        //Registra proyecto
+        proyectos.push(cuentaProyecto);
 
-            //Se anade proyecto al promotor         
-            Promotor storage promotor = promotoresInfo[msg.sender];
+        //Se anade proyecto al promotor         
+        Promotor storage promotor = promotoresInfo[msg.sender];
 
-            require(tokensGoal < promotor._capacidad, "TokensGoal del proyecto es superior a la capacidad del promotor");
+        require(tokensGoal < promotor._capacidad, "TokensGoal del proyecto es superior a la capacidad del promotor");
 
-            promotor._proyectos[cuentaProyecto] = Proyecto(cuentaProyecto, 
-                                                            nombre, 
-                                                            fechaInicioFinanciacion, 
-                                                            fechaFinFinanciacion, 
-                                                            fechaInicioEjecucion, 
-                                                            fechaFinEjecucion, 
-                                                            tokensGoal, 
-                                                            rentabilidad, 
-                                                            ProjectStatus.EN_FINANCIACION, 
-                                                            true, 
-                                                            new address[](0));
+        promotor._proyectos[cuentaProyecto] = Proyecto(cuentaProyecto, 
+                                                        nombre, 
+                                                        fechaInicioFinanciacion, 
+                                                        fechaFinFinanciacion, 
+                                                        fechaInicioEjecucion, 
+                                                        fechaFinEjecucion, 
+                                                        tokensGoal, 
+                                                        rentabilidad, 
+                                                        ProjectStatus.EN_FINANCIACION, 
+                                                        true, 
+                                                        new address[](0));
 
-            promotor._totalProyectos++;
+        promotor._totalProyectos++;
 
-            promotor.proyectos.push(cuentaProyecto);
+        promotor.proyectos.push(cuentaProyecto);
 
-            //Evento proyecto registrado
-            emit ProyectoRegistrado(cuentaProyecto, nombre, fechaInicioFinanciacion, fechaFinFinanciacion, tokensGoal, rentabilidad);
+        //Evento proyecto registrado
+        emit ProyectoRegistrado(cuentaProyecto, nombre, fechaInicioFinanciacion, fechaFinFinanciacion, tokensGoal, rentabilidad);
 
     }
 
@@ -161,21 +166,6 @@ contract Promotores is Ownable {
             }
         }
        
-	}
-
-	function promotorEjecutaProyecto(address cuentaPromotor, address cuentaProyecto, uint256 fechaInicioEjecucion,
-      uint256 fechaFinEjecucion) internal {
-
-		 Promotor storage promotor = promotoresInfo[cuentaPromotor];
-     Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
-     if (proyecto._estadoProyecto != ProjectStatus.EN_FINANCIACION) {
-        emit ProjectStatusIncorrecto(cuentaProyecto, proyecto._estadoProyecto);
-     }
-     proyecto._fechaInicioEjecucion = fechaInicioEjecucion;
-     proyecto._fechaFinEjecucion = fechaFinEjecucion;
-     proyecto._estadoProyecto = ProjectStatus.EN_PROGRESO;
-     emit ProyectoEnEjecucion(cuentaProyecto);
-
 	}
 
   function finalizarProyecto(address cuentaPromotor, address cuentaProyecto) internal {

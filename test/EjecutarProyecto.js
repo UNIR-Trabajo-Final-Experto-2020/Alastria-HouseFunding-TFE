@@ -23,12 +23,8 @@ contract('PlataformaPromoInver', function (accounts) {
             assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
         });
 
-    // Registramos proyecto
-    // fechaInicioFinanciacion: 2020-06-01 --> 1590969600000 
-    // fechaFinFinanciacion: 2020-07-01 --> 1593561600000
-    // fechaInicioEjecucion: 2020-08-01 --> 1596240000000
-    // fechaFinEjecucion: 2020-09-01 --> 1598918400000
-    await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 90", 1590969600000, 1593561600000, 1596240000000, 1598918400000, tokensGoal, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+    
+    await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 90", Date.parse("2020-06-01"), Date.parse("2020-07-01"), Date.parse("2020-08-01"), Date.parse("2020-09-01"), tokensGoal, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
         .on('receipt', function(receipt){
             assert.equal(receipt.logs[0].event, "ProyectoRegistrado");            
         }); 

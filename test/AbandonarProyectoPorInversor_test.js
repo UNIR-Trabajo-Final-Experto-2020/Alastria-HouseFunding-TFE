@@ -22,7 +22,7 @@ contract('PlataformaPromoInver', function (accounts) {
             assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
         });
 
-    await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 90", 0, 0, 0, 0, tokensGoal, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+    await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 90", Date.parse("2020-06-01"), Date.parse("2020-07-01"), Date.parse("2020-08-01"), Date.parse("2020-09-01"), tokensGoal, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
         .on('receipt', function(receipt){
             assert.equal(receipt.logs[0].event, "ProyectoRegistrado");            
         }); 
