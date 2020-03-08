@@ -38,21 +38,21 @@ contract Token is IERC20 {
 
     /**
      * @dev Gets the balance of the specified address.
-     * @param owner The address to query the balance of.
+     * @param account The address to query the balance of.
      * @return An uint256 representing the amount owned by the passed address.
-     */
-    function balanceOf(address owner) public view returns (uint256) {
-        return _balances[owner];
+     */    
+    function balanceOf(address account) public view returns (uint256) {
+        return _balances[account];
     }
 
     /**
      * @dev Function to check the amount of tokens that an owner allowed to a spender.
-     * @param owner address The address which owns the funds.
+     * @param account address The address which owns the funds.
      * @param spender address The address which will spend the funds.
      * @return A uint256 specifying the amount of tokens still available for the spender.
      */
-    function allowance(address owner, address spender) public view returns (uint256) {
-        return _allowed[owner][spender];
+    function allowance(address account, address spender) public view returns (uint256) {
+        return _allowed[account][spender];
     }
 
     /**
@@ -85,8 +85,8 @@ contract Token is IERC20 {
     /**
     *   Nueva funcion para aprobar transferencia de tokens de proyectos a promobtor
     **/
-    function approve(address owner, address spender, uint256 value) internal returns (bool) {
-        _approve(owner, spender, value);
+    function approve(address account, address spender, uint256 value) internal returns (bool) {
+        _approve(account, spender, value);
         return true;
     }
 
@@ -179,16 +179,16 @@ contract Token is IERC20 {
 
     /**
      * @dev Approve an address to spend another addresses' tokens.
-     * @param owner The address that owns the tokens.
+     * @param account The address that owns the tokens.
      * @param spender The address that will spend the tokens.
      * @param value The number of tokens that can be spent.
      */
-    function _approve(address owner, address spender, uint256 value) internal {
+    function _approve(address account, address spender, uint256 value) internal {
         require(spender != address(0));
-        require(owner != address(0));
+        require(account != address(0));
 
-        _allowed[owner][spender] = value;
-        emit Approval(owner, spender, value);
+        _allowed[account][spender] = value;
+        emit Approval(account, spender, value);
     }
 
     /**
