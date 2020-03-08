@@ -1295,6 +1295,40 @@ const ABI_CPII = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "name": "_cuentaPromotor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_cuentaProyecto",
+        "type": "address"
+      }
+    ],
+    "name": "BalanceOfPromotorNoSuficiente",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_cuentaPromotor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_cuentaProyecto",
+        "type": "address"
+      }
+    ],
+    "name": "ProyectoFinalizadoConTransferencias",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "name": "from",
         "type": "address"
@@ -1445,6 +1479,18 @@ const ABI_CPII = [
       }
     ],
     "name": "ProyectoEnEjecucion",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_cuentaProyecto",
+        "type": "address"
+      }
+    ],
+    "name": "ProyectoFinalizado",
     "type": "event"
   },
   {
@@ -1759,6 +1805,18 @@ const ABI_CPII = [
       }
     ],
     "name": "ProyectoEnEjecucion",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_cuentaProyecto",
+        "type": "address"
+      }
+    ],
+    "name": "ProyectoFinalizado",
     "type": "event"
   },
   {

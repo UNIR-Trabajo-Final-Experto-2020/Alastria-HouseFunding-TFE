@@ -17,8 +17,8 @@ async function start() {
 	cuentaPlataforma = accounts[0];	
 	
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
-	//const contratoPromoInver = "0x78c19164660899116f119d2FBf32307F5b3E7def";    //EJAL	
+	//const contratoPromoInver = "0x2AE4c2160d1CbaFF3F8B07B3A0Ca51243931a4eb";  //Juanjo
+	const contratoPromoInver = "0xe0Df65B70A20AaDb411906E3028982650A427C39";    //EJAL	
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
@@ -163,6 +163,7 @@ function loginPromotor() {
 function cargarPantallaPromotor(){
 
 	document.getElementById("msgListProyectosPromotor").innerHTML = "";
+	cleanListaProyectosPromotor();
 
 	let ctaPromotor = localStorage.getItem("ctaPromotorLogado");
 
@@ -191,7 +192,9 @@ function cargarPantallaPromotor(){
 								result.fechaInicioFinanciacion,
 								result.fechaFinFinanciacion,
 								result.fechaInicioEjecucion,
-								result.fechaFinEjecucion);
+								result.fechaFinEjecucion,
+								ctaPromotor,
+								ctaProyecto);
 				
 						} else { 
 							console.error(err);
@@ -414,6 +417,30 @@ function invertirProyecto(cuentaPromotor, cuentaProyecto){
 
 // finPANTALLA INVERTIR EN PROYECTOS
 
+async function finalizarProyecto(cuentaPromotor, cuentaProyecto) {
+
+	instPlatPromoInver.methods.finalizarProyecto(cuentaProyecto)
+		.send({from: cuentaPromotor, gas: 3000000}, function(error, result){
+			if(!error){
+				
+				console.log("Proyecto finalizado OK");
+			}else{
+				console.error(error);
+				mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto no finalizado: debe estar en estado EN_CURSO y haber alcanzado la financiación (goal).");
+
+			}				
+
+			}).on('receipt', function(receipt){
+				
+				if (receipt.events) {
+
+					if (receipt.events.ProyectoFinalizadoConTransferencias) {
+						mostrarMensajeGenerico("msgProyectoPromotorAction_"+cuentaProyecto, "SUCCESS", "Proyecto finalizado y tokens transferidos a inversores.");
+						console.log("Evento ProyectoFinalizadoConTransferencias ok");
+					}
+				}
+			});             
+}
 
 
 
