@@ -1,3 +1,4 @@
+/*
 const PlataformaPromoInver = artifacts.require("PlataformaPromoInver");
 
 contract('PlataformaPromoInver', function (accounts) {
@@ -106,3 +107,4 @@ contract('PlataformaPromoInver', function (accounts) {
 
 });
 
+*/

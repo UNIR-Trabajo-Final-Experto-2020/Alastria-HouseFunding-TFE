@@ -250,12 +250,14 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
             // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)
             proyecto.inversores.push(cuentaInversor);
             
-            // En caso de llegar al tokensGoal, se debe cambiar el estado del proyecto a EN_PROGRESO
-            if (numeroTokenInvertidos == tokensGoalProyecto) {
-                proyecto._estadoProyecto = ProjectStatus.EN_PROGRESO;                
-            }
-
             emit TokensInvertidosProyecto(cuentaInversor, cuentaProyecto, numeroTokens, true);
+
+            // Si con esta inversión se alcanza el tokensGoal, se ejecutara el proyecto, 
+            // es decir se transpasan los token de la cuenta del proyecto a la del promotor.
+            uint256 tokenInvertidosDespuesUltimaInversion = balanceOf(cuentaProyecto); 
+            if (tokenInvertidosDespuesUltimaInversion == tokensGoalProyecto) {
+                ejecutarProyecto(cuentaPromotor, cuentaProyecto);                
+            }            
         } 
     	
     }
@@ -319,5 +321,19 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         _;
     }
 
+    // Para ejecutar el proyecto solo se tiene que cumplir que el tokenGoal del proyecto sea igual a los
+    // token que tiene ese proyecto en el balance. Esta comprobación ya se ha hecho antes de llamar a esta función
+    // en PlataformaPromoInver.invertirProyecto
+    function ejecutarProyecto(address cuentaPromotor, address cuentaProyecto) internal {
+        
+        Promotor storage promotor = promotoresInfo[cuentaPromotor];
+        Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
 
+        proyecto._estadoProyecto = ProjectStatus.EN_PROGRESO;          
+
+        uint256 numeroTokensProyecto = balanceOf(cuentaProyecto);
+        
+        _transfer(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
+        //approveAndTransferFrom(cuentaProyecto, cuentaPromotor, numeroTokensProyecto);
+    }
 }

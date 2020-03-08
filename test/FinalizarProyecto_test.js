@@ -77,53 +77,13 @@ contract('PlataformaPromoInver', function (accounts) {
         // Inversor invierte en proyecto              
         await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, cuentaProyecto, tokensInversor2, { from: cuentaInversor2, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
-                assert.equal(receipt.logs[0].event, "Transfer"); 
+                assert.equal(receipt.logs[0].event, "Transfer");             
                 assert.equal(receipt.logs[1].event, "TokensInvertidosProyecto");                
+                assert.equal(receipt.logs[2].event, "Transfer");            
         }); 
 
         //Promotor ejecuta proyecto: promotorEjecutaProyecto
-        //Fecha inicio la actual y fecha fin en un anyo
-
-        //**************************TODO INICIO **********************
-        //Quitar llamadas promotorEjecutaProyecto y transferirTokensProyectoAPromotor 
-        // porque se invocara desde invertirProyecto...una vez se llegue al tokenGoal del proyecot
-        let currentDate = new Date();
-		let fechaInicioEjecucion = Math.trunc(currentDate.getTime()/1000);
-
-		currentDate.setDate(currentDate.getDate() + 365);
-		let fechaFinEjecucion = Math.trunc(currentDate.getTime()/1000);
-
-		console.log("Fecha inicio ejecucion: " + new Date(fechaInicioEjecucion*1000));
-		console.log("Fecha fin ejecucion: " + new Date(fechaFinEjecucion*1000));
-
-        await this.plataformaPromoInver.promotorEjecutaProyecto(cuentaProyecto, fechaInicioEjecucion, fechaFinEjecucion, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
-            .on('receipt', function(receipt){
-
-                assert.equal(receipt.logs[0].event, "ProyectoEnEjecucion"); 
-        }); 
-
-
- 		//Se obtiene el total del promotor y proyecto
- 		const tokensProyecto = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
- 		console.log("tokensProyecto:"  + tokensProyecto);
- 		
- 		const tokensPromotor = await this.plataformaPromoInver.balanceOf(cuentaPromotor);
-		console.log("tokensPromotor:"  + tokensPromotor);
-
-	    //Se obtiene el total supply antes de hacer transferencia
-	    const totalSupply = await this.plataformaPromoInver.totalSupply();
-
-		//Se realiza transferencia de tokens a promotor	    
-	    await this.plataformaPromoInver.transferirTokensProyectoAPromotor(cuentaProyecto, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
-            .on('receipt', function(receipt){
-				
-				assert.equal(receipt.logs[0].event, "Approval");  
-				assert.equal(receipt.logs[1].event, "Transfer");  
-                assert.equal(receipt.logs[2].event, "Approval"); 
-                assert.equal(receipt.logs[3].event, "TokensTransferidos");          
-        });
-		
-        //**************************TODO FIN **********************
+        //Fecha inicio la actual y fecha fin en un anyo        
 
 		let tokensProyecto2 = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
  		console.log("tokensProyecto despues:"  + tokensProyecto2);
