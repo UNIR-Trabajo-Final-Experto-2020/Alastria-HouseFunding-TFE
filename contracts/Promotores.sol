@@ -9,6 +9,7 @@ contract Promotores is Ownable {
 		uint256 _tokensGoal, uint256 _rentabilidad);
     event ProyectoBorrado(address _cuentaProyecto);
     event ProyectoEnEjecucion(address _cuentaProyecto);
+    event ProyectoFinalizado(address _cuentaProyecto);
     event ProjectStatusIncorrecto(address _cuentaProyecto, ProjectStatus _estadoProyecto);
 
     struct Promotor {
@@ -177,6 +178,20 @@ contract Promotores is Ownable {
 
 	}
 
+  function finalizarProyecto(address cuentaPromotor, address cuentaProyecto) internal {
+     Promotor storage promotor = promotoresInfo[cuentaPromotor];
+     Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
+
+     if (proyecto._estadoProyecto != ProjectStatus.EN_PROGRESO) {
+        emit ProjectStatusIncorrecto(cuentaProyecto, proyecto._estadoProyecto);
+     }
+
+     proyecto._estadoProyecto = ProjectStatus.FINALIZADO;
+     emit ProyectoFinalizado(cuentaProyecto);
+  }
+
+
+
   function esEstadoProyectoValido(address cuentaProyecto, ProjectStatus _status) public view  returns (ProjectStatus _estadoProyecto, bool _esValido) {
     string memory nombre;
     uint256 fechaInicioFinanciacion;
@@ -227,4 +242,17 @@ contract Promotores is Ownable {
       }
     }
 
+  /**
+  * Comprueba que el promotor tiene tokens necesarios para repartir beneficios del proyecto
+  * especificado entre los inversores
+  */
+  function esBalancePromotorValido(address cuentaPromotor, address cuentaProyecto, uint256 balanceOfPromotor) internal view returns (bool) {  
+    Promotor storage promotor = promotoresInfo[cuentaPromotor];
+    Proyecto storage proyecto = promotor._proyectos[cuentaProyecto];
+
+    uint256 rentabilidadNetaProyecto = (proyecto._rentabilidad * proyecto._tokensGoal) / 100;
+
+    return (balanceOfPromotor >= (proyecto._tokensGoal + rentabilidadNetaProyecto));
+
+  }
 }

@@ -26,7 +26,8 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
 	event TokensInvertidosProyecto(address _cuentaInversor, address _cuentaProyecto, uint256 _numeroTokens, bool _invertidos); 
     event PromotorRegistrado(address _cuenta, string _nombre, string _cif, uint256 capacidad);
     event TokensGoalProyectoNoAlcanzado(address _cuentaProyecto, uint256 _balanceOfProyecto, uint256 _tokensGoal);
-    
+    event BalanceOfPromotorNoSuficiente(address _cuentaPromotor, address _cuentaProyecto);
+    event ProyectoFinalizadoConTransferencias(address _cuentaPromotor, address _cuentaProyecto);
 
     //Promotores promotores;
     //Inversores inversores;
@@ -54,20 +55,61 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
   	/**
   	* 	El promotor finaliza proyecto y devuelve los tokens con los intereses a los inversores
   	**/
-    function finalizarProyecto(address cuentaProyecto) public onlyOwner {  
-    	//TODO Cambiar estado a ProjectStatus.FINALIZADO
-    	//Transferencia de tokens de proyecto a inversores
-    	//Transferencia de intereses de tokens de promotor a inversores
+    function finalizarProyecto(address cuentaProyecto) public esProyectoDelPromotor(_msgSender(), cuentaProyecto)  { 
+        //Validar que el proyecto está registrado en el proyecto.
+        
+        //Se valida que el promotor tiene tokens suficientes para repartirlo con los inversores
+        address cuentaPromotor = _msgSender();
+        uint256 balanceOfPromotor = balanceOf(cuentaPromotor);
+
+        if (!esBalancePromotorValido(cuentaPromotor, cuentaProyecto, balanceOfPromotor)) {
+            emit BalanceOfPromotorNoSuficiente(cuentaPromotor, cuentaProyecto);
+        }
+
+        //Cambiar estado a ProjectStatus.FINALIZADO
+        super.finalizarProyecto(cuentaPromotor, cuentaProyecto);
+
+        //Transferencia de inversion mas ganancias a inversores
+        transferToInversores(cuentaPromotor, cuentaProyecto);
+
+        emit ProyectoFinalizadoConTransferencias(cuentaPromotor, cuentaProyecto);
+    }
+
+    function transferToInversores(address cuentaPromotor, address cuentaProyecto) private { 
+    
+        //Consultar proyecto        
+        string memory nombre;
+        uint256 fechaInicioFinanciacion;
+        uint256 fechaFinFinanciacion;
+        uint256 fechaInicioEjecucion; 
+        uint256 fechaFinEjecucion;
+        uint256 tokensGoal;
+        uint256 rentabilidad; 
+        ProjectStatus estadoProyecto;
+
+        (nombre, fechaInicioFinanciacion, fechaFinFinanciacion, fechaInicioEjecucion, fechaFinEjecucion, tokensGoal, rentabilidad, estadoProyecto) = consultarProyecto(cuentaProyecto);
+
+        //Transferencia de intereses de tokens de promotor a inversores
+        address[] memory cuentaInversores = listarInversoresProyecto(cuentaPromotor, cuentaProyecto);
+
+        for (uint256 i = 0; i < cuentaInversores.length; i++) {
+
+            address cuentaInversor = cuentaInversores[i];
+            uint256 tokensInversor = listarTokensPorProyectosPorInversor(cuentaProyecto, cuentaInversor);
+            uint256 valorInversionConInteres = tokensInversor + ((tokensInversor * rentabilidad) / 100);
+
+            transfer(cuentaInversores[i], valorInversionConInteres);
+        }
+
     }
 
     /**
     *	El promotor cancela el proyecto y devuelve los tokens a los inversores
     **/
-    function cancelarProyecto(address cuentaProyecto) public onlyOwner { 
+    function cancelarProyecto(address cuentaProyecto) public esProyectoDelPromotor(_msgSender(), cuentaProyecto)  { 
 		//TODO Cambiar estado a ProjectStatus.FINALIZADO
 		//Transferencia de tokens de proyecto a inversores
-		//Borramos proyecto o solo se transfieren los tokens y se deja en estado FINALIZADO?
-		//Si no se borra ¿Introducimos la fecha de cancelacion en el Proyecto?
+		//Borramos proyecto o solo se transfieren los tokens y se deja en estado FINALIZADO
     }
 
     /**
@@ -276,5 +318,6 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         require(capacidad <= totalSupply());
         _;
     }
+
 
 }
