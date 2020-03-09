@@ -17,7 +17,7 @@ async function start() {
 	cuentaPlataforma = accounts[0];	
 	
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0x26e6AaEF5A797efAbECE53aAD27F4BAF8EE3C241";  //Juanjo
+	const contratoPromoInver = "0x8E1592aA17adec5F69De4Ef666cbE50892568B4e";  //Juanjo
 	//const contratoPromoInver = "0x834C1B095cB55F2574f7f4Af359cB28B0cdCFd24";    //EJAL	
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
