@@ -242,7 +242,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
     function devolverTokensInversor(address cuentaInversor, uint256 numeroTokens) public esPromotorValido(_msgSender()) { 
        address cuentaPromotor = _msgSender();
 
-        bool comprados = transfer(cuentaInversor, numeroTokens);
+        transfer(cuentaInversor, numeroTokens);
 
         emit TokensDevueltosInversor(cuentaPromotor, cuentaInversor, numeroTokens);
     }
