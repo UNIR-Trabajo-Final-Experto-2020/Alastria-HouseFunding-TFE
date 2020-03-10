@@ -17,8 +17,8 @@ async function start() {
 	cuentaPlataforma = accounts[0];	
 	
 	//Recuperamos el contrato	
-	//const contratoPromoInver = "0x8E1592aA17adec5F69De4Ef666cbE50892568B4e";  //Juanjo
-	const contratoPromoInver = "0x3118AD402cc7017E3E3DB123Cb1A6e8b4483b612";    //EJAL	
+	const contratoPromoInver = "0x26e6AaEF5A797efAbECE53aAD27F4BAF8EE3C241";  //Juanjo
+	//const contratoPromoInver = "0x3118AD402cc7017E3E3DB123Cb1A6e8b4483b612";    //EJAL	
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
@@ -456,8 +456,56 @@ async function finalizarProyecto(cuentaPromotor, idProyecto) {
 }
 
 // PANTALLA ADMINISTRACION DE LA PLATAFORMA
+async function cargarPantallaAdmPlataforma(){
 
-function cargarPantallaAdmPlataforma(){
+	const listaDePromotores = await instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000});
+
+	for (let ctaPromotor of listaDePromotores) {
+
+		const promotor = await instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000});
+
+		const balancePromotor = await instPlatPromoInver.methods.balanceOf(ctaPromotor).call( {from: cuentaPlataforma, gas: 50000});
+
+		plantillaPromotorProyectoInversorAdmin(promotor.nombre,
+			promotor.cif,
+			promotor.capacidad,
+			balancePromotor);
+
+		for (let idProyecto of promotor.listadoProyectos) {		
+
+			// Consultar datos de cada proyecto
+			const proyecto = await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000});
+
+			listaProyectosAdmin(proyecto.nombre,
+				proyecto.tokensGoal,
+				proyecto.rentabilidad,
+				proyecto.fechaInicioFinanciacion,
+				proyecto.fechaFinFinanciacion,
+				proyecto.fechaInicioEjecucion,
+				proyecto.fechaFinEjecucion,
+				proyecto.estado,
+				100);
+
+			// Consultar inversores de cada proyecto
+			const inversoresDelProyecto = await instPlatPromoInver.methods.listarInversoresProyecto(ctaPromotor, idProyecto).call( {from: ctaPromotor, gas: 300000});
+
+			for (let ctaInversor of inversoresDelProyecto._inversores) {
+
+				const inversor = await instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 300000});				
+
+				const tokensPorProyectosPorInversor = await instPlatPromoInver.methods.listarTokensPorProyectosPorInversor(idProyecto, ctaInversor).call( {from: ctaPromotor, gas: 300000});
+
+				listaInversoresPorProyectoAdmin(inversor.nombre,
+					inversor.cif,
+					tokensPorProyectosPorInversor); 
+
+			}	
+
+		}	
+	}
+}	
+
+function cargarPantallaAdmPlataforma1(){
 
 	// Consultar addres de promotores
 	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){

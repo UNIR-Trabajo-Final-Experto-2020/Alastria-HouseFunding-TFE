@@ -95,6 +95,7 @@ function cleanListaProyectosPromotor(){
 
 }
 
+// se utiliza en cargarPantallaPromotor
 function plantillaProyectosDelPromotor(nbProyecto, 
 	tokenGoalProyecto, rentabilidad, estadoProyecto, 
 	fechaInicioFinanciacion, fechaFinFinanciacion,
@@ -115,6 +116,7 @@ function plantillaProyectosDelPromotor(nbProyecto,
 	document.getElementById("listaProyectosPromotor").innerHTML += plantilla;
 }
 
+//se utiliza en cargarPantallaInvertirEnProyectos
 function plantillaPromotoresParaInvertir(nbPromotor, cif) {
 
 	var plantilla= `      <br>
@@ -152,6 +154,7 @@ function plantillaPromotoresParaInvertir(nbPromotor, cif) {
 	document.getElementById("invertirEnProyectoDiv").innerHTML += plantilla;	
 }
 
+// se utiliza en cargarPantallaInvertirEnProyectos
 function plantillaAddProyecto (
 	ctaPromotor, 
 	ctaProyecto, 
@@ -179,6 +182,7 @@ function plantillaAddProyecto (
 	document.getElementById("listaProyectosPromotorParaInvertir").innerHTML += plantilla;
 }
 
+// se utiliza en cargarPantallaInversor
 function plantillaProyectosDelInversor(ctaPromotor, 
 	ctaProyecto, 
 	ctaInversor,
@@ -246,19 +250,19 @@ function plantillaPromotorProyectoInversorAdmin(
 	<div class="row"><h3>PROMOTOR</h3></div> 
 	<div class="row">
 	  <div class="col-sm-1"><label> Nombre: </label></div>
-	  <div class="col-sm-11"><span id="nbPromotorPro"></span></div>            	
+	  <div class="col-sm-11"><span id="nbPromotorPro">${nbPromotorPro}</span></div>            	
 	</div>                 
 	<div class="row">
 		<div class="col-sm-1"><label> CIF: </label></div>
-		<div class="col-sm-11"><span id="cifPromotorPro"></span></div>            	
+		<div class="col-sm-11"><span id="cifPromotorPro">${cifPromotorPro}</span></div>            	
 	</div> 
 	<div class="row">
 		<div class="col-sm-1"><label> Capcidad: </label></div>
-		<div class="col-sm-11"><span id="capacidadPromotorPro"></span></div>            	
+		<div class="col-sm-11"><span id="capacidadPromotorPro">${capacidadPromotorPro}</span></div>            	
 	</div> 
 	 <div class="row">
 		<div class="col-sm-1"><label> Balance: </label></div>
-		<div class="col-sm-11"><span id="balancePromotorPro"></span></div>            	
+		<div class="col-sm-11"><span id="balancePromotorPro">${balancePromotorPro}</span></div>            	
 	</div>  
 	<div class="row">
 		<div class="col-sm-2"><label> <button id="rowGetTokensId">Obtener tokens</button></label></div>
@@ -303,4 +307,42 @@ function plantillaPromotorProyectoInversorAdmin(
 
 	document.getElementById("administradorDiv").innerHTML += plantilla;
 
+}
+
+function listaProyectosAdmin(nbProyecto,
+	tokenGoal,
+	rentabilidad,
+	inicioFinanciacion,
+	finFinanciacion,
+	inicioEjecucion,
+	finEjecucion,
+	estado,
+	balance) {
+
+	let plantilla = `<tr>
+		<td>${nbProyecto}</td>
+		<td>${tokenGoal}</td>
+		<td>${rentabilidad}</td>
+		<td>${formateaNumeroAFecha(inicioFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(finFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(inicioEjecucion)}</td>
+		<td>${formateaNumeroAFecha(finEjecucion)}</td>
+		<td>${estado}</td>
+		<td>${balance}</td>            	
+		</tr>`;
+
+	document.getElementById("listaProyectosAdmin").innerHTML += plantilla;
+}
+
+function listaInversoresPorProyectoAdmin(nbInversor,
+	cifInversor,
+	balance) {
+
+		let plantilla = `<tr>
+		<td>${nbInversor}</td>
+		<td>${cifInversor}</td>
+		<td>${balance}</td>		          	
+		</tr>`;
+
+	document.getElementById("listaInversoresPorProyectoAdmin").innerHTML += plantilla;
 }
