@@ -85,7 +85,7 @@ async function registrarProyecto() {
 	let ctaPrmotor = localStorage.getItem("ctaPromotorLogado");
 	
 	//let idProyecto = web3.utils.keccak256(ctaPrmotor);
-	let idProyecto = web3.utils.sha3(ctaPrmotor);
+	let idProyecto = web3.utils.sha3(web3.utils.randomHex(32));
 
 	await instPlatPromoInver.methods
 		.registrarProyecto(idProyecto, nombre, fechaIniFinan, fechaFinFinan, fechaIniEjec, fechaFinEjec, tokenGoal, rentabilidad)
@@ -350,7 +350,7 @@ function cargarPantallaInvertirEnProyectos(){
 						for (let idProyecto of resultConsultarPromo.listadoProyectos) {							
 
 							// Consultar datos de cada proyecto
-							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
+							instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
 								if(!error){
 									console.log(result);	
 									
@@ -392,7 +392,7 @@ function invertirProyecto(cuentaPromotor, idProyecto){
 
 	let ctaInversor = localStorage.getItem("ctaInversorLogado");
 
-	let numeroTokens = document.getElementById(cuentaProyecto).value;
+	let numeroTokens = document.getElementById(idProyecto).value;
 
 	instPlatPromoInver.methods.invertirProyecto(cuentaPromotor, idProyecto, numeroTokens)
 		.send({from: ctaInversor, gas: 3000000}, function(error, result){
@@ -431,7 +431,7 @@ async function finalizarProyecto(cuentaPromotor, idProyecto) {
 					console.log("Proyecto finalizado OK");
 				}else{
 					console.error(error);
-					mostrarMensaje("msgProyectoPromotorAction_"+cuentaProyecto, "ERROR", "Proyecto no finalizado: debe estar en estado EN_CURSO y haber alcanzado la financiación (goal).");
+					mostrarMensaje("msgProyectoPromotorAction_"+idProyecto, "ERROR", "Proyecto no finalizado: debe estar en estado EN_CURSO y haber alcanzado la financiación (goal).");
 
 				}				
 

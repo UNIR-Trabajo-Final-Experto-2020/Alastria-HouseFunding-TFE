@@ -82,11 +82,11 @@ function cleanRegistrarInversor(){
 
 function cleanInvertirEnProyecto(){
 
-	document.getElementById("invertirEnProyectoSpan").innerHTML = "";    
+	$("#invertirEnProyectoSpan").empty();  
 }
 
 function cleanInversor(){
-	document.getElementById("msgConsultaInversor").innerHTML = "";
+	$("#msgConsultaInversor").empty();
 }
 
 function cleanListaProyectosPromotor(){
