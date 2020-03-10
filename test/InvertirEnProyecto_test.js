@@ -12,8 +12,8 @@ contract('Promotores', function (accounts) {
 
         const currentOwner = await this.plataformaPromoInver.currentOwner();
         const cuentaPromotor = accounts[1];
-        const cuentaProyecto = accounts[2];
-        const cuentaInversor = accounts[3];
+        const idProyecto = web3.utils.keccak256(cuentaPromotor);
+        const cuentaInversor = accounts[2];
 
         // Creamos promotor
        await this.plataformaPromoInver.registrarPromotor("Promotor 1", "B123012", 10000, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
@@ -23,7 +23,7 @@ contract('Promotores', function (accounts) {
             });
 
         // Creamos proyecto
-        await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 1", Date.parse("2020-06-01"), Date.parse("2020-07-01"), Date.parse("2020-08-01"), Date.parse("2020-09-01"),200, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+        await this.plataformaPromoInver.registrarProyecto(idProyecto, "Proyecto 1", Date.parse("2020-06-01"), Date.parse("2020-07-01"), Date.parse("2020-08-01"), Date.parse("2020-09-01"),200, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
                 
                 assert.equal(receipt.logs[0].event, "ProyectoRegistrado");            
@@ -45,7 +45,7 @@ contract('Promotores', function (accounts) {
         });   
 
         // Inversor invierte en proyecto              
-        await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, cuentaProyecto, 100, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
+        await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, idProyecto, 100, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
                 console.log(JSON.stringify(receipt, null, 2));
                 
@@ -56,12 +56,12 @@ contract('Promotores', function (accounts) {
             
 
         // Consultamos los token invertidos en el proyecto
-        result = await this.plataformaPromoInver.tokensInvertidosEnProyecto(cuentaProyecto, { from: cuentaInversor, gasPrice: 1, gas: 3000000 });
+        result = await this.plataformaPromoInver.tokensInvertidosEnProyecto(idProyecto, { from: cuentaInversor, gasPrice: 1, gas: 3000000 });
         
         assert.equal(result.tokensInversor, 100);               
  		console.log("tokensInvertidosEnProyecto:"  + result);
         
- 		const tokensProyecto = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
+ 		const tokensProyecto = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto);
  		console.log("tokensProyecto:"  + tokensProyecto);
  		
  		const tokensInversor = await this.plataformaPromoInver.balanceOf(cuentaInversor);

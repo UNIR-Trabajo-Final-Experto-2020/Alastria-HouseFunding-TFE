@@ -6,16 +6,16 @@ contract Inversores is Ownable {
 
 	//Eventos
 	event InversorRegistrado(address cuentaInversor, string nombre, string cif);
-    event InversorBorrado(address cuentaInversor);
-    event ProyectoInversorBorrado(address cuentaProyecto, address cuentaInversor);
+  event InversorBorrado(address cuentaInversor);
+  event ProyectoInversorBorrado(bytes32 idProyecto, address cuentaInversor);
 
     struct Inversor {
       address _address;
       string _nombre;
       string _cif;
       bool _existe;
-  	  address[] _proyectos;
-     mapping(address => TokensInvertidos) _tokensInvertidoPorInversor;                  
+  	  bytes32[] _proyectos;
+      mapping(bytes32 => TokensInvertidos) _tokensInvertidoPorInversor;                  
     }
 
     struct TokensInvertidos {
@@ -28,12 +28,8 @@ contract Inversores is Ownable {
     
     mapping(address => TokensInvertidos) tokensInvertidoPorInversor;    
 
-
-    //DUDA
-    //tokensPorInversor: uint32
 	
 	constructor() public {
-		//Constructor...
 	}
 
 
@@ -41,7 +37,7 @@ contract Inversores is Ownable {
 
         //Registra nuevo inversor
         address cuentaInversor =  _msgSender();
-        inversoresInfo[cuentaInversor] = Inversor(cuentaInversor, nombre, cif, true, new address[](0));
+        inversoresInfo[cuentaInversor] = Inversor(cuentaInversor, nombre, cif, true, new bytes32[](0));
         inversores.push(cuentaInversor);
 
         //Evento inversor registrado
@@ -49,22 +45,23 @@ contract Inversores is Ownable {
 
     }
 
-   function consultarInversor(address cuentaInversor)  public view returns (string memory nombre, string memory cif, address [] memory proyectos)   {
-        return (inversoresInfo[cuentaInversor]._nombre, inversoresInfo[cuentaInversor]._cif, inversoresInfo[cuentaInversor]._proyectos);
+   function consultarInversor(address cuentaInversor)  public view returns (string memory nombre, string memory cif)   {
+        return (inversoresInfo[cuentaInversor]._nombre, inversoresInfo[cuentaInversor]._cif);
     }
 
-    function listarProyectosInversor(address cuentaInversor) public view returns (address [] memory proyectos) {
+    function listarProyectosInversor(address cuentaInversor) public view returns (bytes32[] memory proyectos) {
     	return inversoresInfo[cuentaInversor]._proyectos;
     }   
 
-    function tokensInvertidosEnProyecto(address ctaProyecto) public view 
+    function tokensInvertidosEnProyecto(bytes32 idProyecto) public view 
         returns (address ctaPromotor,           
             uint256 tokensInversor) {
                 
-        TokensInvertidos storage tokensInvertidos = inversoresInfo[_msgSender()]._tokensInvertidoPorInversor[ctaProyecto];                 
+        TokensInvertidos storage tokensInvertidos = inversoresInfo[_msgSender()]._tokensInvertidoPorInversor[idProyecto];                 
 
         return (tokensInvertidos._ctaPromotor, tokensInvertidos._tokensInvertidos);
     }
+
 
 	function deleteInversor(address cuentaInversor) internal  {
 	    delete inversoresInfo[cuentaInversor];
@@ -73,19 +70,21 @@ contract Inversores is Ownable {
             if (inversores[i] == cuentaInversor) {
               delete inversores[i];
               emit InversorBorrado(cuentaInversor);
+              return;
             }
         }
        
 	}
 
-	function deleteProyectoInversor(address cuentaProyecto, address cuentaInversor) internal  {
+	function deleteProyectoInversor(bytes32 idProyecto, address cuentaInversor) internal  {
 
-        address[] storage proyectos = inversoresInfo[cuentaInversor]._proyectos;
+        bytes32[] memory proyectos = inversoresInfo[cuentaInversor]._proyectos;
 	             
         for (uint i = 0; i< proyectos.length; i++) {
-            if (proyectos[i] == cuentaProyecto) {
-              delete proyectos[i];              
-              emit ProyectoInversorBorrado(cuentaProyecto, cuentaInversor);
+            if (proyectos[i] == idProyecto) {  
+              delete inversoresInfo[cuentaInversor]._proyectos[i];         
+              emit ProyectoInversorBorrado(idProyecto, cuentaInversor);
+              return;
             }
         }
        
