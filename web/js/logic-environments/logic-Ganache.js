@@ -440,12 +440,12 @@ async function finalizarProyecto(cuentaPromotor, idProyecto) {
 					if (receipt.events) {
 
 						if (receipt.events.ProyectoFinalizadoConTransferencias) {
-							mostrarMensaje("msgProyectoPromotorAction_"+idProyecto, "SUCCESS", "Proyecto finalizado y tokens transferidos a inversores.");
+							mostrarMensajeGenerico("SUCCESS","Proyecto finalizado y tokens transferidos a inversores.");
 							console.log("Evento ProyectoFinalizadoConTransferencias ok");
 						} else if (receipt.events.BalanceOfPromotorNoSuficiente) {
-							mostrarMensaje("msgProyectoPromotorAction_"+idProyecto, "ERROR", "Proyecto NO finalizado. Promotor necesita tokens para pagar intereses a inversores.");
+							mostrarMensajeGenerico("ERROR", "Proyecto NO finalizado. Promotor necesita tokens para pagar intereses a inversores.");
 						} else {
-							mostrarMensaje("msgProyectoPromotorAction_"+idProyecto, "ERROR", "Proyecto NO finalizado, error...");
+							mostrarMensajeGenerico("ERROR", "Proyecto NO finalizado. Asegurese de que el proyecto esta en progreso y se ha alcanzado el Goal.");
 						}
 					}
 				});   
