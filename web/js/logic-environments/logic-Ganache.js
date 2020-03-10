@@ -84,7 +84,8 @@ async function registrarProyecto() {
 
 	let ctaPrmotor = localStorage.getItem("ctaPromotorLogado");
 	
-	const idProyecto = web3.utils.keccak256(ctaPrmotor);
+	//let idProyecto = web3.utils.keccak256(ctaPrmotor);
+	let idProyecto = web3.utils.sha3(ctaPrmotor);
 
 	await instPlatPromoInver.methods
 		.registrarProyecto(idProyecto, nombre, fechaIniFinan, fechaFinFinan, fechaIniEjec, fechaFinEjec, tokenGoal, rentabilidad)
