@@ -162,8 +162,9 @@ function loginPromotor() {
 
 function cargarPantallaPromotor(){
 
-	document.getElementById("msgListProyectosPromotor").innerHTML = "";
-	cleanListaProyectosPromotor();
+	//document.getElementById("msgListProyectosPromotor").innerHTML = "";
+	document.getElementById("listaProyectosPromotor").innerHTML = "";
+	//cleanListaProyectosPromotor();
 
 	let ctaPromotor = localStorage.getItem("ctaPromotorLogado");
 
@@ -341,36 +342,37 @@ function cargarPantallaInvertirEnProyectos(){
 				instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
 					if(!error){
 						console.log(resultConsultarPromo);	
-
-						//let datosPromotor = {};
-						//datosPromotor.nombre = resultConsultarPromo.nombre;
-						plantillaPromotoresParaInvertir(ctaPromotor, resultConsultarPromo.nombre);
-						let plantillaProyectos = "";	
-						for (let ctaProyecto of resultConsultarPromo.listadoProyectos) {
-
-							
+						
+						plantillaPromotoresParaInvertir(resultConsultarPromo.nombre, resultConsultarPromo.cif);
+						
+						for (let ctaProyecto of resultConsultarPromo.listadoProyectos) {							
 
 							// Consultar datos de cada proyecto
 							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
 								if(!error){
 									console.log(result);	
 									
-									plantillaAddProyecto(ctaPromotor, ctaProyecto,result.nombre);
-									//plantillaPromotoresParaInvertir(nbPromotor, plantillaProyectos)
-									//plantillaProyectos += plantillaProyectosParaInvertir(result.nombre);
-									//let tabla = tablaProyecto(tablaPromo, result.nombre, result.tokensGoal, result.rentabilidad, result.fechaInicioFinanciacion, result.fechaFinFinanciacion);
-									//document.getElementById("invertirEnProyectoSpan").innerHTML += tabla;
-						
+									plantillaAddProyecto(ctaPromotor, 
+										ctaProyecto,
+										result.nombre,
+										result.tokensGoal,
+										result.rentabilidad,
+										traduceEstado(result.estadoProyecto), 
+										result.fechaInicioFinanciacion, 
+										result.fechaFinFinanciacion,
+										result.fechaInicioEjecucion,
+										result.fechaFinEjecucion);											
+
 								} else { 
 									console.error(err);
-									mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+									mostrarMensajeGenerico("ERROR", err);			
 								}	
 							});
 						}						
 			
 					} else {
 						console.error(error);
-						mostrarMensaje("msgConsultaPromotor", "ERROR", error);
+						mostrarMensajeGenerico("ERROR", error);
 					}
 				});			
 			}
@@ -378,7 +380,7 @@ function cargarPantallaInvertirEnProyectos(){
 
 		} else { 
 			console.error(err);
-			mostrarMensaje("msgListProyectosPromotor", "ERROR", err);			
+			mostrarMensajeGenerico("ERROR", err);			
 		}	
 	});
 
@@ -451,7 +453,98 @@ async function finalizarProyecto(cuentaPromotor, cuentaProyecto) {
         }          
 }
 
+// PANTALLA ADMINISTRACION DE LA PLATAFORMA
 
+function cargarPantallaAdmPlataforma(){
+
+	// Consultar addres de promotores
+	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){
+		if(!error){
+			
+			console.log(resultListarPromo);	
+			let promotores = resultListarPromo;			
+
+			for (let ctaPromotor of promotores) {
+			
+				// Consultar datos de cada promotor
+				instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
+					if(!error){
+						console.log(resultConsultarPromo);	
+						
+						plantillaPromotorProyectoInversorAdmin(resultConsultarPromo.nombre,
+							resultConsultarPromo.cif,
+							resultConsultarPromo.capacidad,
+							100);
+	
+						//plantillaPromotoresParaInvertir(resultConsultarPromo.nombre, resultConsultarPromo.cif);
+						
+						for (let ctaProyecto of resultConsultarPromo.listadoProyectos) {							
+
+							// Consultar datos de cada proyecto
+							instPlatPromoInver.methods.consultarProyecto(ctaProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
+								if(!error){
+									console.log(result);	
+									
+									// Consultar inversores de cada proyecto
+									instPlatPromoInver.methods.listarInversoresProyecto(ctaPromotor, ctaProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, resultInversoresPorProy){
+										if(!error){
+											console.log(result);	
+											
+											for (let ctaInversor of resultInversoresPorProy._inversores) {
+											
+												// Consultar inversores de cada proyecto
+												instPlatPromoInver.methods.listarTokensPorProyectosPorInversor(ctaProyecto, ctaInversor).call( {from: ctaPromotor, gas: 300000}, function(error, resultTokenInversor){
+													if(!error){
+														console.log(result);	
+														
+														
+														/*
+														plantillaAddProyecto(ctaPromotor, 
+															ctaProyecto,
+															result.nombre,
+															result.tokensGoal,
+															result.rentabilidad,
+															traduceEstado(result.estadoProyecto), 
+															result.fechaInicioFinanciacion, 
+															result.fechaFinFinanciacion,
+															result.fechaInicioEjecucion,
+															result.fechaFinEjecucion);											
+																*/
+													} else { 
+														console.error(err);
+														mostrarMensajeGenerico("ERROR", err);			
+													}	
+												});											
+											}
+											
+										} else { 
+											console.error(err);
+											mostrarMensajeGenerico("ERROR", err);			
+										}	
+									});
+																		
+								} else { 
+									console.error(err);
+									mostrarMensajeGenerico("ERROR", err);			
+								}	
+							});
+						}						
+			
+					} else {
+						console.error(error);
+						mostrarMensajeGenerico("ERROR", error);
+					}
+				});			
+			}
+
+
+		} else { 
+			console.error(err);
+			mostrarMensajeGenerico("ERROR", err);			
+		}	
+	});
+
+}
 
 
 

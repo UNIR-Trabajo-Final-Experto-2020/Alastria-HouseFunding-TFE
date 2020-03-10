@@ -100,85 +100,86 @@ function plantillaProyectosDelPromotor(nbProyecto,
 	fechaInicioFinanciacion, fechaFinFinanciacion,
 	fechaIniEjecucion, fechaFinEjecucion, ctaPromotor, ctaProyecto) {
 
-	var plantilla= ` 
-		<div class="cuadro centrado">
-			<b>Proyecto</b>
-			<br/><br/>
-			Nombre: ${nbProyecto}
-			<br/>
-			TokenGoal: ${tokenGoalProyecto}
-			<br/>
-			Rentabilidad: ${rentabilidad}
-			<br/>
-			EstadoProyecto: ${estadoProyecto}
-			<br/>
-			Fecha Inicio Financiación: ${formateaNumeroAFecha(fechaInicioFinanciacion)}
-			<br/>
-			Fecha Fin Financiación: ${formateaNumeroAFecha(fechaFinFinanciacion)}
-			<br/>
-			Fecha Inicio Ejecución: ${formateaNumeroAFecha(fechaIniEjecucion)}
-			<br/>
-			Fecha Fin Ejecución: ${formateaNumeroAFecha(fechaFinEjecucion)}
-			<br/><br/>
-			<button type="button" onclick="finalizarProyecto('${ctaPromotor}', '${ctaProyecto}');">Finalizar Proyecto</button>
-			<br/><br/><br/>
-			<span id="msgProyectoPromotorAction_${ctaProyecto}"></span>
-			<br/>
-		</div>`;
-
-	document.getElementById("msgListProyectosPromotor").innerHTML += plantilla;
+	let plantilla = `<tr>
+		<td>${nbProyecto}</td>
+		<td>${tokenGoalProyecto}</td>
+		<td>${rentabilidad}</td>
+		<td>${formateaNumeroAFecha(fechaInicioFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(fechaFinFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(fechaIniEjecucion)}</td>
+		<td>${formateaNumeroAFecha(fechaFinEjecucion)}</td>
+		<td>${estadoProyecto}</td>            
+		<td><button type="button" onclick="finalizarProyecto('${ctaPromotor}', '${ctaProyecto}');">Finalizar</button></td> 
+	  </tr>`;
 	
+	document.getElementById("listaProyectosPromotor").innerHTML += plantilla;
 }
 
-function plantillaPromotoresParaInvertir(ctaPromotor, nbPromotor, proyectosPromotor) {
+function plantillaPromotoresParaInvertir(nbPromotor, cif) {
 
-	var plantilla= ` 
-		<div id="${ctaPromotor}" class="cuadro centrado">
-			<div>Promotor : ${nbPromotor}</div>						
-		</div>`;
+	var plantilla= `      <br>
+		<div class="row"><h3>PROMOTOR</h3></div> 
+		<div class="row">
+		<div class="col-sm-1"><label> Nombre: </label></div>
+		<div class="col-sm-11"><span id="nbPromotorPro">${nbPromotor}</span></div>            	
+		</div>                 
+		<div class="row">
+			<div class="col-sm-1"><label> CIF: </label></div>
+			<div class="col-sm-11"><span id="cifPromotorPro">${cif}</span></div>            	
+		</div>                                               
+		<br>
+		<div class="row"><h5>PROYECTOS</h5></div>
+		<div class="row">
+		<table class="table">             
+			<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>TokenGoal</th>
+				<th>Rentabilidad</th>
+				<th>Fecha Inicio Financiación</th>
+				<th>Fecha Fin Financiación</th>
+				<th>Fecha Inicio Ejecución</th>
+				<th>Fecha Fin Ejecución</th>
+				<th>Estado</th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody id="listaProyectosPromotorParaInvertir">                 
+			</tbody>
+		</table>   
+		</div>`;	
 
-	document.getElementById("invertirEnProyectoSpan").innerHTML += plantilla;	
+	document.getElementById("invertirEnProyectoDiv").innerHTML += plantilla;	
 }
 
-function plantillaAddProyecto (ctaPromotor, ctaProyecto, nbProyecto) { 
-	
-	// Creamos div
-	var newDiv = document.createElement("div"); 
+function plantillaAddProyecto (
+	ctaPromotor, 
+	ctaProyecto, 
+	nbProyecto,
+	tokenGoalProyecto,
+	rentabilidad,
+	estadoProyecto, 
+	fechaInicioFinanciacion, 
+	fechaFinFinanciacion,
+	fechaIniEjecucion, 
+	fechaFinEjecucion) { 
 
-	var newContent = document.createTextNode(nbProyecto);
-	newDiv.appendChild(newContent); //añade texto al div creado. 
+	let plantilla = `<tr>
+		<td>${nbProyecto}</td>
+		<td>${tokenGoalProyecto}</td>
+		<td>${rentabilidad}</td>
+		<td>${formateaNumeroAFecha(fechaInicioFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(fechaFinFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(fechaIniEjecucion)}</td>
+		<td>${formateaNumeroAFecha(fechaFinEjecucion)}</td>
+		<td>${estadoProyecto}</td>            
+		<td><button type="button" onclick="invertirProyecto('${ctaPromotor}', '${ctaProyecto}');">Invertir</button></td> 
+	</tr>`;
 
-	// boton
-	var newButton = document.createElement("button"); 
-	var aType = document.createAttribute("type");
-	aType.value = "button";
-	newButton.setAttributeNode(aType);
-	var onclickInput = document.createAttribute("onClick");
-	onclickInput.value = `invertirProyecto("${ctaPromotor}", "${ctaProyecto}")`;
-	newButton.setAttributeNode(onclickInput);	
-	var textoButon = document.createTextNode("Invertir");
-	newButton.appendChild(textoButon); //añade texto al boton.
-	newDiv.appendChild(newButton);
+	document.getElementById("listaProyectosPromotorParaInvertir").innerHTML += plantilla;
+}
 
-	// caja texto	
-	var newCajaTexto = document.createElement("input"); 
-	var aId = document.createAttribute("id");
-	aId.value = ctaProyecto;
-	newCajaTexto.setAttributeNode(aId);
-	var aType = document.createAttribute("type");
-	aType.value = "text";
-	newCajaTexto.setAttributeNode(aType);
-	newDiv.appendChild(newCajaTexto);
-
-	// añade el elemento creado y su contenido al DOM 
-	//var currentDiv = document.getElementById(ctaPromotor); 
-	//document.getElementById(ctaProyecto).appendChild(newInput)
-	document.getElementById(ctaPromotor).appendChild(newDiv);
-
-	//document.body.insertBefore(newDiv, currentDiv); 
-  }
-
-  function plantillaProyectosDelInversor(ctaPromotor, 
+function plantillaProyectosDelInversor(ctaPromotor, 
 	ctaProyecto, 
 	ctaInversor,
 	nbProyecto, 
@@ -189,28 +190,20 @@ function plantillaAddProyecto (ctaPromotor, ctaProyecto, nbProyecto) {
 	fechaFinFinanciacion, 
 	tokenInvertidos) {
 
-	var plantilla= ` 
-		<div class="cuadro centrado">
-			Proyecto
-			</br></br>
-			Nombre: ${nbProyecto}
-			</br>
-			TokenGoal: ${tokenGoalProyecto}
-			</br>
-			Rentabilidad: ${rentabilidad}
-			</br>
-			EstadoProyecto: ${estadoProyecto}
-			</br>
-			Fecha Inicio Financiación: ${fechaInicioFinanciacion}
-			</br>
-			Fecha Fin Financiación: ${fechaFinFinanciacion}
-			</br>
-			Token invertidos: ${tokenInvertidos}
-			</br>
-			<button type="button" onclick="abandonarProyecto('${ctaPromotor}', '${ctaProyecto}', '${ctaInversor}');cleanInversor();">Abandonar</button>
-		</div>`;
+	let plantilla = `<tr>
+		<td>${nbProyecto}</td>
+		<td>${tokenGoalProyecto}</td>
+		<td>${rentabilidad}</td>
+		<td>${formateaNumeroAFecha(fechaInicioFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(fechaFinFinanciacion)}</td>
+		<td>${formateaNumeroAFecha(fechaIniEjecucion)}</td>
+		<td>${formateaNumeroAFecha(fechaFinEjecucion)}</td>
+		<td>${estadoProyecto}</td>
+		<td>${tokenInvertidos}</td>            
+		<td><button type="button" onclick="abandonarProyecto('${ctaPromotor}', '${ctaProyecto}', '${ctaInversor}');cleanInversor();">Abandonar</button></td> 
+		</tr>`;
 
-	document.getElementById("msgConsultaInversor").innerHTML += plantilla;
+	document.getElementById("listaProyectosDelInversor").innerHTML += plantilla;
 	
 }
 
@@ -240,4 +233,74 @@ function formateaNumeroAFecha(num){
 		return "-";
 	}
 	return new Date(Number.parseInt(num)).toLocaleDateString();	
+}
+
+function plantillaPromotorProyectoInversorAdmin(
+	nbPromotorPro,
+	cifPromotorPro,
+	capacidadPromotorPro,
+	balancePromotorPro){
+
+	var plantilla= `
+	<br>
+	<div class="row"><h3>PROMOTOR</h3></div> 
+	<div class="row">
+	  <div class="col-sm-1"><label> Nombre: </label></div>
+	  <div class="col-sm-11"><span id="nbPromotorPro"></span></div>            	
+	</div>                 
+	<div class="row">
+		<div class="col-sm-1"><label> CIF: </label></div>
+		<div class="col-sm-11"><span id="cifPromotorPro"></span></div>            	
+	</div> 
+	<div class="row">
+		<div class="col-sm-1"><label> Capcidad: </label></div>
+		<div class="col-sm-11"><span id="capacidadPromotorPro"></span></div>            	
+	</div> 
+	 <div class="row">
+		<div class="col-sm-1"><label> Balance: </label></div>
+		<div class="col-sm-11"><span id="balancePromotorPro"></span></div>            	
+	</div>  
+	<div class="row">
+		<div class="col-sm-2"><label> <button id="rowGetTokensId">Obtener tokens</button></label></div>
+		<div class="col-sm-10"></div>            	
+	</div>       
+	<br>
+	<div class="row"><h5>PROYECTO</h5></div>
+	<div class="row">
+	  <table class="table">             
+		<thead>
+		  <tr>
+			<th>Nombre</th>
+			<th>TokenGoal</th>
+			<th>Rentabilidad</th>
+			<th>Inicio Financiación</th>
+			<th>Fin Financiación</th>
+			<th>Inicio Ejecución</th>
+			<th>Fin Ejecución</th>                          
+			<th>Estado</th>
+			<th>Balance</th>
+		  </tr>
+		</thead>
+		<tbody id="listaProyectosAdmin">                 
+		</tbody>
+	  </table>   
+	</div>    
+	<br>
+	<div class="row"><h6>INVERSORES</h6></div>
+	<div class="row">
+	  <table class="table">             
+		<thead>
+		  <tr>
+			<th>Nombre</th>
+			<th>Cif</th>             
+			<th>Balance</th>
+		  </tr>
+		</thead>
+		<tbody id="listaInversoresPorProyectoAdmin">                 
+		</tbody>
+	  </table>   
+	</div>`;
+
+	document.getElementById("administradorDiv").innerHTML += plantilla;
+
 }

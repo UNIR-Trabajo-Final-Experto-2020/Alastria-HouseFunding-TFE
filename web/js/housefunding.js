@@ -5,7 +5,8 @@
           
           muestra_oculta('accesosDiv', 'administradorDiv');
           limpiarMensajes();
-          obtenerPromotores();
+          cargarPantallaAdmPlataforma();
+          //obtenerPromotores();
 
         } else {
           console.log("Cuenta administrador no valida");
