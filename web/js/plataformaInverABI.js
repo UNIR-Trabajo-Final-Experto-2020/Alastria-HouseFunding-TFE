@@ -274,8 +274,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -341,7 +341,7 @@ const ABI_CPII = [
       },
       {
         "name": "proyectos",
-        "type": "address[]"
+        "type": "bytes32[]"
       }
     ],
     "payable": false,
@@ -360,7 +360,7 @@ const ABI_CPII = [
     "outputs": [
       {
         "name": "proyectos",
-        "type": "address[]"
+        "type": "bytes32[]"
       }
     ],
     "payable": false,
@@ -371,8 +371,8 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "ctaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "tokensInvertidosEnProyecto",
@@ -527,6 +527,48 @@ const ABI_CPII = [
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      },
+      {
+        "name": "nombre",
+        "type": "string"
+      },
+      {
+        "name": "fechaInicioFinanciacion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaFinFinanciacion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaInicioEjecucion",
+        "type": "uint256"
+      },
+      {
+        "name": "fechaFinEjecucion",
+        "type": "uint256"
+      },
+      {
+        "name": "tokensGoal",
+        "type": "uint256"
+      },
+      {
+        "name": "rentabilidad",
+        "type": "uint256"
+      }
+    ],
+    "name": "registrarProyecto",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "name",
@@ -578,26 +620,40 @@ const ABI_CPII = [
     "type": "function"
   },
   {
-    "constant": true,
+    "constant": false,
     "inputs": [
       {
-        "name": "cuentaProyecto",
+        "name": "from",
         "type": "address"
       },
       {
-        "name": "_status",
-        "type": "uint8"
-      }
-    ],
-    "name": "esEstadoProyectoValido",
-    "outputs": [
-      {
-        "name": "_estadoProyecto",
-        "type": "uint8"
+        "name": "to",
+        "type": "address"
       },
       {
-        "name": "_esValido",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "transferFrom",
+    "outputs": [
+      {
+        "name": "",
         "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "listarProyectos",
+    "outputs": [
+      {
+        "name": "_proyectos",
+        "type": "bytes32[]"
       }
     ],
     "payable": false,
@@ -608,8 +664,118 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "cuentaProyecto",
+        "name": "cuentaInversor",
         "type": "address"
+      }
+    ],
+    "name": "consultarInversor",
+    "outputs": [
+      {
+        "name": "nombre",
+        "type": "string"
+      },
+      {
+        "name": "cif",
+        "type": "string"
+      },
+      {
+        "name": "proyectos",
+        "type": "bytes32[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "tokensInvertidosEnProyecto",
+    "outputs": [
+      {
+        "name": "ctaPromotor",
+        "type": "address"
+      },
+      {
+        "name": "tokensInversor",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "name": "addedValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "increaseAllowance",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      },
+      {
+        "name": "cuentaInversor",
+        "type": "address"
+      }
+    ],
+    "name": "listarTokensPorProyectosPorInversor",
+    "outputs": [
+      {
+        "name": "tokensInversor",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "consultarProyecto",
@@ -645,199 +811,6 @@ const ABI_CPII = [
       {
         "name": "estadoProyecto",
         "type": "uint8"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "transferFrom",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "listarProyectos",
-    "outputs": [
-      {
-        "name": "_proyectos",
-        "type": "address[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "cuentaInversor",
-        "type": "address"
-      }
-    ],
-    "name": "consultarInversor",
-    "outputs": [
-      {
-        "name": "nombre",
-        "type": "string"
-      },
-      {
-        "name": "cif",
-        "type": "string"
-      },
-      {
-        "name": "proyectos",
-        "type": "address[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "cuentaProyecto",
-        "type": "address"
-      },
-      {
-        "name": "nombre",
-        "type": "string"
-      },
-      {
-        "name": "fechaInicioFinanciacion",
-        "type": "uint256"
-      },
-      {
-        "name": "fechaFinFinanciacion",
-        "type": "uint256"
-      },
-      {
-        "name": "fechaInicioEjecucion",
-        "type": "uint256"
-      },
-      {
-        "name": "fechaFinEjecucion",
-        "type": "uint256"
-      },
-      {
-        "name": "tokensGoal",
-        "type": "uint256"
-      },
-      {
-        "name": "rentabilidad",
-        "type": "uint256"
-      }
-    ],
-    "name": "registrarProyecto",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "cuentaPromotor",
-        "type": "address"
-      },
-      {
-        "name": "cuentaProyecto",
-        "type": "address"
-      }
-    ],
-    "name": "listarInversoresProyecto",
-    "outputs": [
-      {
-        "name": "_inversores",
-        "type": "address[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "decimals",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "name": "addedValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "increaseAllowance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "ctaProyecto",
-        "type": "address"
-      }
-    ],
-    "name": "tokensInvertidosEnProyecto",
-    "outputs": [
-      {
-        "name": "ctaPromotor",
-        "type": "address"
-      },
-      {
-        "name": "tokensInversor",
-        "type": "uint256"
       }
     ],
     "payable": false,
@@ -896,11 +869,48 @@ const ABI_CPII = [
       },
       {
         "name": "listadoProyectos",
+        "type": "bytes32[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "cuentaPromotor",
+        "type": "address"
+      },
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "listarInversoresProyecto",
+    "outputs": [
+      {
+        "name": "_inversores",
         "type": "address[]"
       }
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ejecutarProyecto",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1011,12 +1021,17 @@ const ABI_CPII = [
   },
   {
     "constant": true,
-    "inputs": [],
-    "name": "currentOwner",
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "consultarTokensInvertidosEnProyecto",
     "outputs": [
       {
-        "name": "",
-        "type": "address"
+        "name": "tokensInvertidos",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -1024,22 +1039,27 @@ const ABI_CPII = [
     "type": "function"
   },
   {
-    "constant": true,
+    "constant": false,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
-      },
-      {
-        "name": "cuentaInversor",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
-    "name": "listarTokensPorProyectosPorInversor",
+    "name": "deleteProyecto",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "currentOwner",
     "outputs": [
       {
-        "name": "tokensInversor",
-        "type": "uint256"
+        "name": "",
+        "type": "address"
       }
     ],
     "payable": false,
@@ -1058,7 +1078,34 @@ const ABI_CPII = [
     "outputs": [
       {
         "name": "proyectos",
-        "type": "address[]"
+        "type": "bytes32[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      },
+      {
+        "name": "_status",
+        "type": "uint8"
+      }
+    ],
+    "name": "esEstadoProyectoValido",
+    "outputs": [
+      {
+        "name": "_estadoProyecto",
+        "type": "uint8"
+      },
+      {
+        "name": "_esValido",
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -1086,20 +1133,6 @@ const ABI_CPII = [
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "cuentaProyecto",
-        "type": "address"
-      }
-    ],
-    "name": "deleteProyecto",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1181,33 +1214,6 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "_numeroTokens",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "aprobados",
-        "type": "bool"
-      }
-    ],
-    "name": "TokensNoAprobados",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "name": "_numeroToken",
         "type": "uint256"
       }
@@ -1225,8 +1231,8 @@ const ABI_CPII = [
       },
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -1274,8 +1280,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -1301,8 +1307,8 @@ const ABI_CPII = [
       },
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "BalanceOfPromotorNoSuficiente",
@@ -1318,11 +1324,60 @@ const ABI_CPII = [
       },
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "ProyectoFinalizadoConTransferencias",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "cuentaInversor",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "cuentaPromotor",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "idProyecto",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "numeroTokensProyectoInversor",
+        "type": "uint256"
+      }
+    ],
+    "name": "InversorAbandonaProyecto",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_cuentaPromotor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_cuentaInversor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_numeroTokens",
+        "type": "uint256"
+      }
+    ],
+    "name": "TokensDevueltosInversor",
     "type": "event"
   },
   {
@@ -1408,8 +1463,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -1425,8 +1480,13 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuenta",
+        "name": "_cuentaPromotor",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -1462,8 +1522,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "ProyectoBorrado",
@@ -1474,8 +1534,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "ProyectoEnEjecucion",
@@ -1486,8 +1546,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "ProyectoFinalizado",
@@ -1498,8 +1558,20 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ProyectoEjecutado",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -1508,6 +1580,23 @@ const ABI_CPII = [
       }
     ],
     "name": "ProjectStatusIncorrecto",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_cuentaPromotor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ProyectoGoalNoAlcanzado",
     "type": "event"
   },
   {
@@ -1553,8 +1642,8 @@ const ABI_CPII = [
     "constant": false,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "finalizarProyecto",
@@ -1567,8 +1656,8 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "cancelarProyecto",
@@ -1621,8 +1710,8 @@ const ABI_CPII = [
         "type": "address"
       },
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       },
       {
         "name": "numeroTokens",
@@ -1643,11 +1732,33 @@ const ABI_CPII = [
         "type": "address"
       },
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "abandonarProyecto",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "cuentaInversor",
+        "type": "address"
+      },
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      },
+      {
+        "name": "numeroTokens",
+        "type": "uint256"
+      }
+    ],
+    "name": "devolverTokensInversor",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -1715,8 +1826,13 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuenta",
+        "name": "_cuentaPromotor",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -1752,8 +1868,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "ProyectoBorrado",
@@ -1764,8 +1880,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "ProyectoEnEjecucion",
@@ -1776,8 +1892,8 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "ProyectoFinalizado",
@@ -1788,8 +1904,20 @@ const ABI_CPII = [
     "inputs": [
       {
         "indexed": false,
-        "name": "_cuentaProyecto",
-        "type": "address"
+        "name": "_idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ProyectoEjecutado",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_idProyecto",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -1798,6 +1926,23 @@ const ABI_CPII = [
       }
     ],
     "name": "ProjectStatusIncorrecto",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "_cuentaPromotor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "_idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ProyectoGoalNoAlcanzado",
     "type": "event"
   },
   {
@@ -1821,8 +1966,8 @@ const ABI_CPII = [
     "constant": false,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       },
       {
         "name": "nombre",
@@ -1883,7 +2028,7 @@ const ABI_CPII = [
       },
       {
         "name": "listadoProyectos",
-        "type": "address[]"
+        "type": "bytes32[]"
       }
     ],
     "payable": false,
@@ -1894,8 +2039,8 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "consultarProyecto",
@@ -1939,12 +2084,31 @@ const ABI_CPII = [
   },
   {
     "constant": true,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "consultarTokensInvertidosEnProyecto",
+    "outputs": [
+      {
+        "name": "tokensInvertidos",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [],
     "name": "listarProyectos",
     "outputs": [
       {
         "name": "_proyectos",
-        "type": "address[]"
+        "type": "bytes32[]"
       }
     ],
     "payable": false,
@@ -1973,8 +2137,8 @@ const ABI_CPII = [
         "type": "address"
       },
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "listarInversoresProyecto",
@@ -1992,8 +2156,8 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       },
       {
         "name": "cuentaInversor",
@@ -2015,8 +2179,8 @@ const ABI_CPII = [
     "constant": false,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       }
     ],
     "name": "deleteProyecto",
@@ -2029,8 +2193,8 @@ const ABI_CPII = [
     "constant": true,
     "inputs": [
       {
-        "name": "cuentaProyecto",
-        "type": "address"
+        "name": "idProyecto",
+        "type": "bytes32"
       },
       {
         "name": "_status",
@@ -2050,6 +2214,20 @@ const ABI_CPII = [
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "idProyecto",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ejecutarProyecto",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
