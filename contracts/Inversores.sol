@@ -45,13 +45,14 @@ contract Inversores is Ownable {
 
     }
 
-   function consultarInversor(address cuentaInversor)  public view returns (string memory nombre, string memory cif)   {
-        return (inversoresInfo[cuentaInversor]._nombre, inversoresInfo[cuentaInversor]._cif);
+   function consultarInversor(address cuentaInversor)  public view returns (string memory nombre, string memory cif, bytes32[] memory proyectos)   {
+        return (inversoresInfo[cuentaInversor]._nombre, inversoresInfo[cuentaInversor]._cif, inversoresInfo[cuentaInversor]._proyectos);
     }
 
+    
     function listarProyectosInversor(address cuentaInversor) public view returns (bytes32[] memory proyectos) {
     	return inversoresInfo[cuentaInversor]._proyectos;
-    }   
+    }  
 
     function tokensInvertidosEnProyecto(bytes32 idProyecto) public view 
         returns (address ctaPromotor,           
