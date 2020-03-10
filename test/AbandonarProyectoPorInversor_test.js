@@ -12,8 +12,9 @@ contract('PlataformaPromoInver', function (accounts) {
     const tokensGoal = 1000;
     const tokensInversor = 200;
     const cuentaPromotor = accounts[1];
-    const cuentaProyecto = accounts[2];
-    const cuentaInversor = accounts[3];
+    const idProyecto = web3.utils.keccak256(cuentaPromotor);
+    const cuentaInversor = accounts[2];
+
     const currentOwner = await this.plataformaPromoInver.currentOwner();
 
    await this.plataformaPromoInver.registrarPromotor("Promotor 90", "B123012", 10000, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
@@ -22,13 +23,13 @@ contract('PlataformaPromoInver', function (accounts) {
             assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
         });
 
-    await this.plataformaPromoInver.registrarProyecto(cuentaProyecto, "Proyecto 90", Date.parse("2020-06-01"), Date.parse("2020-07-01"), Date.parse("2020-08-01"), Date.parse("2020-09-01"), tokensGoal, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+    await this.plataformaPromoInver.registrarProyecto(idProyecto, "Proyecto 90", Date.parse("2020-06-01"), Date.parse("2020-07-01"), Date.parse("2020-08-01"), Date.parse("2020-09-01"), tokensGoal, 10, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
         .on('receipt', function(receipt){
             assert.equal(receipt.logs[0].event, "ProyectoRegistrado");            
         }); 
 
     //Se obtiene token del proyecto
-    const tokensDespuesDeRegistrarProyecto = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
+    const tokensDespuesDeRegistrarProyecto = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto);
     console.log("tokensDespuesDeRegistrarProyecto:"  + tokensDespuesDeRegistrarProyecto); 
     assert.equal(tokensDespuesDeRegistrarProyecto, 0);        
 
@@ -51,7 +52,7 @@ contract('PlataformaPromoInver', function (accounts) {
     assert.equal(tokensInversorAntesDeInvertir, 200);  
 
     // Inversor invierte en proyecto              
-    await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, cuentaProyecto, 150, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
+    await this.plataformaPromoInver.invertirProyecto(cuentaPromotor, idProyecto, 150, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
         .on('receipt', function(receipt){
 
             assert.equal(receipt.logs[0].event, "Transfer"); 
@@ -69,13 +70,14 @@ contract('PlataformaPromoInver', function (accounts) {
     assert.equal(tokensInversorDespuesDeInvertir, 50); 
 
     //Token proyecto despues de que un inversor haga una inversión
-    const tokensProyectoDespuesDeInvertir = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
-    console.log("tokensProyectoDespuesDeInvertir:"  + tokensProyectoDespuesDeInvertir);  
-    assert.equal(tokensProyectoDespuesDeInvertir, 150); 
+    result = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 });
+    console.log("tokensProyectoDespuesDeInvertir:"  + result);  
+    assert.equal(result, 150); 
+
 
     //Conculta tokens del inversor
     const tokensPorInversor =
-        await this.plataformaPromoInver.listarTokensPorProyectosPorInversor(cuentaProyecto, cuentaInversor, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
+        await this.plataformaPromoInver.listarTokensPorProyectosPorInversor(idProyecto, cuentaInversor, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
                 
         }); 
@@ -84,31 +86,15 @@ contract('PlataformaPromoInver', function (accounts) {
     assert.equal(tokensPorInversor, 150); 
 
     //Se realiza transferencia de proyecto a inversor    
-    await this.plataformaPromoInver.abandonarProyecto(cuentaPromotor, cuentaProyecto, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
+    await this.plataformaPromoInver.abandonarProyecto(cuentaPromotor, idProyecto, { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
             .on('receipt', function(receipt){
         
-        assert.equal(receipt.logs[0].event, "Approval");  
-        assert.equal(receipt.logs[1].event, "Transfer");  
-        assert.equal(receipt.logs[2].event, "Approval"); 
-        assert.equal(receipt.logs[3].event, "TokensTransferidos"); 
+        assert.equal(receipt.logs[0].event, "InversorAbandonaProyecto");  
                 
     });
 
-    const tokensProyectoDespuesDeAbandonarInversor = await this.plataformaPromoInver.balanceOf(cuentaProyecto);
-    console.log("tokensProyectoDespuesDeAbandonarInversor: "  + tokensProyectoDespuesDeAbandonarInversor);
-    assert.equal(tokensProyectoDespuesDeAbandonarInversor, 0); 
-    
-    const tokensInversorDespuesDeAbandonar = await this.plataformaPromoInver.balanceOf(cuentaInversor);
-    console.log("tokensInversorDespuesDeAbandonar: "  + tokensInversorDespuesDeAbandonar);
-    assert.equal(tokensProyectoDespuesDeAbandonarInversor, 0); 
-       
-    const proyectosPorInversorDespuesDeAbandonar = await this.plataformaPromoInver.listarProyectosInversor(cuentaInversor);
-    console.log("proyectosPorInversorDespuesDeAbandonar: " + proyectosPorInversorDespuesDeAbandonar);   
-    assert.equal(proyectosPorInversorDespuesDeAbandonar[0], 0);  
-
     });
     
-
 
 });
 

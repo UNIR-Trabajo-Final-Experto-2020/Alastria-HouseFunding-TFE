@@ -70,6 +70,7 @@ contract Inversores is Ownable {
             if (inversores[i] == cuentaInversor) {
               delete inversores[i];
               emit InversorBorrado(cuentaInversor);
+              return;
             }
         }
        
@@ -80,9 +81,10 @@ contract Inversores is Ownable {
         bytes32[] memory proyectos = inversoresInfo[cuentaInversor]._proyectos;
 	             
         for (uint i = 0; i< proyectos.length; i++) {
-            if (proyectos[i] == idProyecto) {
-              delete proyectos[i];              
+            if (proyectos[i] == idProyecto) {  
+              delete inversoresInfo[cuentaInversor]._proyectos[i];         
               emit ProyectoInversorBorrado(idProyecto, cuentaInversor);
+              return;
             }
         }
        

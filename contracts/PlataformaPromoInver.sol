@@ -228,10 +228,6 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
         // Obtenemos el proyecto del promotor
         Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[idProyecto];
         uint256 numeroTokensProyectoInversor = proyecto._tokensPorInversor[cuentaInversor];
- 
-        proyecto._tokensPorInversor[cuentaInversor] = 0;
-        deleteProyectoInversor(idProyecto, cuentaInversor);        
-        delete inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[idProyecto]; 
 
         emit InversorAbandonaProyecto(cuentaInversor, cuentaPromotor, idProyecto, numeroTokensProyectoInversor);
     }
@@ -239,9 +235,24 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
    /**
     * El promotor devuelve tokens invertidos al inversor
     **/
-    function devolverTokensInversor(address cuentaInversor, uint256 numeroTokens) public esPromotorValido(_msgSender()) { 
-       address cuentaPromotor = _msgSender();
+    function devolverTokensInversor(address cuentaInversor, 
+                                    bytes32 idProyecto,
+                                    uint256 numeroTokens) public esPromotorValido(_msgSender()) {  
 
+        address cuentaPromotor = _msgSender();
+
+        //Se actualizan el valor de los tokens invertidos
+        Proyecto storage proyecto =  promotoresInfo[cuentaPromotor]._proyectos[idProyecto];
+        proyecto._tokensPorInversor[cuentaInversor] -= numeroTokens;
+        proyecto._tokensInvertidos -= numeroTokens;
+        
+        //Se eliminan estructuras del inversor en proyecto
+        proyecto._tokensPorInversor[cuentaInversor] = 0;
+        deleteProyectoInversor(idProyecto, cuentaInversor);        
+        delete inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[idProyecto]; 
+
+        
+        //Transferencia de tokens a inversor
         transfer(cuentaInversor, numeroTokens);
 
         emit TokensDevueltosInversor(cuentaPromotor, cuentaInversor, numeroTokens);
