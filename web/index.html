@@ -116,19 +116,19 @@
         <div class="col-sm-10"><input type="text" id="rentabilidadProyectoReg"/></div>            	
         </div>
         <div class="row">
-      <div class="col-sm-2"><label> Fecha Inicio Financ.: </label></div>
+      <div class="col-sm-2"><label> Inicio Financ.: </label></div>
         <div class="col-sm-10"><input type="text" name="fechaIniFinancProyectoRegDatepicker" id="fechaIniFinancProyectoReg"/></div>            	
         </div>
         <div class="row">
-      <div class="col-sm-2"><label> Fecha Fin Financiac.: </label></div>
+      <div class="col-sm-2"><label> Fin Financiac.: </label></div>
         <div class="col-sm-10"><input type="text" name="fechaFinFinancProyectoRegDatepicker" id="fechaFinFinancProyectoReg"/></div>            	
         </div>
         <div class="row">
-      <div class="col-sm-2"><label> Fecha Inicio Ejecución: </label></div>
+      <div class="col-sm-2"><label> Inicio Ejecución: </label></div>
         <div class="col-sm-10"><input type="text" name="fechaIniEjeProyectoRegDatepicker" id="fechaIniEjeProyectoReg"/></div>            	
         </div>
         <div class="row">
-      <div class="col-sm-2"><label> Fecha Fin Ejecución: </label></div>
+      <div class="col-sm-2"><label> Fin Ejecución: </label></div>
         <div class="col-sm-10"><input type="text" name="fechaFinEjeProyectoRegDatepicker" id="fechaFinEjeProyectoReg"/></div>            	
         </div>
         <br>            
@@ -162,10 +162,10 @@
               <th>Nombre</th>
               <th>TokenGoal</th>
               <th>Rentabilidad</th>
-              <th>Fecha Inicio Financiación</th>
-              <th>Fecha Fin Financiación</th>
-              <th>Fecha Inicio Ejecución</th>
-              <th>Fecha Fin Ejecución</th>
+              <th>Inicio Financiación</th>
+              <th>Fin Financiación</th>
+              <th>Inicio Ejecución</th>
+              <th>Fin Ejecución</th>
               <th>Estado</th>
               <th></th>
             </tr>
@@ -202,11 +202,11 @@
                 <th>Nombre</th>
                 <th>TokenGoal</th>
                 <th>Rentabilidad</th>
-                <th>Fecha Inicio Financiación</th>
-                <th>Fecha Fin Financiación</th>
-                <th>Fecha Inicio Ejecución</th>
-                <th>Fecha Fin Ejecución</th>
-                <th>Token invertidos</th>              
+                <th>Token invertidos</th> 
+                <th>Inicio Financiación</th>
+                <th>Fin Financiación</th>
+                <th>Inicio Ejecución</th>
+                <th>Fin Ejecución</th>                             
                 <th>Estado</th>
                 <th></th>
               </tr>
@@ -222,10 +222,10 @@
     <!-- FIN INVERSOR-->    
 
     <!-- INICIO INVERTIR EN PROYECTO-->
-    <div id="invertirEnProyectoDiv" class="container" style="display: none">     
-      <br>      
-      <div class="row"><p><button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cleanInvertirEnProyecto();cargarPantallaInversor();">Volver</button></p></div> 
+    
+    <div id="invertirEnProyectoDiv" class="container" style="display: none">             
     </div>
+    
     <!-- FIN INVERTIR EN PROYECTO-->       
     
     <!-- INICIO ADMINISTRADOR -->
@@ -256,12 +256,12 @@
           <div class="col-sm-10">
             <input type="number" min="1" name="numeroTokens" id="numeroTokens" size="30" maxlength="10" value=""/>
              <input type="button" name="tranferirTokensBtn" value="Tranferir" onclick="tranferirTokens()"/>
-              <button type="button" onclick="muestra_oculta('administradorDiv', 'accesosDiv')">Volver</button>
+              <button type="button" onclick="muestra_oculta('administradorDiv', 'accesosDiv');cleanAdministracionPlataforma();">Volver</button>
           </div>            	
         </div>
         <div class="row"><span id="msgAdministradorPlataforma"></span></div> 
         <div class="row"><h4>Lista de Promotores</h4></div>
-
+        <div id="listadoAdm"></div>
 <!--
 
         <div class="row">

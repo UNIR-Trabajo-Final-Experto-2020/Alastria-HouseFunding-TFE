@@ -179,6 +179,9 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
             if(inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[idProyecto]._tokensInvertidos == 0) {               
                 inversoresInfo[cuentaInversor]._proyectos.push(idProyecto);
 
+                // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)
+                proyecto.inversores.push(cuentaInversor);
+
                 // Contabilizamos los tokens que un inversor invierte en cada proyecto
                 inversoresInfo[cuentaInversor]._tokensInvertidoPorInversor[idProyecto] = TokensInvertidos(cuentaPromotor, numeroTokens);
             } else {
@@ -190,11 +193,7 @@ contract PlataformaPromoInver is Promotores, Inversores, Token {
             proyecto._tokensPorInversor[cuentaInversor] += numeroTokens;
             proyecto._tokensInvertidos += numeroTokens;
 
-            // Añadimos el inversor a la lista de todos los inversores que han participado en el proyecto. (TODO: verificar primero si el inversor ha invertido previamente)
-            proyecto.inversores.push(cuentaInversor);
-            
-            emit TokensInvertidosProyecto(cuentaInversor, idProyecto, numeroTokens, true);
-           
+            emit TokensInvertidosProyecto(cuentaInversor, idProyecto, numeroTokens, true);           
         } 
     	
     }

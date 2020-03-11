@@ -267,6 +267,8 @@ function cargarPantallaInversor(){
 												traduceEstado(resultConsultarProy.estadoProyecto),										 
 												formateaNumeroAFecha(resultConsultarProy.fechaInicioFinanciacion), 
 												formateaNumeroAFecha(resultConsultarProy.fechaFinFinanciacion), 
+												formateaNumeroAFecha(resultConsultarProy.fechaInicioEjecucion), 
+												formateaNumeroAFecha(resultConsultarProy.fechaFinEjecucion), 						
 												resultTokenInvertidosEnProy.tokensInversor);				
 
 								
@@ -392,7 +394,7 @@ function invertirProyecto(cuentaPromotor, idProyecto){
 
 	let ctaInversor = localStorage.getItem("ctaInversorLogado");
 
-	let numeroTokens = document.getElementById(idProyecto).value;
+	let numeroTokens = document.getElementById("tokensAInvertir").value;
 
 	instPlatPromoInver.methods.invertirProyecto(cuentaPromotor, idProyecto, numeroTokens)
 		.send({from: ctaInversor, gas: 3000000}, function(error, result){
@@ -410,7 +412,7 @@ function invertirProyecto(cuentaPromotor, idProyecto){
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.TokensInvertidosProyecto) {
-						document.getElementById(idProyecto).value = "";						
+						document.getElementById("tokensAInvertir").value = "";						
 						mostrarMensajeGenerico("SUCCESS", "Token invertidos en proyecto");
 						console.log("Evento TokensInvertidosProyecto ok");
 					}
@@ -483,13 +485,13 @@ async function cargarPantallaAdmPlataforma(){
 				proyecto.fechaFinFinanciacion,
 				proyecto.fechaInicioEjecucion,
 				proyecto.fechaFinEjecucion,
-				proyecto.estado,
+				proyecto.estadoProyecto,
 				100);
 
 			// Consultar inversores de cada proyecto
 			const inversoresDelProyecto = await instPlatPromoInver.methods.listarInversoresProyecto(ctaPromotor, idProyecto).call( {from: ctaPromotor, gas: 300000});
 
-			for (let ctaInversor of inversoresDelProyecto._inversores) {
+			for (let ctaInversor of inversoresDelProyecto) {
 
 				const inversor = await instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 300000});				
 
@@ -505,96 +507,7 @@ async function cargarPantallaAdmPlataforma(){
 	}
 }	
 
-function cargarPantallaAdmPlataforma1(){
 
-	// Consultar addres de promotores
-	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){
-		if(!error){
-			
-			console.log(resultListarPromo);	
-			let promotores = resultListarPromo;			
-
-			for (let ctaPromotor of promotores) {
-			
-				// Consultar datos de cada promotor
-				instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
-					if(!error){
-						console.log(resultConsultarPromo);	
-						
-						plantillaPromotorProyectoInversorAdmin(resultConsultarPromo.nombre,
-							resultConsultarPromo.cif,
-							resultConsultarPromo.capacidad,
-							100);
-	
-						//plantillaPromotoresParaInvertir(resultConsultarPromo.nombre, resultConsultarPromo.cif);
-						
-						for (let idProyecto of resultConsultarPromo.listadoProyectos) {							
-
-							// Consultar datos de cada proyecto
-							instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
-								if(!error){
-									console.log(result);	
-									
-									// Consultar inversores de cada proyecto
-									instPlatPromoInver.methods.listarInversoresProyecto(ctaPromotor, idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, resultInversoresPorProy){
-										if(!error){
-											console.log(result);	
-											
-											for (let ctaInversor of resultInversoresPorProy._inversores) {
-											
-												// Consultar inversores de cada proyecto
-												instPlatPromoInver.methods.listarTokensPorProyectosPorInversor(idProyecto, ctaInversor).call( {from: ctaPromotor, gas: 300000}, function(error, resultTokenInversor){
-													if(!error){
-														console.log(result);	
-														
-														
-														/*
-														plantillaAddProyecto(ctaPromotor, 
-															ctaProyecto,
-															result.nombre,
-															result.tokensGoal,
-															result.rentabilidad,
-															traduceEstado(result.estadoProyecto), 
-															result.fechaInicioFinanciacion, 
-															result.fechaFinFinanciacion,
-															result.fechaInicioEjecucion,
-															result.fechaFinEjecucion);											
-																*/
-													} else { 
-														console.error(err);
-														mostrarMensajeGenerico("ERROR", err);			
-													}	
-												});											
-											}
-											
-										} else { 
-											console.error(err);
-											mostrarMensajeGenerico("ERROR", err);			
-										}	
-									});
-																		
-								} else { 
-									console.error(err);
-									mostrarMensajeGenerico("ERROR", err);			
-								}	
-							});
-						}						
-			
-					} else {
-						console.error(error);
-						mostrarMensajeGenerico("ERROR", error);
-					}
-				});			
-			}
-
-
-		} else { 
-			console.error(err);
-			mostrarMensajeGenerico("ERROR", err);			
-		}	
-	});
-
-}
 
 
 

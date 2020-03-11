@@ -69,8 +69,8 @@ function cleanRegistrarProyecto(){
 	document.getElementById("rentabilidadProyectoReg").value = "";
 	document.getElementById("fechaIniFinancProyectoReg").value = "";
 	document.getElementById("fechaFinFinancProyectoReg").value = "";
-	//document.getElementById("fechaIniEjeProyectoReg").value = "";
-	//document.getElementById("fechaFinEjeProyectoReg").value = "";
+	document.getElementById("fechaIniEjeProyectoReg").value = "";
+	document.getElementById("fechaFinEjeProyectoReg").value = "";
 	
 }
 
@@ -82,17 +82,23 @@ function cleanRegistrarInversor(){
 
 function cleanInvertirEnProyecto(){
 
-	$("#invertirEnProyectoSpan").empty();  
+	document.getElementById("invertirEnProyectoDiv").innerHTML = "";	
 }
 
 function cleanInversor(){
-	$("#msgConsultaInversor").empty();
+	document.getElementById("listaProyectosDelInversor").innerHTML = "";	
 }
 
 function cleanListaProyectosPromotor(){
 	
 	$('[id^=msgListProyectosPromotor]').empty();
 
+}
+
+function cleanAdministracionPlataforma(){
+	
+	document.getElementById("listadoAdm").innerHTML = "";
+	//document.getElementById("listaInversoresPorProyectoAdmin").innerHTML = "";
 }
 
 // se utiliza en cargarPantallaPromotor
@@ -119,7 +125,9 @@ function plantillaProyectosDelPromotor(nbProyecto,
 //se utiliza en cargarPantallaInvertirEnProyectos
 function plantillaPromotoresParaInvertir(nbPromotor, cif) {
 
-	var plantilla= `      <br>
+	var plantilla= `<br>      
+		<div class="row"><p><button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cleanInvertirEnProyecto();cargarPantallaInversor();">Volver</button></p></div> 	
+		<br>
 		<div class="row"><h3>PROMOTOR</h3></div> 
 		<div class="row">
 		<div class="col-sm-1"><label> Nombre: </label></div>
@@ -137,12 +145,13 @@ function plantillaPromotoresParaInvertir(nbPromotor, cif) {
 			<tr>
 				<th>Nombre</th>
 				<th>TokenGoal</th>
-				<th>Rentabilidad</th>
-				<th>Fecha Inicio Financiación</th>
-				<th>Fecha Fin Financiación</th>
-				<th>Fecha Inicio Ejecución</th>
-				<th>Fecha Fin Ejecución</th>
+				<th>Rentabil.</th>
+				<th>Inicio Financiación</th>
+				<th>Fin Financiación</th>
+				<th>Inicio Ejecución</th>
+				<th>Fin Ejecución</th>
 				<th>Estado</th>
+				<th></th>
 				<th></th>
 			</tr>
 			</thead>
@@ -177,6 +186,7 @@ function plantillaAddProyecto (
 		<td>${formateaNumeroAFecha(fechaFinEjecucion)}</td>
 		<td>${estadoProyecto}</td>            
 		<td><button type="button" onclick="invertirProyecto('${ctaPromotor}', '${ctaProyecto}');">Invertir</button></td> 
+		<td><input type="text" id="tokensAInvertir" size="5"/></td> 
 	</tr>`;
 
 	document.getElementById("listaProyectosPromotorParaInvertir").innerHTML += plantilla;
@@ -191,19 +201,21 @@ function plantillaProyectosDelInversor(ctaPromotor,
 	rentabilidad, 
 	estadoProyecto, 
 	fechaInicioFinanciacion, 
-	fechaFinFinanciacion, 
+	fechaFinFinanciacion,
+	fechaIniEjecucion,
+	fechaFinEjecucion,
 	tokenInvertidos) {
 
 	let plantilla = `<tr>
 		<td>${nbProyecto}</td>
 		<td>${tokenGoalProyecto}</td>
 		<td>${rentabilidad}</td>
+		<td>${tokenInvertidos}</td>   
 		<td>${formateaNumeroAFecha(fechaInicioFinanciacion)}</td>
 		<td>${formateaNumeroAFecha(fechaFinFinanciacion)}</td>
 		<td>${formateaNumeroAFecha(fechaIniEjecucion)}</td>
 		<td>${formateaNumeroAFecha(fechaFinEjecucion)}</td>
-		<td>${estadoProyecto}</td>
-		<td>${tokenInvertidos}</td>            
+		<td>${estadoProyecto}</td>		         
 		<td><button type="button" onclick="abandonarProyecto('${ctaPromotor}', '${ctaProyecto}', '${ctaInversor}');cleanInversor();">Abandonar</button></td> 
 		</tr>`;
 
@@ -305,7 +317,7 @@ function plantillaPromotorProyectoInversorAdmin(
 	  </table>   
 	</div>`;
 
-	document.getElementById("administradorDiv").innerHTML += plantilla;
+	document.getElementById("listadoAdm").innerHTML += plantilla;
 
 }
 
@@ -327,7 +339,7 @@ function listaProyectosAdmin(nbProyecto,
 		<td>${formateaNumeroAFecha(finFinanciacion)}</td>
 		<td>${formateaNumeroAFecha(inicioEjecucion)}</td>
 		<td>${formateaNumeroAFecha(finEjecucion)}</td>
-		<td>${estado}</td>
+		<td>${traduceEstado(estado)}</td>
 		<td>${balance}</td>            	
 		</tr>`;
 

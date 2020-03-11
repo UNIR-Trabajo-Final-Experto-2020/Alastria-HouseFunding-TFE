@@ -364,6 +364,7 @@ function cargarPantallaInvertirEnProyectos(){
 
 }
 
+// BORRAR
 function tablaProyecto(tablaPromotor, nbPromotor, tokenGoal, rentabilidad, fechaIniFinan, fechaFinFinan){
 	
 	tablaPromotor+="<tr><td>Proyecto</td></tr>";
