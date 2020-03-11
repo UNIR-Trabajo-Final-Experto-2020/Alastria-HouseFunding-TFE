@@ -97,8 +97,7 @@ function cleanListaProyectosPromotor(){
 
 function cleanAdministracionPlataforma(){
 	
-	document.getElementById("listadoAdm").innerHTML = "";
-	//document.getElementById("listaInversoresPorProyectoAdmin").innerHTML = "";
+	document.getElementById("listadoAdm").innerHTML = "";	
 }
 
 // se utiliza en cargarPantallaPromotor
@@ -281,41 +280,7 @@ function plantillaPromotorProyectoInversorAdmin(
 		<div class="col-sm-10"></div>            	
 	</div>       
 	<br>
-	<div class="row"><h5>PROYECTO</h5></div>
-	<div class="row">
-	  <table class="table">             
-		<thead>
-		  <tr>
-			<th>Nombre</th>
-			<th>TokenGoal</th>
-			<th>Rentabilidad</th>
-			<th>Inicio Financiación</th>
-			<th>Fin Financiación</th>
-			<th>Inicio Ejecución</th>
-			<th>Fin Ejecución</th>                          
-			<th>Estado</th>
-			<th>Balance</th>
-		  </tr>
-		</thead>
-		<tbody id="listaProyectosAdmin">                 
-		</tbody>
-	  </table>   
-	</div>    
-	<br>
-	<div class="row"><h6>INVERSORES</h6></div>
-	<div class="row">
-	  <table class="table">             
-		<thead>
-		  <tr>
-			<th>Nombre</th>
-			<th>Cif</th>             
-			<th>Balance</th>
-		  </tr>
-		</thead>
-		<tbody id="listaInversoresPorProyectoAdmin">                 
-		</tbody>
-	  </table>   
-	</div>`;
+	<div id="listaProyectosInversoresAdmin"></div>`;
 
 	document.getElementById("listadoAdm").innerHTML += plantilla;
 
@@ -331,30 +296,66 @@ function listaProyectosAdmin(nbProyecto,
 	estado,
 	balance) {
 
-	let plantilla = `<tr>
-		<td>${nbProyecto}</td>
-		<td>${tokenGoal}</td>
-		<td>${rentabilidad}</td>
-		<td>${formateaNumeroAFecha(inicioFinanciacion)}</td>
-		<td>${formateaNumeroAFecha(finFinanciacion)}</td>
-		<td>${formateaNumeroAFecha(inicioEjecucion)}</td>
-		<td>${formateaNumeroAFecha(finEjecucion)}</td>
-		<td>${traduceEstado(estado)}</td>
-		<td>${balance}</td>            	
-		</tr>`;
+	let plantilla = `
+		<div class="row"><h5>PROYECTO</h5></div>
+		<div class="row">
+			<table class="table">             
+				<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>TokenGoal</th>
+					<th>Rentabilidad</th>
+					<th>Inicio Financiación</th>
+					<th>Fin Financiación</th>
+					<th>Inicio Ejecución</th>
+					<th>Fin Ejecución</th>                          
+					<th>Estado</th>
+					<th>Balance</th>
+				</tr>
+				</thead>
+				<tbody> 
+					<tr>
+						<td>${nbProyecto}</td>
+						<td>${tokenGoal}</td>
+						<td>${rentabilidad}</td>
+						<td>${formateaNumeroAFecha(inicioFinanciacion)}</td>
+						<td>${formateaNumeroAFecha(finFinanciacion)}</td>
+						<td>${formateaNumeroAFecha(inicioEjecucion)}</td>
+						<td>${formateaNumeroAFecha(finEjecucion)}</td>
+						<td>${traduceEstado(estado)}</td>
+						<td>${balance}</td>            	
+					</tr>				                
+				</tbody>
+			</table>   
+		</div>
+		<div class="row"><h6>INVERSORES</h6></div>
+		<div class="row">
+			<table class="table">             
+				<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Cif</th>             
+					<th>Balance</th>
+				</tr>
+				</thead>
+				<tbody id="listaInversoresAdmin">  					             
+				</tbody>
+			</table>   
+		</div>`;
 
-	document.getElementById("listaProyectosAdmin").innerHTML += plantilla;
+	document.getElementById("listaProyectosInversoresAdmin").innerHTML += plantilla;
 }
 
 function listaInversoresPorProyectoAdmin(nbInversor,
 	cifInversor,
 	balance) {
 
-		let plantilla = `<tr>
-		<td>${nbInversor}</td>
-		<td>${cifInversor}</td>
-		<td>${balance}</td>		          	
-		</tr>`;
+		let plantilla = `
+			<tr>
+				<td>${nbInversor}</td>
+				<td>${cifInversor}</td>
+				<td>${balance}</td>		          	
+			</tr>`;
 
-	document.getElementById("listaInversoresPorProyectoAdmin").innerHTML += plantilla;
+	document.getElementById("listaInversoresAdmin").innerHTML += plantilla;
 }
