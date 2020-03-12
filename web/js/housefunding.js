@@ -1,6 +1,5 @@
       //FUNCIONES JS PARA PANTALLA ADMINISTRADOR
 
-
       function limpiarMensajes() {
         limpiarMensajesError("msgAdministradorPlataforma");
         limpiarMensajesError("msgPromotroresMensajes");        
