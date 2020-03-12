@@ -5,6 +5,7 @@ var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 var instanciaPlataformaPromoInver;
 var accounts, cuentaPlataforma, cuentaPromotor;
 let contadorAccountsUtilizadas = 1;
+let usuarios = new Array();
 
 async function start() {
 
@@ -39,8 +40,8 @@ async function registrarPromotor(){
 
 	var nombre = document.getElementById("nbPromotor").value;
     var cif = document.getElementById("cifPromotor").value;
-    var capacidad = document.getElementById("capacidadPromotor").value;
-
+	var capacidad = document.getElementById("capacidadPromotor").value;
+	
 	let ctaPromotorNueva = dameNuevaCuenta();
 
 	try {
@@ -58,7 +59,7 @@ async function registrarPromotor(){
 						console.log(JSON.stringify(receipt.events, null, 2));
 
 						if (receipt.events.PromotorRegistrado) {
-							localStorage.setItem("accountPromotor", cuentaPromotor);
+							usuarios.push(ctaPromotorNueva+document.getElementById("passPromotor").value);							
 							mostrarMensajeGenerico("SUCCESS","Promotor registrado correctamente, su Id: " + ctaPromotorNueva);
 							cleanRegistrarPromotor();
 							console.log("Evento registro promotor ok");
@@ -139,6 +140,7 @@ async function registrarInversor() {
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.InversorRegistrado) {
+						usuarios.push(cuentaInversorNueva+document.getElementById("passInversor").value);							
 						cleanRegistrarInversor();
 						mostrarMensajeGenerico("SUCCESS", "Inversor registrado correctamente, su Id:" + cuentaInversorNueva);
 						console.log("Evento registro inversor ok");
@@ -152,6 +154,11 @@ async function registrarInversor() {
 
 // PANTALLA PROMOTOR
 function loginPromotor() {
+
+	if(usuarios.indexOf(document.getElementById("loginPromotorT").value+document.getElementById("pssPromotor").value) === -1){		
+		mostrarMensajeGenerico("ERROR", "Cuenta o pass promotor no valida");
+		return false;
+	}
 
 	let ctaPromotor = document.getElementById("loginPromotorT").value;
 
@@ -222,6 +229,11 @@ function cargarPantallaPromotor(){
 
 // PANTALLA INVERSOR
 function loginInversor() {
+	
+	if(usuarios.indexOf(document.getElementById("logInversor").value+document.getElementById("pssInversor").value) === -1){	
+		mostrarMensajeGenerico("ERROR", "Cuenta o pass inversor no valida");
+		return false;
+	}
 
 	let ctaInversor = document.getElementById("logInversor").value;
 
