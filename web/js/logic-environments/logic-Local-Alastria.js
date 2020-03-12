@@ -197,7 +197,7 @@ async function loginPromotor() {
 	muestra_oculta('accesosDiv', 'promotorDiv');		
 }
 
-function cargarPantallaPromotor(){
+async function cargarPantallaPromotor(){
 
 	//document.getElementById("msgListProyectosPromotor").innerHTML = "";
 	document.getElementById("listaProyectosPromotor").innerHTML = "";
@@ -207,7 +207,7 @@ function cargarPantallaPromotor(){
 
 	await desbloqueaCuenta(ctaPromotor);
 	// Consultamos los datos del promotor
-	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
+	await instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
 		if(!error){
 			console.log(resultConsultarPromo);	
 			document.getElementById("nbPromotorPro").innerHTML = resultConsultarPromo.nombre;
@@ -220,7 +220,7 @@ function cargarPantallaPromotor(){
 				for(let idProyecto of resultConsultarPromo.listadoProyectos){
 
 					// consultamos proyecto
-					instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
+					await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
 						if(!error){
 							console.log(result);	
 							
@@ -263,7 +263,7 @@ async function loginInversor() {
 		mostrarMensajeGenerico("ERROR", "Cuenta o pass inversor no valida");
 		return false;
 	}
-	
+
 	let ctaInversor = document.getElementById("logInversor").value;
 	await desbloqueaCuenta(ctaInversor);
 
@@ -274,13 +274,13 @@ async function loginInversor() {
 	muestra_oculta('accesosDiv', 'inversorDiv');		
 }
 
-function cargarPantallaInversor(){
+async function cargarPantallaInversor(){
 
 	let ctaInversor = localStorage.getItem("ctaInversorLogado");
 
 	await desbloqueaCuenta(ctaInversor);
 	// Consultamos dastos del inversor y ctas proyectos que ha invertido
-	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 300000}, function(error, result){
+	await instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 300000}, function(error, result){
 		if(!error){
 			console.log(result);	
 			document.getElementById("nbInversorInv").innerHTML = result.nombre;
@@ -291,13 +291,13 @@ function cargarPantallaInversor(){
 				for(let idProyecto of result.proyectos){
 					
 					if(idProyecto != 0){
-						instPlatPromoInver.methods.tokensInvertidosEnProyecto(idProyecto).call( {from: ctaInversor, gas: 300000}, function(error, resultTokenInvertidosEnProy){
+						await instPlatPromoInver.methods.tokensInvertidosEnProyecto(idProyecto).call( {from: ctaInversor, gas: 300000}, function(error, resultTokenInvertidosEnProy){
 							if(!error){
 								console.log(resultTokenInvertidosEnProy);	
 								
 								if(resultTokenInvertidosEnProy.tokensInversor != 0){
 									// consultamos proyecto
-									instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: resultTokenInvertidosEnProy.ctaPromotor, gas: 300000}, function(error, resultConsultarProy){
+									await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: resultTokenInvertidosEnProy.ctaPromotor, gas: 300000}, function(error, resultConsultarProy){
 										if(!error){
 											console.log(resultConsultarProy);	
 											
@@ -341,11 +341,11 @@ function cargarPantallaInversor(){
 
 }	
 
-function abandonarProyecto(ctaPromotor, idProyecto, ctaInversor){
+async function abandonarProyecto(ctaPromotor, idProyecto, ctaInversor){
 	
 	await desbloqueaCuenta(ctaInversor);
 	
-	instPlatPromoInver.methods.abandonarProyecto(ctaPromotor, idProyecto)
+	await instPlatPromoInver.methods.abandonarProyecto(ctaPromotor, idProyecto)
 		.send({from: ctaInversor, gas: 300000}, function(error, result){
 			if(!error){
 				
@@ -423,7 +423,7 @@ async function cargarPantallaInvertirEnProyectos1(){
 	
 	await desbloqueaCuenta(ctaPromotor);
 	// Consultar addres de promotores
-	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){
+	await instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){
 		if(!error){
 			
 			console.log(resultListarPromo);	
@@ -432,7 +432,7 @@ async function cargarPantallaInvertirEnProyectos1(){
 			for (let ctaPromotor of promotores) {
 			
 				// Consultar datos de cada promotor
-				instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
+				await instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
 					if(!error){
 						console.log(resultConsultarPromo);	
 						
@@ -441,7 +441,7 @@ async function cargarPantallaInvertirEnProyectos1(){
 						for (let idProyecto of resultConsultarPromo.listadoProyectos) {							
 
 							// Consultar datos de cada proyecto
-							instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
+							await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
 								if(!error){
 									console.log(result);	
 									
@@ -479,14 +479,14 @@ async function cargarPantallaInvertirEnProyectos1(){
 
 }
 
-function invertirProyecto(cuentaPromotor, idProyecto){
+async function invertirProyecto(cuentaPromotor, idProyecto){
 
 	let ctaInversor = localStorage.getItem("ctaInversorLogado");
 
 	let numeroTokens = document.getElementById("tokensAInvertir"+idProyecto).value;
 
 	await desbloqueaCuenta(ctaInversor);
-	instPlatPromoInver.methods.invertirProyecto(cuentaPromotor, idProyecto, numeroTokens)
+	await instPlatPromoInver.methods.invertirProyecto(cuentaPromotor, idProyecto, numeroTokens)
 		.send({from: ctaInversor, gas: 3000000}, function(error, result){
 			if(!error){
 				
@@ -518,7 +518,7 @@ async function finalizarProyecto(cuentaPromotor, idProyecto) {
 
 	try {
 		await desbloqueaCuenta(cuentaPromotor);
-		instPlatPromoInver.methods.finalizarProyecto(idProyecto)
+		await instPlatPromoInver.methods.finalizarProyecto(idProyecto)
 			.send({from: cuentaPromotor, gas: 3000000}, function(error, result){
 				if(!error){
 					
@@ -609,11 +609,6 @@ async function cargarPantallaAdmPlataforma(){
 	}
 }	
 
-
-
-
-
-  
 
 
  
