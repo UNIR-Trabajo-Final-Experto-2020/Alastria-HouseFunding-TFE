@@ -61,8 +61,17 @@ module.exports = {
       gas: 9000000,
       gasPrice: 0x0,
       from: "0x74d4c56d8dcbc10a567341bfac6da0a8f04dc41d"
-     }
+     },
      
+     alastriaTelsius: {
+       host: "10.141.8.11",     // Localhost (default: none)
+       port: 8545,            // general 1
+       network_id: "*",       // Any network (default: none)
+       gas: 9000000,
+       gasPrice: 0x0,
+       from: "0xbc869c21d631e122d35789942a573241ec04d2e4"
+     }
+
     // Another network with more advanced options...
     // advanced: {
       // port: 8777,             // Custom port

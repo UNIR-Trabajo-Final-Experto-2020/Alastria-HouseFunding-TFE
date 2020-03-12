@@ -1,18 +1,29 @@
 //En caso de ganache
 
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:22001"));
+var web3 = new Web3(new Web3.providers.HttpProvider("http://10.141.8.11:8545"));
 
 var instanciaPlataformaPromoInver;
 var accounts, cuentaPlataforma, cuentaPromotor;
 let contadorAccountsUtilizadas = 1;
-var pps ='test';
+var pps ='4mFmfbLsSlUS9b5msSfx';
 
 async function start() {
 
 	// Gett all the accounts
-	accounts = await web3.eth.getAccounts();
+	var accounts = [
+        "0xbc869c21d631e122d35789942a573241ec04d2e4",
+        "0xad11f232919a54696791387e3a74a63394c2dafb",
+        "0x35ad6e72cb2ec714b80154b796c7835f97053d3e",
+        "0xa3fefd78a13f6b6bb1cf60c20bb854c7ed2d8d17",
+        "0x09702705ebed2c925b3c56662e4982ebec8bce7d",
+        "0xc35fdb9f41a34e998f4d094922e190b4c6fd8e32",
+        "0x11c5395d602289b7407ceebb4fdde5707772c6ae",
+        "0x48d095879b4ebde16b74129c4ec9d3d78d984b80",
+        "0xea66394b0ecc0175b7b4889a24ea959e84b2d32c",
+        "0x241bae338d230276f8bc1d38e7ac7bc6a1cbdf22"
+        ];
 	
-	await web3.eth.personal.unlockAccount(accounts[0], "Passw0rd");
+	await web3.eth.personal.unlockAccount(accounts[0], pps);
 	
 	console.log("INIT ACCOUNTS\n" + accounts);
 
@@ -26,13 +37,15 @@ async function start() {
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
 
-
 async function dameNuevaCuenta(){
-	// En la testnet local de Alastria
-    var address = await web3.eth.personal.newAccount(pss);
-    await desbloqueaCuenta(address);
+
+	let address = accounts[contadorAccountsUtilizadas]
+	contadorAccountsUtilizadas ++;
+	await desbloqueaCuenta(address);
 	return address;
 }
+
+
 
 async function desbloqueaCuenta(cuenta) {
 	await web3.eth.personal.unlockAccount(cuenta, pss, 0);
@@ -98,6 +111,7 @@ async function registrarProyecto() {
 	
 	//let idProyecto = web3.utils.keccak256(ctaPrmotor);
 	let idProyecto = web3.utils.sha3(web3.utils.randomHex(32));
+
 	await desbloqueaCuenta(ctaPrmotor);
 
 	await instPlatPromoInver.methods
@@ -196,8 +210,8 @@ function cargarPantallaPromotor(){
 	//cleanListaProyectosPromotor();
 
 	let ctaPromotor = localStorage.getItem("ctaPromotorLogado");
-
 	await desbloqueaCuenta(ctaPromotor);
+
 	// Consultamos los datos del promotor
 	instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000}, function(error, resultConsultarPromo){
 		if(!error){
@@ -264,8 +278,8 @@ async function loginInversor() {
 function cargarPantallaInversor(){
 
 	let ctaInversor = localStorage.getItem("ctaInversorLogado");
-
 	await desbloqueaCuenta(ctaInversor);
+
 	// Consultamos dastos del inversor y ctas proyectos que ha invertido
 	instPlatPromoInver.methods.consultarInversor(ctaInversor).call( {from: ctaInversor, gas: 300000}, function(error, result){
 		if(!error){
@@ -368,7 +382,6 @@ async function cargarPantallaInvertirEnProyectos(){
 
 	// Consultar addres de promotores
 	await desbloqueaCuenta(cuentaPlataforma);
-	
 	await desbloqueaCuenta(ctaPromotor);
 
 	const listaDePromotores = await instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000});
@@ -406,10 +419,12 @@ async function cargarPantallaInvertirEnProyectos(){
 }	
 
 async function cargarPantallaInvertirEnProyectos1(){
+
+	// Consultar addres de promotores
 	await desbloqueaCuenta(cuentaPlataforma);
 	
 	await desbloqueaCuenta(ctaPromotor);
-	// Consultar addres de promotores
+
 	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){
 		if(!error){
 			
@@ -542,7 +557,6 @@ async function cargarPantallaAdmPlataforma(){
 	await desbloqueaCuenta(cuentaPlataforma);
 	
 	await desbloqueaCuenta(ctaPromotor);
-	
 	const listaDePromotores = await instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000});
 
 	for (let ctaPromotor of listaDePromotores) {

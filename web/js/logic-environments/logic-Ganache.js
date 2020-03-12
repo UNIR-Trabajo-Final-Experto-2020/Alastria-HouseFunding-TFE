@@ -18,8 +18,8 @@ async function start() {
 	cuentaPlataforma = accounts[0];	
 	
 	//Recuperamos el contrato	
-	const contratoPromoInver = "0x26e6AaEF5A797efAbECE53aAD27F4BAF8EE3C241";  //Juanjo
-	//const contratoPromoInver = "0x3118AD402cc7017E3E3DB123Cb1A6e8b4483b612";    //EJAL	
+	//const contratoPromoInver = "0x26e6AaEF5A797efAbECE53aAD27F4BAF8EE3C241";  //Juanjo
+	const contratoPromoInver = "0x2Fc21bE2e095c3F13aD28964AE4ee5BeBDB5FD62";    //EJAL	
 
 	instPlatPromoInver = new web3.eth.Contract(ABI_CPII, contratoPromoInver);	
 }
@@ -150,7 +150,20 @@ async function registrarInversor() {
 }
 // fin PANTALLA REGISTRAR NUEVO INVERSOR
 
+  function loginAdministrador() {
+    var cuenta = document.getElementById("loginAdministrador").value;
+    if (cuentaPlataforma == cuenta) {
+      
+      muestra_oculta('accesosDiv', 'administradorDiv');
+      limpiarMensajes();
+      cargarPantallaAdmPlataforma();
+      //obtenerPromotores();
 
+    } else {
+      console.log("Cuenta administrador no valida");
+      mostrarMensaje("msgAccesoAdministrador", "ERROR", "Cuenta administrador no valida");
+    }
+  }
 
 // PANTALLA PROMOTOR
 function loginPromotor() {

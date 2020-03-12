@@ -1,18 +1,4 @@
       //FUNCIONES JS PARA PANTALLA ADMINISTRADOR
-      function loginAdministrador() {
-        var cuenta = document.getElementById("loginAdministrador").value;
-        if (cuentaPlataforma == cuenta) {
-          
-          muestra_oculta('accesosDiv', 'administradorDiv');
-          limpiarMensajes();
-          cargarPantallaAdmPlataforma();
-          //obtenerPromotores();
-
-        } else {
-          console.log("Cuenta administrador no valida");
-          mostrarMensajeGenerico("ERROR", "Cuenta administrador no valida");
-        }
-      }
 
       function limpiarMensajes() {
         limpiarMensajesError("msgAdministradorPlataforma");
