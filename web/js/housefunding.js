@@ -10,7 +10,7 @@
 
         } else {
           console.log("Cuenta administrador no valida");
-          mostrarMensaje("msgAccesoAdministrador", "ERROR", "Cuenta administrador no valida");
+          mostrarMensajeGenerico("ERROR", "Cuenta administrador no valida");
         }
       }
 

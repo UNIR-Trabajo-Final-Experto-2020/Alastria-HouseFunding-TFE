@@ -322,7 +322,7 @@ function abandonarProyecto(ctaPromotor, idProyecto, ctaInversor){
 					}
 					
 				}
-			});  
+			});  			
 }
 // fin PANTALLA INVERSOR
 
@@ -550,7 +550,12 @@ async function cargarPantallaAdmPlataforma(){
 	}
 }	
 
+function tranferirTokenPromotor(ctaPromotor){
 
+	let idTT = `mensajeSpanTT${ctaPromotor}`;
+
+	mostrarMensaje(idTT, "INFO", "Se tranfieren token al promotor para ejecución de proyecto");
+}
 
 
 

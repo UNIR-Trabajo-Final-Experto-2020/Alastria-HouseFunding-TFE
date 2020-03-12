@@ -1,44 +1,38 @@
 function mostrarMensaje(id, tipoMensaje, mensaje) {
 
-	var className;
+	var className = getClassNameTipoMensaje(tipoMensaje);
 
-	if (tipoMensaje == "SUCCESS") {
-		className = "label success";
-	} else if (tipoMensaje == "INFO") {
-		className = "label info";
-	} else if (tipoMensaje == "WARNING") {
-		className = "label warning";
-	} else if (tipoMensaje == "ERROR") {
-		className = "label err";
-	} else if (tipoMensaje == "OTHER") {		
-		className = "label other";
-
-	}
-
-	document.getElementById(id).className = className;
+	document.getElementById(id).className += className;
 	document.getElementById(id).innerHTML  = mensaje;	
 }
 
 function mostrarMensajeGenerico(tipoMensaje, mensaje) {
 
-	var className;
-
-	if (tipoMensaje == "SUCCESS") {
-		className = "bg-success text-white";
-	} else if (tipoMensaje == "INFO") {
-		className = "bg-primary text-white";
-	} else if (tipoMensaje == "WARNING") {
-		className = "bg-warning text-white";
-	} else if (tipoMensaje == "ERROR") {
-		className = "bg-danger text-white";
-	} else if (tipoMensaje == "OTHER") {		
-		className = "bg-secondary text-white";
-
-	}
+	var className = getClassNameTipoMensaje(tipoMensaje);
 
 	document.getElementById("mensajesDiv").style.display = 'block';
 	document.getElementById("mensajesDiv").className = className;
 	document.getElementById("mensajesDiv").innerHTML  = mensaje;	
+}
+
+function getClassNameTipoMensaje(tipoMensaje){
+
+	var className;
+
+	if (tipoMensaje == "SUCCESS") {
+		className = "bg-success text-white container p-1 my-1 border text-center";
+	} else if (tipoMensaje == "INFO") {
+		className = "bg-primary text-white container p-1 my-1 border text-center";
+	} else if (tipoMensaje == "WARNING") {
+		className = "bg-warning text-white container p-1 my-1 border text-center";
+	} else if (tipoMensaje == "ERROR") {
+		className = "bg-danger text-white container p-1 my-1 border text-center";
+	} else if (tipoMensaje == "OTHER") {		
+		className = "bg-secondary text-white container p-1 my-1 border text-center";
+
+	}
+
+	return className;
 }
 
 
@@ -141,46 +135,6 @@ function plantillaPromotoresParaInvertir(ctaPromotor, nbPromotorPro,
 	<div id="listaProyectosParaInvertir${ctaPromotor}"></div>`;
 	
 	document.getElementById("invertirEnProyectoDiv").innerHTML += plantilla;	
-
-/*
-
-	var plantilla= `<br>      
-		<div class="row"><p><button type="button" onclick="muestra_oculta('inversorDiv', 'invertirEnProyectoDiv');cleanInvertirEnProyecto();cargarPantallaInversor();">Volver</button></p></div> 	
-		<br>
-		<div class="row"><h3>PROMOTOR</h3></div> 
-		<div class="row">
-		<div class="col-sm-1"><label> Nombre: </label></div>
-		<div class="col-sm-11"><span id="nbPromotorPro">${nbPromotor}</span></div>            	
-		</div>                 
-		<div class="row">
-			<div class="col-sm-1"><label> CIF: </label></div>
-			<div class="col-sm-11"><span id="cifPromotorPro">${cif}</span></div>            	
-		</div>                                               
-		<br>
-		<div class="row"><h5>PROYECTOS</h5></div>
-		<div class="row">
-		<table class="table">             
-			<thead>
-			<tr>
-				<th>Nombre</th>
-				<th>TokenGoal</th>
-				<th>Rentabil.</th>
-				<th>Inicio Financiación</th>
-				<th>Fin Financiación</th>
-				<th>Inicio Ejecución</th>
-				<th>Fin Ejecución</th>
-				<th>Estado</th>
-				<th></th>
-				<th></th>
-			</tr>
-			</thead>
-			<tbody id="listaProyectosPromotorParaInvertir">                 
-			</tbody>
-		</table>   
-		</div>`;	
-
-	document.getElementById("invertirEnProyectoDiv").innerHTML += plantilla;	
-	*/
 }
 
 // se utiliza en cargarPantallaInvertirEnProyectos
@@ -236,22 +190,6 @@ function plantillaAddProyecto (
 			</table>   
 		</div>`;
 
-
-/*
-	let plantilla = `<tr>
-		<td>${nbProyecto}</td>
-		<td>${tokenGoalProyecto}</td>
-		<td>${rentabilidad}</td>
-		<td>${formateaNumeroAFecha(fechaInicioFinanciacion)}</td>
-		<td>${formateaNumeroAFecha(fechaFinFinanciacion)}</td>
-		<td>${formateaNumeroAFecha(fechaIniEjecucion)}</td>
-		<td>${formateaNumeroAFecha(fechaFinEjecucion)}</td>
-		<td>${estadoProyecto}</td>            
-		<td><button type="button" onclick="invertirProyecto('${ctaPromotor}', '${ctaProyecto}');">Invertir</button></td> 
-		<td><input type="text" id="tokensAInvertir" size="5"/></td> 
-	</tr>`;
-*/
-	//document.getElementById("listaProyectosPromotorParaInvertir").innerHTML += plantilla;
 	document.getElementById("listaProyectosParaInvertir"+ctaPromotor).innerHTML += plantilla;
 	
 }
@@ -280,7 +218,7 @@ function plantillaProyectosDelInversor(ctaPromotor,
 		<td>${formateaNumeroAFecha(fechaIniEjecucion)}</td>
 		<td>${formateaNumeroAFecha(fechaFinEjecucion)}</td>
 		<td>${estadoProyecto}</td>		         
-		<td><button type="button" onclick="abandonarProyecto('${ctaPromotor}', '${ctaProyecto}', '${ctaInversor}');cleanInversor();">Abandonar</button></td> 
+		<td><button type="button" onclick="abandonarProyecto('${ctaPromotor}', '${ctaProyecto}', '${ctaInversor}');">Abandonar</button></td> 
 		</tr>`;
 
 	document.getElementById("listaProyectosDelInversor").innerHTML += plantilla;
@@ -342,8 +280,8 @@ function plantillaPromotorProyectoInversorAdmin(
 		<div class="col-sm-11"><span id="balancePromotorPro">${balancePromotorPro}</span></div> 		
 	</div>  
 	<div class="row">
-		<div class="col-sm-2"><label> <button id="rowGetTokensId">Obtener tokens</button></label></div>
-		<div class="col-sm-10"></div>            	
+		<div class="col-sm-2"><label> <button onclick="tranferirTokenPromotor('${ctaPromotor}');">Transferir tokens</button></label></div>
+		<div class="col-sm-10"> <p id="mensajeSpanTT${ctaPromotor}"></p></div>            	
 	</div>       
 	<br>
 	<div id="listaProyectosInversoresAdmin${ctaPromotor}"></div>`;
