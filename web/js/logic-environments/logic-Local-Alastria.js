@@ -220,7 +220,7 @@ async function cargarPantallaPromotor(){
 				for(let idProyecto of resultConsultarPromo.listadoProyectos){
 
 					// consultamos proyecto
-					await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
+					 instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000}, function(error, result){
 						if(!error){
 							console.log(result);	
 							
@@ -291,7 +291,7 @@ async function cargarPantallaInversor(){
 				for(let idProyecto of result.proyectos){
 					
 					if(idProyecto != 0){
-						await instPlatPromoInver.methods.tokensInvertidosEnProyecto(idProyecto).call( {from: ctaInversor, gas: 300000}, function(error, resultTokenInvertidosEnProy){
+						 instPlatPromoInver.methods.tokensInvertidosEnProyecto(idProyecto).call( {from: ctaInversor, gas: 300000}, function(error, resultTokenInvertidosEnProy){
 							if(!error){
 								console.log(resultTokenInvertidosEnProy);	
 								
