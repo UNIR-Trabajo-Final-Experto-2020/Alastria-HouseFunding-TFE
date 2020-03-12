@@ -31,7 +31,7 @@
       }
 
        //Tranfiere numeroTokens a cuentaDestino (Promotor o Inversor) de la cuenta de la plataforma.
-       function tranferirTokens()
+       async function tranferirTokens()
        {
 
           var cuentaDestino = document.getElementById("cuentaDestino").value;
@@ -51,6 +51,9 @@
 
                 console.log("Tranfiere a promotor");
                 tranferirTokensPromotor(cuentaDestino, numeroTokens);
+
+                const balancePromotor = await instPlatPromoInver.methods.balanceOf(cuentaDestino).call( {from: cuentaPlataforma, gas: 50000});
+                document.getElementById("balancePromotorPro").innerHTML = balancePromotor;                 
 
           } else if (tipoUsuario == 'INVERSOR') {    
                  

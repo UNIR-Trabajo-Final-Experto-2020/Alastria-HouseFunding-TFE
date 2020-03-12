@@ -331,7 +331,44 @@ function abandonarProyecto(ctaPromotor, idProyecto, ctaInversor){
 
 // PANTALLA INVERTIR EN PROYECTOS
 // Carga todos los proyectos existentes en la plataforma
-function cargarPantallaInvertirEnProyectos(){
+async function cargarPantallaInvertirEnProyectos(){
+
+	// Consultar addres de promotores
+	const listaDePromotores = await instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000});
+
+	for (let ctaPromotor of listaDePromotores) {
+
+		// Consultar datos de cada promotor		
+		const promotor = await instPlatPromoInver.methods.consultarPromotor(ctaPromotor).call( {from: ctaPromotor, gas: 300000});
+
+		plantillaPromotoresParaInvertir(ctaPromotor,
+			promotor.nombre,
+			promotor.cif);
+
+		for (let idProyecto of promotor.listadoProyectos) {		
+
+			// Consultar datos de cada proyecto
+			const proyecto = await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000});
+
+			const balanceProyecto = await instPlatPromoInver.methods.consultarTokensInvertidosEnProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000});
+
+			plantillaAddProyecto(ctaPromotor, 
+				idProyecto,
+				proyecto.nombre,
+				proyecto.tokensGoal,
+				proyecto.rentabilidad,
+				traduceEstado(proyecto.estadoProyecto), 
+				proyecto.fechaInicioFinanciacion, 
+				proyecto.fechaFinFinanciacion,
+				proyecto.fechaInicioEjecucion,
+				proyecto.fechaFinEjecucion,
+				balanceProyecto);			
+
+		}			
+	}	
+}	
+
+function cargarPantallaInvertirEnProyectos1(){
 
 	// Consultar addres de promotores
 	instPlatPromoInver.methods.listarPromotoress().call( {from: cuentaPlataforma, gas: 300000}, function(error, resultListarPromo){
@@ -347,7 +384,7 @@ function cargarPantallaInvertirEnProyectos(){
 					if(!error){
 						console.log(resultConsultarPromo);	
 						
-						plantillaPromotoresParaInvertir(resultConsultarPromo.nombre, resultConsultarPromo.cif);
+						plantillaPromotoresParaInvertir(ctaPromotor, resultConsultarPromo.nombre, resultConsultarPromo.cif);
 						
 						for (let idProyecto of resultConsultarPromo.listadoProyectos) {							
 
@@ -394,7 +431,7 @@ function invertirProyecto(cuentaPromotor, idProyecto){
 
 	let ctaInversor = localStorage.getItem("ctaInversorLogado");
 
-	let numeroTokens = document.getElementById("tokensAInvertir").value;
+	let numeroTokens = document.getElementById("tokensAInvertir"+idProyecto).value;
 
 	instPlatPromoInver.methods.invertirProyecto(cuentaPromotor, idProyecto, numeroTokens)
 		.send({from: ctaInversor, gas: 3000000}, function(error, result){
@@ -411,8 +448,8 @@ function invertirProyecto(cuentaPromotor, idProyecto){
 				if (receipt.events) {
 					console.log(JSON.stringify(receipt.events, null, 2));
 
-					if (receipt.events.TokensInvertidosProyecto) {
-						document.getElementById("tokensAInvertir").value = "";						
+					if (receipt.events.TokensInvertidosProyecto) {						
+						document.getElementById("tokensAInvertir"+idProyecto).value	= "";				
 						mostrarMensajeGenerico("SUCCESS", "Token invertidos en proyecto");
 						console.log("Evento TokensInvertidosProyecto ok");
 					}
@@ -468,7 +505,7 @@ async function cargarPantallaAdmPlataforma(){
 
 		const balancePromotor = await instPlatPromoInver.methods.balanceOf(ctaPromotor).call( {from: cuentaPlataforma, gas: 50000});
 
-		plantillaPromotorProyectoInversorAdmin(promotor.nombre,
+		plantillaPromotorProyectoInversorAdmin(ctaPromotor,promotor.nombre,
 			promotor.cif,
 			promotor.capacidad,
 			balancePromotor);
@@ -478,7 +515,11 @@ async function cargarPantallaAdmPlataforma(){
 			// Consultar datos de cada proyecto
 			const proyecto = await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000});
 
-			listaProyectosAdmin(proyecto.nombre,
+			const balanceProyecto = await instPlatPromoInver.methods.consultarTokensInvertidosEnProyecto(idProyecto).call( {from: ctaPromotor, gas: 300000});
+
+			listaProyectosAdmin(ctaPromotor, 
+				idProyecto,
+				proyecto.nombre,
 				proyecto.tokensGoal,
 				proyecto.rentabilidad,
 				proyecto.fechaInicioFinanciacion,
@@ -486,7 +527,7 @@ async function cargarPantallaAdmPlataforma(){
 				proyecto.fechaInicioEjecucion,
 				proyecto.fechaFinEjecucion,
 				proyecto.estadoProyecto,
-				100);
+				balanceProyecto);
 
 			// Consultar inversores de cada proyecto
 			const inversoresDelProyecto = await instPlatPromoInver.methods.listarInversoresProyecto(ctaPromotor, idProyecto).call( {from: ctaPromotor, gas: 300000});
@@ -497,13 +538,15 @@ async function cargarPantallaAdmPlataforma(){
 
 				const tokensPorProyectosPorInversor = await instPlatPromoInver.methods.listarTokensPorProyectosPorInversor(idProyecto, ctaInversor).call( {from: ctaPromotor, gas: 300000});
 
-				listaInversoresPorProyectoAdmin(inversor.nombre,
+				listaInversoresPorProyectoAdmin(idProyecto,
+					inversor.nombre,
 					inversor.cif,
 					tokensPorProyectosPorInversor); 
 
 			}	
 
 		}	
+		
 	}
 }	
 
