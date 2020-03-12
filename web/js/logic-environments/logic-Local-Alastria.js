@@ -297,7 +297,7 @@ async function cargarPantallaInversor(){
 								
 								if(resultTokenInvertidosEnProy.tokensInversor != 0){
 									// consultamos proyecto
-									await instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: resultTokenInvertidosEnProy.ctaPromotor, gas: 300000}, function(error, resultConsultarProy){
+									 instPlatPromoInver.methods.consultarProyecto(idProyecto).call( {from: resultTokenInvertidosEnProy.ctaPromotor, gas: 300000}, function(error, resultConsultarProy){
 										if(!error){
 											console.log(resultConsultarProy);	
 											
