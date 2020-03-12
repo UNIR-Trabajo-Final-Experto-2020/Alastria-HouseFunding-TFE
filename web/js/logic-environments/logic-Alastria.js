@@ -6,6 +6,7 @@ var instanciaPlataformaPromoInver;
 var accounts, cuentaPlataforma, cuentaPromotor;
 let contadorAccountsUtilizadas = 1;
 var pps ='4mFmfbLsSlUS9b5msSfx';
+let usuarios = new Array();
 
 async function start() {
 
@@ -83,6 +84,7 @@ async function registrarPromotor(){
 						console.log(JSON.stringify(receipt.events, null, 2));
 
 						if (receipt.events.PromotorRegistrado) {
+							usuarios.push(ctaPromotorNueva+document.getElementById("passPromotor").value);
 							localStorage.setItem("accountPromotor", cuentaPromotor);
 							mostrarMensajeGenerico("SUCCESS","Promotor registrado correctamente, su Id: " + ctaPromotorNueva);
 							cleanRegistrarPromotor();
@@ -166,6 +168,7 @@ async function registrarInversor() {
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.InversorRegistrado) {
+						usuarios.push(cuentaInversorNueva+document.getElementById("passInversor").value);
 						cleanRegistrarInversor();
 						mostrarMensajeGenerico("SUCCESS", "Inversor registrado correctamente, su Id:" + cuentaInversorNueva);
 						console.log("Evento registro inversor ok");

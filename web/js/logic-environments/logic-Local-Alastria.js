@@ -6,6 +6,7 @@ var instanciaPlataformaPromoInver;
 var accounts, cuentaPlataforma, cuentaPromotor;
 let contadorAccountsUtilizadas = 1;
 var pps ='test';
+let usuarios = new Array();
 
 async function start() {
 
@@ -70,6 +71,7 @@ async function registrarPromotor(){
 						console.log(JSON.stringify(receipt.events, null, 2));
 
 						if (receipt.events.PromotorRegistrado) {
+							usuarios.push(ctaPromotorNueva+document.getElementById("passPromotor").value);	
 							localStorage.setItem("accountPromotor", cuentaPromotor);
 							mostrarMensajeGenerico("SUCCESS","Promotor registrado correctamente, su Id: " + ctaPromotorNueva);
 							cleanRegistrarPromotor();
@@ -152,6 +154,7 @@ async function registrarInversor() {
 					console.log(JSON.stringify(receipt.events, null, 2));
 
 					if (receipt.events.InversorRegistrado) {
+						usuarios.push(cuentaInversorNueva+document.getElementById("passInversor").value);
 						cleanRegistrarInversor();
 						mostrarMensajeGenerico("SUCCESS", "Inversor registrado correctamente, su Id:" + cuentaInversorNueva);
 						console.log("Evento registro inversor ok");
@@ -179,6 +182,11 @@ async function loginAdministrador() {
 
 // PANTALLA PROMOTOR
 async function loginPromotor() {
+	
+	if(usuarios.indexOf(document.getElementById("loginPromotorT").value+document.getElementById("pssPromotor").value) === -1){		
+		mostrarMensajeGenerico("ERROR", "Cuenta o pass promotor no valida");
+		return false;
+	}
 
 	let ctaPromotor = document.getElementById("loginPromotorT").value;
 	await desbloqueaCuenta(ctaPromotor);
@@ -251,6 +259,11 @@ function cargarPantallaPromotor(){
 // PANTALLA INVERSOR
 async function loginInversor() {
 
+	if(usuarios.indexOf(document.getElementById("logInversor").value+document.getElementById("pssInversor").value) === -1){	
+		mostrarMensajeGenerico("ERROR", "Cuenta o pass inversor no valida");
+		return false;
+	}
+	
 	let ctaInversor = document.getElementById("logInversor").value;
 	await desbloqueaCuenta(ctaInversor);
 
