@@ -1,4 +1,6 @@
 //Configuracion entornos
+let ENVIRONMENT = 'ALASTRIA';
+
 let ganache_ENVIRONMENT = 
 	[
 	"common.js", 
@@ -15,7 +17,15 @@ let local_Alastria_ENVIRONMENT =
 	"housefunding.js"
 	];
 
-function importarJs(environmentJs) {
+let alastria_ENVIRONMENT = 
+	[
+	"common.js", 
+	"plataformaInverABI.js",
+	"logic-environments/logic-Alastria.js?v=" + Date.now(),
+	"housefunding.js"
+	];
+
+function importarJs(envType, environmentJs) {
 	
 	var parentScript = document.getElementById('configJs');
 	parentScript = parentScript.src;
@@ -31,7 +41,10 @@ function importarJs(environmentJs) {
 		script.src = parentScript + "/" +pathJs;
 		document.body.appendChild(script);		
 	}  	
+
+	ENVIRONMENT = envType;
 }
+
 
 function importarWeb3() {
 	
@@ -40,9 +53,8 @@ function importarWeb3() {
 	document.body.appendChild(script);			   
 }
 
-//importarWeb3();
 
-importarJs(ganache_ENVIRONMENT);
-//importarJs(local_Alastria_ENVIRONMENT);
-
+importarJs('GANACHE', ganache_ENVIRONMENT);
+//importarJs('LOCAL_ALASTRIA', local_Alastria_ENVIRONMENT);
+//importarJs('ALASTRIA', alastria_ENVIRONMENT);
 

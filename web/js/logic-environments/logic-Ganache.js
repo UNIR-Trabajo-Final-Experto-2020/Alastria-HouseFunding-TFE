@@ -148,7 +148,20 @@ async function registrarInversor() {
 }
 // fin PANTALLA REGISTRAR NUEVO INVERSOR
 
+  function loginAdministrador() {
+    var cuenta = document.getElementById("loginAdministrador").value;
+    if (cuentaPlataforma == cuenta) {
+      
+      muestra_oculta('accesosDiv', 'administradorDiv');
+      limpiarMensajes();
+      cargarPantallaAdmPlataforma();
+      //obtenerPromotores();
 
+    } else {
+      console.log("Cuenta administrador no valida");
+      mostrarMensaje("msgAccesoAdministrador", "ERROR", "Cuenta administrador no valida");
+    }
+  }
 
 // PANTALLA PROMOTOR
 function loginPromotor() {
