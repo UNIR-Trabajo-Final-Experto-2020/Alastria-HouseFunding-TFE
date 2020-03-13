@@ -53,12 +53,14 @@ y copiar el contenido del abi.json al fichero plataformaInverABI.js
 El entorno sobre el que se desee arrancar la DAPP se configura en el fichero config.js. Dejar solamente la línea del entorno que se desee utilizar:
 
 importarJs('GANACHE', ganache_ENVIRONMENT);
+
 //importarJs('LOCAL_ALASTRIA', local_Alastria_ENVIRONMENT);
+
 //importarJs('ALASTRIA', alastria_ENVIRONMENT);
 
 # Configuración del address del SC: PlataformaPromoInver
 
-Una vez desplegado el SC mediante truffle, copiar el address donde se ha desplegado el SC y dependiendo del entorno establecerlo de la siguiente forma:
+Una vez desplegado el SC mediante truffle, copiar el address donde se ha desplegado el SC y dependiendo del entorno modificarlo de la siguiente forma:
 
 - Ganache: abrir ficher logic-Ganache.js y establecer el address en la funcion start, en la variable contratoPromoInver.
 
