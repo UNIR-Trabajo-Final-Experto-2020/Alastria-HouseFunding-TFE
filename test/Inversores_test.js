@@ -1,7 +1,7 @@
 const Inversores = artifacts.require("Inversores");
 
 contract('Inversores', function (accounts) {
-    console.log(accounts);
+    //console.log(accounts);
     
     beforeEach(async function () {
         this.inversores = await Inversores.new();
@@ -9,7 +9,7 @@ contract('Inversores', function (accounts) {
     
     it('Registar Inversor valido', async function () {
 		
-        console.log(accounts[0]);
+        //console.log(accounts[0]);
 
         const cuentaInversor = accounts[0];
 
@@ -23,14 +23,14 @@ contract('Inversores', function (accounts) {
     
     it('Registar Inversor sin nombre', async function () {
 		
-        console.log(accounts[1]);
+        //console.log(accounts[1]);
 
         const cuentaInversor = accounts[1];
 
         try {
        		await this.inversores.registrarInversor("", "B123839", { from: cuentaInversor, gasPrice: 1, gas: 3000000 });
        	} catch (error) {
-			console.log("Error inversores: " + error.message);
+			//console.log("Error inversores: " + error.message);
   			return;
        	}
 		assert.fail('Inversores: Expected throw not received');

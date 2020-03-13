@@ -1,7 +1,7 @@
 const PlataformaPromoInver = artifacts.require("PlataformaPromoInver");
 
 contract('PlataformaPromoInver', function (accounts) {
-    console.log(accounts);
+    //console.log(accounts);
     
     beforeEach(async function () {
         this.plataformaPromoInver = await PlataformaPromoInver.new();
@@ -30,7 +30,7 @@ contract('PlataformaPromoInver', function (accounts) {
 
     //Se obtiene token del proyecto
     const tokensDespuesDeRegistrarProyecto = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto);
-    console.log("tokensDespuesDeRegistrarProyecto:"  + tokensDespuesDeRegistrarProyecto); 
+    //console.log("tokensDespuesDeRegistrarProyecto:"  + tokensDespuesDeRegistrarProyecto); 
     assert.equal(tokensDespuesDeRegistrarProyecto, 0);        
 
     await this.plataformaPromoInver.registrarInversor("Inversor-90", "B123855", { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
@@ -48,7 +48,7 @@ contract('PlataformaPromoInver', function (accounts) {
         });
 
     const tokensInversorAntesDeInvertir = await this.plataformaPromoInver.balanceOf(cuentaInversor);
-    console.log("tokensInversorAntesDeInvertir:"  + tokensInversorAntesDeInvertir);
+    //console.log("tokensInversorAntesDeInvertir:"  + tokensInversorAntesDeInvertir);
     assert.equal(tokensInversorAntesDeInvertir, 200);  
 
     // Inversor invierte en proyecto              
@@ -73,15 +73,15 @@ contract('PlataformaPromoInver', function (accounts) {
 
    
     const tokensProyectoDespuesDeAbandonarInversor = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto);
-    console.log("tokensProyectoDespuesDeAbandonarInversor: "  + tokensProyectoDespuesDeAbandonarInversor);
+    //console.log("tokensProyectoDespuesDeAbandonarInversor: "  + tokensProyectoDespuesDeAbandonarInversor);
     assert.equal(tokensProyectoDespuesDeAbandonarInversor, 0); 
     
     const tokensInversorDespuesDeAbandonar = await this.plataformaPromoInver.balanceOf(cuentaInversor);
-    console.log("tokensInversorDespuesDeAbandonar: "  + tokensInversorDespuesDeAbandonar);
+    //console.log("tokensInversorDespuesDeAbandonar: "  + tokensInversorDespuesDeAbandonar);
     assert.equal(tokensProyectoDespuesDeAbandonarInversor, 0); 
        
     const proyectosPorInversorDespuesDeAbandonar = await this.plataformaPromoInver.listarProyectosInversor(cuentaInversor);
-    console.log("proyectosPorInversorDespuesDeAbandonar: " + proyectosPorInversorDespuesDeAbandonar);   
+    //console.log("proyectosPorInversorDespuesDeAbandonar: " + proyectosPorInversorDespuesDeAbandonar);   
     assert.equal(proyectosPorInversorDespuesDeAbandonar[0], 0);  
 
     });

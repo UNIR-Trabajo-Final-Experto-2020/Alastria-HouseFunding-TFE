@@ -1,7 +1,7 @@
 const PlataformaPromoInver = artifacts.require("PlataformaPromoInver");
 
 contract('PlataformaPromoInver', function (accounts) {
-    console.log(accounts);
+    //console.log(accounts);
     
     beforeEach(async function () {
         this.plataformaPromoInver = await PlataformaPromoInver.new();
@@ -9,7 +9,7 @@ contract('PlataformaPromoInver', function (accounts) {
     
     it('Registar Promotor valido', async function () {
 		
-        console.log(accounts[1]);
+        //console.log(accounts[1]);
 
         const cuentaPromotor = accounts[1];
 
@@ -23,13 +23,13 @@ contract('PlataformaPromoInver', function (accounts) {
     
     it('Registar Promotor capacidad invalida', async function () {
 		
-        console.log(accounts[1]);
+        //console.log(accounts[1]);
 
         const cuentaPromotor = accounts[1];
         try{
        		await this.plataformaPromoInver.registrarPromotor("Promotor 32", "B123019", 1000000001, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 });
   		} catch (error ) {
-  			console.log("Error: " + error.message);
+  			//console.log("Error: " + error.message);
   			return;
   		}
      	assert.fail('Expected throw not received');
@@ -38,7 +38,7 @@ contract('PlataformaPromoInver', function (accounts) {
 
     it('Intentar registrar un promotor que ya existe', async function () {
 		
-        console.log(accounts[1]);
+        //console.log(accounts[1]);
 
         const cuentaPromotor = accounts[1];
 
@@ -55,7 +55,7 @@ contract('PlataformaPromoInver', function (accounts) {
                     assert.equal(receipt.logs[0].event, "PromotorRegistrado");            
                 });
         } catch (error ) {
-            console.log("Error: " + error.message);
+            //console.log("Error: " + error.message);
             return;
         }    
 
@@ -68,10 +68,10 @@ contract('PlataformaPromoInver', function (accounts) {
 		        
    		//Es el accounts[0]
 		const currentOwner = await this.plataformaPromoInver.currentOwner();
-		console.log("currentOwner: " + currentOwner);
+		//console.log("currentOwner: " + currentOwner);
 
         const cuentaInversor = accounts[2];
-		console.log("Cuenta inversor:"  + cuentaInversor);
+		//console.log("Cuenta inversor:"  + cuentaInversor);
 
 		const tokensInversor = 10000;
 		//Se crea inversor
@@ -103,10 +103,10 @@ contract('PlataformaPromoInver', function (accounts) {
 		        
    		//Es el accounts[0]
 		const currentOwner = await this.plataformaPromoInver.currentOwner();
-		console.log("currentOwner: " + currentOwner);
+		//console.log("currentOwner: " + currentOwner);
 
         const cuentaPromotor = accounts[1];
-		console.log("Cuenta promotor:"  + cuentaPromotor);
+		//console.log("Cuenta promotor:"  + cuentaPromotor);
 
 		const tokensPromotor = 500000;
 

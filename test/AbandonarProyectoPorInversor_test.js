@@ -1,7 +1,7 @@
 const PlataformaPromoInver = artifacts.require("PlataformaPromoInver");
 
 contract('PlataformaPromoInver', function (accounts) {
-    console.log(accounts);
+    //console.log(accounts);
     
     beforeEach(async function () {
         this.plataformaPromoInver = await PlataformaPromoInver.new();
@@ -30,7 +30,7 @@ contract('PlataformaPromoInver', function (accounts) {
 
     //Se obtiene token del proyecto
     const tokensDespuesDeRegistrarProyecto = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto);
-    console.log("tokensDespuesDeRegistrarProyecto:"  + tokensDespuesDeRegistrarProyecto); 
+    //console.log("tokensDespuesDeRegistrarProyecto:"  + tokensDespuesDeRegistrarProyecto); 
     assert.equal(tokensDespuesDeRegistrarProyecto, 0);        
 
     await this.plataformaPromoInver.registrarInversor("Inversor-90", "B123855", { from: cuentaInversor, gasPrice: 1, gas: 3000000 })
@@ -48,7 +48,7 @@ contract('PlataformaPromoInver', function (accounts) {
         });
 
     const tokensInversorAntesDeInvertir = await this.plataformaPromoInver.balanceOf(cuentaInversor);
-    console.log("tokensInversorAntesDeInvertir:"  + tokensInversorAntesDeInvertir);
+    //console.log("tokensInversorAntesDeInvertir:"  + tokensInversorAntesDeInvertir);
     assert.equal(tokensInversorAntesDeInvertir, 200);  
 
     // Inversor invierte en proyecto              
@@ -61,17 +61,17 @@ contract('PlataformaPromoInver', function (accounts) {
     
     // Tiene proyecto despues de invertir
     const proyectosPorInversorAntesDeAbandonar = await this.plataformaPromoInver.listarProyectosInversor(cuentaInversor);
-    console.log("proyectosPorInversorAntesDeAbandonar: " + proyectosPorInversorAntesDeAbandonar);   
+    //console.log("proyectosPorInversorAntesDeAbandonar: " + proyectosPorInversorAntesDeAbandonar);   
     assert.notEqual(proyectosPorInversorAntesDeAbandonar[0], 0); 
 
     // token que le quedan al inversor en su cuenta despues de invertir
     const tokensInversorDespuesDeInvertir = await this.plataformaPromoInver.balanceOf(cuentaInversor);
-    console.log("tokensInversorDespuesDeInvertir:"  + tokensInversorDespuesDeInvertir);
+    //console.log("tokensInversorDespuesDeInvertir:"  + tokensInversorDespuesDeInvertir);
     assert.equal(tokensInversorDespuesDeInvertir, 50); 
 
     //Token proyecto despues de que un inversor haga una inversión
     result = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto, { from: cuentaPromotor, gasPrice: 1, gas: 3000000 });
-    console.log("tokensProyectoDespuesDeInvertir:"  + result);  
+    //console.log("tokensProyectoDespuesDeInvertir:"  + result);  
     assert.equal(result, 150); 
 
 
@@ -82,7 +82,7 @@ contract('PlataformaPromoInver', function (accounts) {
                 
         }); 
 
-    console.log("listarTokensPorProyectosPorInversor:"  + tokensPorInversor);
+    //console.log("listarTokensPorProyectosPorInversor:"  + tokensPorInversor);
     assert.equal(tokensPorInversor, 150); 
 
     //Se realiza transferencia de proyecto a inversor    

@@ -2,7 +2,7 @@ const PlataformaPromoInver = artifacts.require("PlataformaPromoInver");
 
 contract('PlataformaPromoInver', function (accounts) {
 
-    console.log(accounts);
+    //console.log(accounts);
     
     beforeEach(async function () {
         this.plataformaPromoInver = await PlataformaPromoInver.new();
@@ -85,11 +85,11 @@ contract('PlataformaPromoInver', function (accounts) {
         //Fecha inicio la actual y fecha fin en un anyo        
 
 		let tokensProyecto2 = await this.plataformaPromoInver.consultarTokensInvertidosEnProyecto(idProyecto);
- 		console.log("tokensProyecto despues:"  + tokensProyecto2);
+ 		//console.log("tokensProyecto despues:"  + tokensProyecto2);
  		assert.equal(tokensProyecto2, 0);
 
  		let tokensPromotor2 = await this.plataformaPromoInver.balanceOf(cuentaPromotor);
-		console.log("tokensPromotor despues:"  + tokensPromotor2);
+		//console.log("tokensPromotor despues:"  + tokensPromotor2);
         assert.equal(tokensPromotor2, tokensGoal);
 
         //Transferimos tokens necesearios a promotor para repartir ganancias
@@ -100,7 +100,7 @@ contract('PlataformaPromoInver', function (accounts) {
                 
                 assert.equal(receipt.logs[0].event, "Transfer");  
                 assert.equal(receipt.logs[1].event, "TokensEmitidos");    
-                console.log("Se transfieren " + tokensPromotorIntereses + " tokens para intereses a promotor");      
+                //console.log("Se transfieren " + tokensPromotorIntereses + " tokens para intereses a promotor");      
         });        
 		
 
@@ -117,7 +117,7 @@ contract('PlataformaPromoInver', function (accounts) {
                 assert.equal(receipt.logs[1].event, "Transfer");  
                 assert.equal(receipt.logs[2].event, "Transfer");  
                 assert.equal(receipt.logs[3].event, "ProyectoFinalizadoConTransferencias"); 
-                console.log("Transferencias realizadas a inversores");         
+                //console.log("Transferencias realizadas a inversores");         
         }); 
         
         let tokensPromotorFinalizado = await this.plataformaPromoInver.balanceOf(cuentaPromotor);
