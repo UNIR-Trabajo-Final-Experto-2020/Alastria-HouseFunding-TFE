@@ -48,6 +48,10 @@ truffle-export-abi -d ./build/contracts/ -o ./build/abi.json -v
 
 y copiar el contenido del abi.json al fichero plataformaInverABI.js
 
+- Instalación de truffle-export-abi:
+
+https://github.com/maxme/truffle-export-abi
+
 # Configuración de entorno: config.js
 
 El entorno sobre el que se desee arrancar la DAPP se configura en el fichero config.js. Dejar solamente la línea del entorno que se desee utilizar:
