@@ -1,7 +1,7 @@
 # Alastria-HouseFunding-TFE
 Aplicación descentralizada para la financiación de proyectos utilizando tecnología Blockchain.
 
-Inicialización:
+Inicialización y funcionamiento básico:
 
 1 - Se despliega PlataformaPromoInver con la accounts[0]
 	- Se transfiere 1000000000 VAT a la dirección PlataformaPromoInver
@@ -17,23 +17,54 @@ Inicialización:
 	5.1 - El inversor I1 compra tokens a PlataformaPromoInver: balanceOf del inversor se incrementa y se resta del totalSupply (Exchange). Método tranferirTokensParaInversor.
 	5.2 - El inversor I1 invierte 1000 VAT en P1 (invertirProyecto).
 	5.3 - El inversor I1 invierto 5000 VAT en P2 (invertirProyecto).
-	5.4 - LLega el último inversor de un proyecto y alcance el tokensGoal (proyecto EN_PROGRESO).
+	5.4 - LLega el último inversor de un proyecto y alcance el tokensGoal
 
-6 - El promotor transfiere tokens del proyecto a su cuenta.
+6 - El promotor ejecuta el proyecto (EN_EJECUCION)
 
 7 - El promotor transfiere tokens de plataforma a su cuenta para pagar intereses.
 
-8 - Finalizar proyecto.
+8 - El promotor finaliza el proyecto: se transfieren tokens con intereses a inversores.
 
-# Despliegue del proyecto en local
+# Despliegue del proyecto Ganache local
 
 truffle migrate --reset --all --network ganache
+
+# Despliegue del proyecto Alastria local
+
+truffle migrate --reset --all --network alastriaLocal
+
+# Despliegue del proyecto en Alastria (nodo Unir)
+
+truffle migrate --reset --all --network alastriaTelsius
 
 # Ejecucion de test
 
 truffle test
 
-	  
+# Regeneración de ABI
+Si se modifica la interfaz de los SmartContract es necesario generar el ABI con este comando:
+
+truffle-export-abi -d ./build/contracts/ -o ./build/abi.json -v
+
+y copiar el contenido del abi.json al fichero plataformaInverABI.js
+
+# Configuración de entorno: config.js
+
+El entorno sobre el que se desee arrancar la DAPP se configura en el fichero config.js. Dejar solamente la línea del entorno que se desee utilizar:
+
+importarJs('GANACHE', ganache_ENVIRONMENT);
+//importarJs('LOCAL_ALASTRIA', local_Alastria_ENVIRONMENT);
+//importarJs('ALASTRIA', alastria_ENVIRONMENT);
+
+# Configuración del address del SC: PlataformaPromoInver
+
+Una vez desplegado el SC mediante truffle, copiar el address donde se ha desplegado el SC y dependiendo del entorno establecerlo de la siguiente forma:
+
+- Ganache: abrir ficher logic-Ganache.js y establecer el address en la funcion start, en la variable contratoPromoInver.
+
+- Alastria Local: abrir ficher logic-Local-Alastria.js y establecer el address en la funcion start, en la variable contratoPromoInver.
+
+- Alastria (Telsius): abrir ficher logic-Alastria.js y establecer el address en la funcion start, en la variable contratoPromoInver.
 
 
 
