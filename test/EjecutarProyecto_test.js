@@ -7,7 +7,7 @@ contract('PlataformaPromoInver', function (accounts) {
         this.plataformaPromoInver = await PlataformaPromoInver.new();
     });
     
-  it('Finalizar Proyecto por Promotor', async function () {
+  it('Ejecutar Proyecto por Promotor', async function () {
 
     const tokensGoal = 200;
     const tokensInversor = 200;
