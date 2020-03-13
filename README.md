@@ -52,6 +52,15 @@ y copiar el contenido del abi.json al fichero plataformaInverABI.js
 
 https://github.com/maxme/truffle-export-abi
 
+# Configuración del address del contrato PlataformaPromoInver.sol desplegado:
+
+Se debe establecer el address en la variable contratoPromoInver de la función start del fichero:
+
+- logic-Ganache.js: Si se desea probar con un testnet local con Ganache.
+- logic-Local-Alastria.js: Si se desea probar con un nodo local de Alastria.
+- logic-Alastria.js: Si se desea probar en la red Telsius de Alastria (necesario estar dentro de la red de Alastria).
+
+
 # Configuración de entorno: config.js
 
 El entorno sobre el que se desee arrancar la DAPP se configura en el fichero config.js. Dejar solamente la línea del entorno que se desee utilizar:
