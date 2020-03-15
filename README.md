@@ -25,7 +25,13 @@ Inicialización y funcionamiento básico:
 
 8 - El promotor finaliza el proyecto: se transfieren tokens con intereses a inversores.
 
-# Despliegue del proyecto Ganache local
+## Requisitos previos 
+
+Instalación de Ganache para el entorno local.
+
+https://www.trufflesuite.com/ganache
+
+## Despliegue del proyecto Ganache local
 
 truffle migrate --reset --all --network ganache
 
