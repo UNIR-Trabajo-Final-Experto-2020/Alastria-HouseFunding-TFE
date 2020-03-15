@@ -1,5 +1,6 @@
-# Alastria-HouseFunding-TFE
-Aplicación descentralizada para la financiación de proyectos utilizando tecnología Blockchain.
+# HouseFunding: Financiación de proyectos inmobiliarios
+
+Aplicación descentralizada para la financiación de proyectos immobiliarios utilizando tecnología Blockchain.
 
 Inicialización y funcionamiento básico:
 
@@ -35,19 +36,19 @@ https://www.trufflesuite.com/ganache
 
 truffle migrate --reset --all --network ganache
 
-# Despliegue del proyecto Alastria local
+## Despliegue del proyecto Alastria local
 
 truffle migrate --reset --all --network alastriaLocal
 
-# Despliegue del proyecto en Alastria (nodo Unir)
+## Despliegue del proyecto en Alastria (nodo Unir)
 
 truffle migrate --reset --all --network alastriaTelsius
 
-# Ejecucion de test
+## Ejecucion de test
 
 truffle test
 
-# Regeneración de ABI
+## Regeneración de ABI
 Si se modifica la interfaz de los SmartContract es necesario generar el ABI con este comando:
 
 truffle-export-abi -d ./build/contracts/ -o ./build/abi.json -v
@@ -58,7 +59,7 @@ y copiar el contenido del abi.json al fichero plataformaInverABI.js
 
 https://github.com/maxme/truffle-export-abi
 
-# Configuración del address del contrato PlataformaPromoInver.sol desplegado:
+## Configuración del address del contrato PlataformaPromoInver.sol desplegado:
 
 Se debe establecer el address en la variable contratoPromoInver de la función start del fichero:
 
@@ -67,7 +68,7 @@ Se debe establecer el address en la variable contratoPromoInver de la función s
 - logic-Alastria.js: Si se desea probar en la red Telsius de Alastria (necesario estar dentro de la red de Alastria).
 
 
-# Configuración de entorno: config.js
+## Configuración de entorno: config.js
 
 El entorno sobre el que se desee arrancar la DAPP se configura en el fichero config.js. Dejar solamente la línea del entorno que se desee utilizar:
 
@@ -77,7 +78,7 @@ importarJs('GANACHE', ganache_ENVIRONMENT);
 
 //importarJs('ALASTRIA', alastria_ENVIRONMENT);
 
-# Configuración del address del SC: PlataformaPromoInver
+## Configuración del address del SC: PlataformaPromoInver
 
 Una vez desplegado el SC mediante truffle, copiar el address donde se ha desplegado el SC y dependiendo del entorno modificarlo de la siguiente forma:
 
