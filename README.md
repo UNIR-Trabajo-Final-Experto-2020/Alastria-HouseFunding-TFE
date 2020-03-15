@@ -32,6 +32,8 @@ Instalación de Ganache para el entorno local.
 
 https://www.trufflesuite.com/ganache
 
+A continuación es necesario crear un nuevo Workspace y seleccionar el truffle-config.js que ya tiene configurado el entorno ganache local.
+
 ## Despliegue del proyecto Ganache local
 
 truffle migrate --reset --all --network ganache
