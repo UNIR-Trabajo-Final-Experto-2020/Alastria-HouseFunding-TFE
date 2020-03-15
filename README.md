@@ -90,5 +90,17 @@ Una vez desplegado el SC mediante truffle, copiar el address donde se ha despleg
 
 - Alastria (Telsius): abrir ficher logic-Alastria.js y establecer el address en la funcion start, en la variable contratoPromoInver.
 
+## Iniciar aplicación web
+
+Para iniciar la aplicación web es necesario un servidor web. Se puede utilizar por ejemplo un servidor web de python desde línea de comandos (nos situamos en la carpeta /web):
+
+python -m SimpleHTTPServer 8000
+
+A continuación desde un explorador accedemos a la siguietne ul:
+
+http://localhost:8000/index.html
+
+
+
 
 
